@@ -50,3 +50,13 @@ BASELINES_PQ = INTERIM / "paper_baselines.parquet"
 def ensure_dirs() -> None:
     for d in (RAW, INTERIM, PROCESSED, FIGURES, EDA_JSON):
         d.mkdir(parents=True, exist_ok=True)
+
+# Extracted processed LRTS (Google Drive zip). The zip nests a top-level folder of the same name.
+LRTS_DATA = RAW / "long_running_test_suites" / "long_running_test_suites"
+LRTS_FULL_DATASET_CSV = LRTS_DATA / "dataset.csv"
+LRTS_TEST_RESULT_DIR = LRTS_DATA / "processed_test_result"
+LRTS_SHADATA_DIR = LRTS_DATA / "shadata"
+
+# More interim tables
+RUN_FILE_AUDIT_PQ = INTERIM / "run_file_audit.parquet"   # per-run counts recomputed from the csv.zip
+FAILURES_PQ = INTERIM / "failures.parquet"               # one row per failing (run, test_class), with labels
