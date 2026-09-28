@@ -1,0 +1,38 @@
+# All paths are relative to the repo root (resolved in src/stp/paths.py).
+paths:
+  raw: data/raw
+  interim: data/interim
+  processed: data/processed
+  lrts_repo: external/LRTS
+  figures: reports/figures
+  eda_json: reports/eda_json
+  report: reports/EDA_REPORT.md
+
+sources:
+  lrts_git: https://github.com/lrtsuser/LRTS
+  lrts_gdrive_id: 13vnCA0tY2BMY9irfn0nV01bJnST6z4kx
+  lrts_gdrive_url: https://drive.google.com/file/d/13vnCA0tY2BMY9irfn0nV01bJnST6z4kx/view
+
+projects:
+  - activemq
+  - hadoop
+  - hbase
+  - hive
+  - jackrabbit-oak
+  - james
+  - kafka
+  - karaf
+  - log4j
+  - tvm
+
+# Chronological split per project, by build_timestamp (fractions of builds).
+split:
+  train: 0.70
+  val: 0.15
+  test: 0.15
+
+eda:
+  seed: 42
+  ttff_max_failed_runs_per_project: 300   # Phase 3.G stratified sample size
+  ttff_random_shuffles: 20
+  min_first_fail_runs_in_test: 30
