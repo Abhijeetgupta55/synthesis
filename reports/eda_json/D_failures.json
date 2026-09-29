@@ -1,0 +1,371 @@
+{
+  "failed_classes_per_failed_run": {
+    "median": {
+      "per_project": {
+        "activemq": 1.0,
+        "hadoop": 2.0,
+        "hbase": 1.0,
+        "hive": 2.0,
+        "jackrabbit-oak": 2.0,
+        "james": 2.0,
+        "kafka": 2.0,
+        "karaf": 1.0,
+        "log4j": 2.0,
+        "tvm": 2.0
+      },
+      "macro": 1.7
+    },
+    "mean": {
+      "per_project": {
+        "activemq": 2.543147,
+        "hadoop": 4.97867,
+        "hbase": 2.765376,
+        "hive": 8.974864,
+        "jackrabbit-oak": 12.023857,
+        "james": 5.816851,
+        "kafka": 4.603113,
+        "karaf": 2.029268,
+        "log4j": 3.240741,
+        "tvm": 6.317151
+      },
+      "macro": 5.329304
+    },
+    "p90": {
+      "per_project": {
+        "activemq": 5.0,
+        "hadoop": 9.4,
+        "hbase": 4.0,
+        "hive": 21.0,
+        "jackrabbit-oak": 26.0,
+        "james": 14.0,
+        "kafka": 7.0,
+        "karaf": 3.0,
+        "log4j": 8.0,
+        "tvm": 12.0
+      },
+      "macro": 10.94
+    },
+    "share_exactly_one": {
+      "per_project": {
+        "activemq": 0.548223,
+        "hadoop": 0.437892,
+        "hbase": 0.628702,
+        "hive": 0.430027,
+        "jackrabbit-oak": 0.473161,
+        "james": 0.420886,
+        "kafka": 0.320913,
+        "karaf": 0.663415,
+        "log4j": 0.419753,
+        "tvm": 0.329686
+      },
+      "macro": 0.467266
+    }
+  },
+  "per_test_failure_tail": {
+    "failing_test_classes": {
+      "per_project": {
+        "activemq": 154.0,
+        "hadoop": 1062.0,
+        "hbase": 328.0,
+        "hive": 724.0,
+        "jackrabbit-oak": 928.0,
+        "james": 1146.0,
+        "kafka": 1338.0,
+        "karaf": 87.0,
+        "log4j": 85.0,
+        "tvm": 1455.0
+      },
+      "macro": 730.7
+    },
+    "share_failed_once": {
+      "per_project": {
+        "activemq": 0.454545,
+        "hadoop": 0.40678,
+        "hbase": 0.195122,
+        "hive": 0.214088,
+        "jackrabbit-oak": 0.155172,
+        "james": 0.219895,
+        "kafka": 0.06278,
+        "karaf": 0.344828,
+        "log4j": 0.270588,
+        "tvm": 0.067354
+      },
+      "macro": 0.239115
+    },
+    "share_of_failures_top1pct_tests": {
+      "per_project": {
+        "activemq": 0.159681,
+        "hadoop": 0.146673,
+        "hbase": 0.066722,
+        "hive": 0.128151,
+        "jackrabbit-oak": 0.074901,
+        "james": 0.155049,
+        "kafka": 0.256019,
+        "karaf": 0.120192,
+        "log4j": 0.055238,
+        "tvm": 0.113866
+      },
+      "macro": 0.127649
+    },
+    "share_of_failures_top10_tests": {
+      "per_project": {
+        "activemq": 0.401198,
+        "hadoop": 0.140121,
+        "hbase": 0.127677,
+        "hive": 0.149345,
+        "jackrabbit-oak": 0.074901,
+        "james": 0.142197,
+        "kafka": 0.201991,
+        "karaf": 0.490385,
+        "log4j": 0.537143,
+        "tvm": 0.091206
+      },
+      "macro": 0.235616
+    },
+    "max_failures_one_test": {
+      "per_project": {
+        "activemq": 57.0,
+        "hadoop": 173.0,
+        "hbase": 22.0,
+        "hive": 325.0,
+        "jackrabbit-oak": 127.0,
+        "james": 271.0,
+        "kafka": 6566.0,
+        "karaf": 50.0,
+        "log4j": 29.0,
+        "tvm": 590.0
+      },
+      "macro": 821.0
+    }
+  },
+  "ftf_share_of_failures": {
+    "per_project": {
+      "activemq": 0.307385,
+      "hadoop": 0.267641,
+      "hbase": 0.514827,
+      "hive": 0.054803,
+      "jackrabbit-oak": 0.076802,
+      "james": 0.080585,
+      "kafka": 0.041253,
+      "karaf": 0.209135,
+      "log4j": 0.241905,
+      "tvm": 0.177415
+    },
+    "macro": 0.197175
+  },
+  "ftf_share_of_failures_after_burn_in": {
+    "per_project": {
+      "activemq": 0.169329,
+      "hadoop": 0.127559,
+      "hbase": 0.5,
+      "hive": 0.037766,
+      "jackrabbit-oak": 0.02381,
+      "james": 0.058775,
+      "kafka": 0.027592,
+      "karaf": 0.160563,
+      "log4j": 0.192857,
+      "tvm": 0.158532
+    },
+    "macro": 0.145678
+  },
+  "ftf_share_of_failures_anystage_def": {
+    "per_project": {
+      "activemq": 0.307385,
+      "hadoop": 0.267641,
+      "hbase": 0.434926,
+      "hive": 0.054803,
+      "jackrabbit-oak": 0.076802,
+      "james": 0.077933,
+      "kafka": 0.016398,
+      "karaf": 0.209135,
+      "log4j": 0.228571,
+      "tvm": 0.060752
+    },
+    "macro": 0.173435
+  },
+  "failed_runs_with_any_ftf": {
+    "per_project": {
+      "activemq": 0.28934,
+      "hadoop": 0.23463,
+      "hbase": 0.537585,
+      "hive": 0.096467,
+      "jackrabbit-oak": 0.148111,
+      "james": 0.14913,
+      "kafka": 0.067306,
+      "karaf": 0.209756,
+      "log4j": 0.364198,
+      "tvm": 0.213092
+    },
+    "macro": 0.230962
+  },
+  "failed_runs_all_ftf": {
+    "per_project": {
+      "activemq": 0.152284,
+      "hadoop": 0.086575,
+      "hbase": 0.355353,
+      "hive": 0.02106,
+      "jackrabbit-oak": 0.055666,
+      "james": 0.061313,
+      "kafka": 0.015248,
+      "karaf": 0.131707,
+      "log4j": 0.185185,
+      "tvm": 0.087147
+    },
+    "macro": 0.115154
+  },
+  "failed_runs_all_ftf_after_burn_in": {
+    "per_project": {
+      "activemq": 0.113333,
+      "hadoop": 0.061286,
+      "hbase": 0.328841,
+      "hive": 0.007792,
+      "jackrabbit-oak": 0.035669,
+      "james": 0.047366,
+      "kafka": 0.0093,
+      "karaf": 0.077844,
+      "log4j": 0.196721,
+      "tvm": 0.064199
+    },
+    "macro": 0.094235
+  },
+  "failed_runs_with_any_ftf_after_burn_in": {
+    "per_project": {
+      "activemq": 0.193333,
+      "hadoop": 0.15994,
+      "hbase": 0.514825,
+      "hive": 0.068398,
+      "jackrabbit-oak": 0.10828,
+      "james": 0.117448,
+      "kafka": 0.052509,
+      "karaf": 0.149701,
+      "log4j": 0.327869,
+      "tvm": 0.186808
+    },
+    "macro": 0.187911
+  },
+  "n_ftf_runs": {
+    "activemq": 57,
+    "hadoop": 187,
+    "hbase": 236,
+    "hive": 142,
+    "jackrabbit-oak": 149,
+    "james": 377,
+    "kafka": 2547,
+    "karaf": 43,
+    "log4j": 59,
+    "tvm": 1071
+  },
+  "n_ftf_runs_after_burn_in": {
+    "activemq": 29,
+    "hadoop": 107,
+    "hbase": 191,
+    "hive": 79,
+    "jackrabbit-oak": 85,
+    "james": 243,
+    "kafka": 1756,
+    "karaf": 25,
+    "log4j": 40,
+    "tvm": 742
+  },
+  "n_failure_rows": {
+    "activemq": 501,
+    "hadoop": 3968,
+    "hbase": 1214,
+    "hive": 13211,
+    "jackrabbit-oak": 12096,
+    "james": 14705,
+    "kafka": 174171,
+    "karaf": 416,
+    "log4j": 525,
+    "tvm": 31818
+  },
+  "flaky": {
+    "share_failures_jira_flaky": {
+      "per_project": {
+        "activemq": 0.051896,
+        "hadoop": 0.179688,
+        "hbase": 0.06425,
+        "hive": 0.343426,
+        "jackrabbit-oak": 0.00744,
+        "james": 0.0,
+        "kafka": 0.322264,
+        "karaf": 0.120192,
+        "log4j": 0.032381,
+        "tvm": 0.099881
+      },
+      "macro": 0.122142
+    },
+    "share_failures_flaky_before_fix": {
+      "per_project": {
+        "activemq": 0.045908,
+        "hadoop": 0.081401,
+        "hbase": 0.017298,
+        "hive": 0.152449,
+        "jackrabbit-oak": 0.003555,
+        "james": 0.0,
+        "kafka": 0.078101,
+        "karaf": 0.050481,
+        "log4j": 0.032381,
+        "tvm": 0.001163
+      },
+      "macro": 0.046274
+    },
+    "share_failures_flaky_after_fix": {
+      "per_project": {
+        "activemq": 0.005988,
+        "hadoop": 0.098286,
+        "hbase": 0.046952,
+        "hive": 0.190977,
+        "jackrabbit-oak": 0.003886,
+        "james": 0.0,
+        "kafka": 0.244162,
+        "karaf": 0.069712,
+        "log4j": 0.0,
+        "tvm": 0.098718
+      },
+      "macro": 0.075868
+    },
+    "share_failed_runs_only_flaky": {
+      "per_project": {
+        "activemq": 0.035533,
+        "hadoop": 0.144291,
+        "hbase": 0.077449,
+        "hive": 0.201766,
+        "jackrabbit-oak": 0.011928,
+        "james": 0.0,
+        "kafka": 0.24819,
+        "karaf": 0.15122,
+        "log4j": 0.0,
+        "tvm": 0.120971
+      },
+      "macro": 0.099135
+    },
+    "n_listed_flaky_classes_matched": {
+      "activemq": 2,
+      "hadoop": 38,
+      "hbase": 15,
+      "hive": 78,
+      "jackrabbit-oak": 4,
+      "kafka": 59,
+      "karaf": 1,
+      "log4j": 3,
+      "tvm": 50
+    },
+    "share_ftf_rows_that_are_jira_flaky": {
+      "per_project": {
+        "activemq": 0.012987,
+        "hadoop": 0.035782,
+        "hbase": 0.04,
+        "hive": 0.107735,
+        "jackrabbit-oak": 0.004306,
+        "james": 0.0,
+        "kafka": 0.069033,
+        "karaf": 0.011494,
+        "log4j": 0.047244,
+        "tvm": 0.042516
+      },
+      "macro": 0.03711
+    }
+  },
+  "definition": "3.D Failure structure: failures per failed run, per-test failure frequency tail, first-time failures, flakiness.\n\nfirst-time failure (ftf): failing test class with no failure of the same class in any strictly earlier run\n(by build_timestamp) of the same (project, stage). History = all 108k runs. Because the first months of each\nproject have no history, ftf is inflated early on; we also report it after a burn-in (first 15% of each project's\nruns by time, i.e. roughly the part a model would train on).\n"
+}

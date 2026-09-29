@@ -107,11 +107,13 @@ def plot(s: dict) -> None:
         ax.set_yscale("log")
         ax.set_xticks(x, projects + ["MACRO"])
         plt.setp(ax.get_xticklabels(), rotation=30, ha="right")
-        ax.set_title(f"Median minutes to first failure — {title}")
-        ax.legend(ncols=4, fontsize=8)
+        ax.set_title(f"Median minutes to first failure — {title}", fontsize=10)
     axes[0].set_ylabel("minutes (log)")
-    fig.text(0.01, -0.03, "Sample of ≤300 failed runs per project; sequential execution with actual class durations.",
-             fontsize=7)
+    handles, labels = axes[0].get_legend_handles_labels()
+    fig.legend(handles, labels, ncols=4, loc="upper center", bbox_to_anchor=(0.5, 1.08), fontsize=9)
+    fig.tight_layout()
+    fig.text(0.01, -0.08, "Sample of ≤300 failed runs per project; sequential execution with actual class durations; "
+             "values < 0.01 min drawn at 0.01.", fontsize=7)
     savefig(fig, "G_time_to_first_failure")
 
 

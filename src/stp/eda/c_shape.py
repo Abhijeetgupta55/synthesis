@@ -51,7 +51,7 @@ def plot(tbl: pd.DataFrame, monthly: pd.DataFrame) -> None:
     ax.barh(y, t.runs, color=PALETTE[0], height=0.75, label="all runs")
     ax.barh(y, t.failed_runs, color=PALETTE[1], height=0.4, label="failed runs")
     for i, (r, s) in enumerate(zip(t.runs, t.share_of_all_runs)):
-        ax.text(r * 1.03, i, f"{r:,}  ({s:.0%})", va="center", fontsize=8, color=TEXT_2)
+        ax.text(r * 1.03, i, f"{r:,}  ({s:.1%})", va="center", fontsize=8, color=TEXT_2)
     ax.set_yticks(y, t.index)
     ax.set_xscale("log")
     ax.set_xlabel("test-suite runs (log)")
