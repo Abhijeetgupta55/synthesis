@@ -60,3 +60,9 @@ LRTS_SHADATA_DIR = LRTS_DATA / "shadata"
 # More interim tables
 RUN_FILE_AUDIT_PQ = INTERIM / "run_file_audit.parquet"   # per-run counts recomputed from the csv.zip
 FAILURES_PQ = INTERIM / "failures.parquet"               # one row per failing (run, test_class), with labels
+
+# Phase 1+ outputs
+RESULTS = ROOT / "reports" / "results"                    # every reported number lives in a JSON here
+SPLITS_BUILD_PQ = PROCESSED / "splits_build.parquet"
+FEATURES_DIR = PROCESSED / "features"                    # hive-partitioned by project
+DUCKDB_TMP = PROCESSED / "_duckdb_tmp"                   # spill directory for out-of-core queries

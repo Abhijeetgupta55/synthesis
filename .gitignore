@@ -7,3 +7,8 @@ __pycache__/
 .ipynb_checkpoints/
 *.egg-info/
 .pytest_cache/
+
+# tool + pipeline outputs
+data/processed/_duckdb_tmp/
+.smartci/
+demo_bundle/

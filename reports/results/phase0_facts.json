@@ -1,0 +1,399 @@
+{
+  "fact3": {
+    "median_build_duration_over_suite": {
+      "per_project": {
+        "karaf": 4.902585,
+        "hadoop": 4.173128,
+        "hbase": 0.424483,
+        "james": 1.457186,
+        "log4j": 4.958537,
+        "activemq": 1.108335,
+        "hive": 0.140828,
+        "jackrabbit-oak": 0.332703,
+        "kafka": 0.35454,
+        "tvm": 0.764346
+      },
+      "macro": 1.861667
+    }
+  },
+  "fact4": {
+    "failed_run_rate_by_eda_split": {
+      "activemq": {
+        "train": 0.464744,
+        "val": 0.462687,
+        "test": 0.313433
+      },
+      "hadoop": {
+        "train": 0.408369,
+        "val": 0.417508,
+        "test": 0.360269
+      },
+      "hbase": {
+        "train": 0.436185,
+        "val": 0.457516,
+        "test": 0.381579
+      },
+      "hive": {
+        "train": 0.745308,
+        "val": 0.551724,
+        "test": 0.575
+      },
+      "jackrabbit-oak": {
+        "train": 0.662349,
+        "val": 0.342742,
+        "test": 0.620968
+      },
+      "james": {
+        "train": 0.457416,
+        "val": 0.386986,
+        "test": 0.365297
+      },
+      "kafka": {
+        "train": 0.603526,
+        "val": 0.921095,
+        "test": 0.973229
+      },
+      "karaf": {
+        "train": 0.287402,
+        "val": 0.247706,
+        "test": 0.293578
+      },
+      "log4j": {
+        "train": 0.292683,
+        "val": 0.35443,
+        "test": 0.325
+      },
+      "tvm": {
+        "train": 0.146627,
+        "val": 0.07838,
+        "test": 0.064867
+      }
+    },
+    "builds_with_stages_in_different_splits": {
+      "tvm": 58
+    }
+  },
+  "fact5": {
+    "n_classes": 2275,
+    "n_py": 2193,
+    "n_modules": 1547,
+    "n_py_modules": 1467,
+    "share_tvm_failures_under_tests_python": 0.932208,
+    "n_tvm_failure_rows": 31818.0
+  },
+  "fact1": {
+    "share_prev_run_unfinished_at_start": {
+      "per_project": {
+        "activemq": 0.435955,
+        "hadoop": 0.513391,
+        "hbase": 0.213018,
+        "hive": 0.678873,
+        "jackrabbit-oak": 0.387175,
+        "james": 0.618403,
+        "kafka": 0.778106,
+        "karaf": 0.398621,
+        "log4j": 0.231939,
+        "tvm": 0.725588
+      },
+      "macro": 0.498107
+    },
+    "share_any_earlier_run_unfinished_at_start": {
+      "per_project": {
+        "activemq": 0.467416,
+        "hadoop": 0.550783,
+        "hbase": 0.225838,
+        "hive": 0.697653,
+        "jackrabbit-oak": 0.408348,
+        "james": 0.666038,
+        "kafka": 0.801719,
+        "karaf": 0.401379,
+        "log4j": 0.235741,
+        "tvm": 0.729764
+      },
+      "macro": 0.518468
+    },
+    "share_prev_run_same_start_ts": {
+      "per_project": {
+        "activemq": 0.002247,
+        "hadoop": 0.004042,
+        "hbase": 0.005917,
+        "hive": 0.001408,
+        "jackrabbit-oak": 0.00121,
+        "james": 0.00257,
+        "kafka": 0.003251,
+        "karaf": 0.002759,
+        "log4j": 0.003802,
+        "tvm": 0.005288
+      },
+      "macro": 0.003249
+    },
+    "build_duration": {
+      "med_build_duration_s": 10034.0,
+      "med_suite_s": 20558.6305,
+      "max_build_duration_days": 83.146435,
+      "p99_build_duration_h": 11.011125,
+      "p999_build_duration_h": 25.581111,
+      "share_over_1d": 0.001246,
+      "share_over_2d": 0.000157
+    },
+    "last_outcome_check_10pct_class_sample": {
+      "activemq": {
+        "n_rows": 31213.0,
+        "match_prev_by_start": 1.0,
+        "share_rows_prev_unfinished": 0.437492,
+        "share_lofail_from_unfinished": 0.59322,
+        "n_lo_fail": 59.0
+      },
+      "hadoop": {
+        "n_rows": 119757.0,
+        "match_prev_by_start": 0.999699,
+        "share_rows_prev_unfinished": 0.372253,
+        "share_lofail_from_unfinished": 0.260504,
+        "n_lo_fail": 595.0
+      },
+      "hbase": {
+        "n_rows": 105192.0,
+        "match_prev_by_start": 0.999981,
+        "share_rows_prev_unfinished": 0.220341,
+        "share_lofail_from_unfinished": 0.107438,
+        "n_lo_fail": 121.0
+      },
+      "hive": {
+        "n_rows": 262292.0,
+        "match_prev_by_start": 0.999969,
+        "share_rows_prev_unfinished": 0.672321,
+        "share_lofail_from_unfinished": 0.518861,
+        "n_lo_fail": 1299.0
+      },
+      "jackrabbit-oak": {
+        "n_rows": 303131.0,
+        "match_prev_by_start": 1.0,
+        "share_rows_prev_unfinished": 0.371782,
+        "share_lofail_from_unfinished": 0.356816,
+        "n_lo_fail": 1093.0
+      },
+      "james": {
+        "n_rows": 917798.0,
+        "match_prev_by_start": 0.999998,
+        "share_rows_prev_unfinished": 0.622798,
+        "share_lofail_from_unfinished": 0.522974,
+        "n_lo_fail": 1197.0
+      },
+      "kafka": {
+        "n_rows": 7685770.0,
+        "match_prev_by_start": 0.99972,
+        "share_rows_prev_unfinished": 0.787914,
+        "share_lofail_from_unfinished": 0.779058,
+        "n_lo_fail": 12587.0
+      },
+      "karaf": {
+        "n_rows": 17861.0,
+        "match_prev_by_start": 1.0,
+        "share_rows_prev_unfinished": 0.395503,
+        "share_lofail_from_unfinished": 0.285714,
+        "n_lo_fail": 42.0
+      },
+      "log4j": {
+        "n_rows": 33966.0,
+        "match_prev_by_start": 1.0,
+        "share_rows_prev_unfinished": 0.235442,
+        "share_lofail_from_unfinished": 0.425,
+        "n_lo_fail": 80.0
+      },
+      "tvm": {
+        "n_rows": 1573377.0,
+        "match_prev_by_start": 0.999975,
+        "share_rows_prev_unfinished": 0.712556,
+        "share_lofail_from_unfinished": 0.727755,
+        "n_lo_fail": 3203.0
+      }
+    },
+    "last_outcome_match_rate": {
+      "per_project": {
+        "activemq": 1.0,
+        "hadoop": 0.999699,
+        "hbase": 0.999981,
+        "hive": 0.999969,
+        "jackrabbit-oak": 1.0,
+        "james": 0.999998,
+        "kafka": 0.99972,
+        "karaf": 1.0,
+        "log4j": 1.0,
+        "tvm": 0.999975
+      },
+      "macro": 0.999934
+    },
+    "share_last_outcome_fail_rows_from_unfinished_run": {
+      "per_project": {
+        "activemq": 0.59322,
+        "hadoop": 0.260504,
+        "hbase": 0.107438,
+        "hive": 0.518861,
+        "jackrabbit-oak": 0.356816,
+        "james": 0.522974,
+        "kafka": 0.779058,
+        "karaf": 0.285714,
+        "log4j": 0.425,
+        "tvm": 0.727755
+      },
+      "macro": 0.457734
+    }
+  },
+  "fact2": {
+    "share_new": {
+      "per_project": {
+        "activemq": 0.018868,
+        "hadoop": 0.021605,
+        "hbase": 0.027322,
+        "hive": 0.048387,
+        "jackrabbit-oak": 0.064935,
+        "james": 0.156105,
+        "kafka": 0.052489,
+        "karaf": 0.035088,
+        "log4j": 0.049383,
+        "tvm": 0.017775
+      },
+      "macro": 0.049196
+    },
+    "share_edited": {
+      "per_project": {
+        "activemq": 0.018868,
+        "hadoop": 0.188272,
+        "hbase": 0.054645,
+        "hive": 0.048387,
+        "jackrabbit-oak": 0.069264,
+        "james": 0.081917,
+        "kafka": 0.202073,
+        "karaf": 0.0,
+        "log4j": 0.098765,
+        "tvm": 0.063199
+      },
+      "macro": 0.082539
+    },
+    "share_existing": {
+      "per_project": {
+        "activemq": 0.962264,
+        "hadoop": 0.790123,
+        "hbase": 0.918033,
+        "hive": 0.903226,
+        "jackrabbit-oak": 0.865801,
+        "james": 0.761978,
+        "kafka": 0.745438,
+        "karaf": 0.964912,
+        "log4j": 0.851852,
+        "tvm": 0.919026
+      },
+      "macro": 0.868265
+    },
+    "share_edited_basename": {
+      "per_project": {
+        "activemq": 0.018868,
+        "hadoop": 0.188272,
+        "hbase": 0.054645,
+        "hive": 0.048387,
+        "jackrabbit-oak": 0.069264,
+        "james": 0.081917,
+        "kafka": 0.202748,
+        "karaf": 0.0,
+        "log4j": 0.098765,
+        "tvm": 0.063199
+      },
+      "macro": 0.082607
+    },
+    "share_existing_basename": {
+      "per_project": {
+        "activemq": 0.962264,
+        "hadoop": 0.790123,
+        "hbase": 0.918033,
+        "hive": 0.903226,
+        "jackrabbit-oak": 0.865801,
+        "james": 0.761978,
+        "kafka": 0.744762,
+        "karaf": 0.964912,
+        "log4j": 0.851852,
+        "tvm": 0.919026
+      },
+      "macro": 0.868198
+    },
+    "n_ftf_rows_with_change_data": {
+      "per_project": {
+        "activemq": 53,
+        "hadoop": 324,
+        "hbase": 549,
+        "hive": 372,
+        "jackrabbit-oak": 231,
+        "james": 647,
+        "kafka": 4439,
+        "karaf": 57,
+        "log4j": 81,
+        "tvm": 4557
+      },
+      "macro": 1131.0
+    },
+    "map_rate_classes_exact": {
+      "per_project": {
+        "activemq": 0.071048,
+        "hadoop": 0.372297,
+        "hbase": 0.120654,
+        "hive": 0.283824,
+        "jackrabbit-oak": 0.251158,
+        "james": 0.533547,
+        "kafka": 0.923732,
+        "karaf": 0.263374,
+        "log4j": 0.440415,
+        "tvm": 0.685714
+      },
+      "macro": 0.394577
+    },
+    "map_rate_classes_fallback": {
+      "per_project": {
+        "activemq": 0.072824,
+        "hadoop": 0.372297,
+        "hbase": 0.120654,
+        "hive": 0.283824,
+        "jackrabbit-oak": 0.251622,
+        "james": 0.533547,
+        "kafka": 0.923732,
+        "karaf": 0.263374,
+        "log4j": 0.44171,
+        "tvm": 0.685714
+      },
+      "macro": 0.39493
+    },
+    "map_rate_failure_rows_exact": {
+      "per_project": {
+        "activemq": 0.11976,
+        "hadoop": 0.523438,
+        "hbase": 0.20346,
+        "hive": 0.259784,
+        "jackrabbit-oak": 0.339616,
+        "james": 0.698878,
+        "kafka": 0.996147,
+        "karaf": 0.466346,
+        "log4j": 0.344762,
+        "tvm": 0.814288
+      },
+      "macro": 0.476648
+    },
+    "share_classes_mappable": {
+      "per_project": {
+        "activemq": 1.0,
+        "hadoop": 0.989972,
+        "hbase": 1.0,
+        "hive": 1.0,
+        "jackrabbit-oak": 1.0,
+        "james": 1.0,
+        "kafka": 0.999594,
+        "karaf": 1.0,
+        "log4j": 1.0,
+        "tvm": 0.976264
+      },
+      "macro": 0.996583
+    },
+    "definition": "ftf = EDA first-time failure (no earlier failure of the class in the same project+stage by start time), restricted to runs after the per-project 15% burn-in and builds with compare data. new = class not present in any strictly earlier-started run of the project; edited = not new and the class's own file (exact suffix mapping) is in the build's changed files."
+  },
+  "_meta": {
+    "generated": "2026-10-20 04:28:20",
+    "git_sha": "d6a16e0"
+  }
+}

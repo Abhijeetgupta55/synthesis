@@ -1,16 +1,31 @@
 [project]
-name = "stp"
+name = "smartci"
 version = "0.1.0"
-description = "Smart CI Test Prioritization: rank CI tests so failures (esp. first-time failures) surface early"
-requires-python = ">=3.11,<3.12"
+description = "smartci: run the pytest tests most likely to fail first (never skips). Research pipeline on LRTS in package `stp`."
+requires-python = ">=3.10"
+# Core = what the installable tool needs inside a user's pytest venv. Kept small on purpose.
 dependencies = [
-  "pandas>=2.2", "pyarrow>=15", "polars>=1.0", "duckdb>=1.0", "numpy>=1.26",
-  "scipy>=1.12", "matplotlib>=3.8", "seaborn>=0.13", "jupyter", "nbconvert",
-  "ipykernel", "gdown>=5.1", "tqdm", "pyyaml",
+  "numpy>=1.26",
+  "pandas>=2.1",
+  "pyarrow>=14",
+  "scikit-learn>=1.4",
+  "lightgbm>=4.3",
+  "junitparser>=3.1",
+  "pyyaml>=6",
+  "pytest>=7.4",
+  "coverage>=7.4",
 ]
 
 [project.optional-dependencies]
-dev = ["pytest>=8"]
+# Exact pins for the research pipeline (Python 3.11 .venv); see requirements-lock.txt for the full lock.
+research = [
+  "numpy==2.4.6", "pandas==3.0.6", "pyarrow==25.0.1", "polars==1.44.2", "duckdb==1.5.6",
+  "scipy==1.17.1", "matplotlib==3.11.2", "seaborn>=0.13", "scikit-learn==1.9.1", "lightgbm==4.7.0",
+  "optuna==5.0.0", "shap==0.51.0", "rank-bm25==0.2.2", "gitpython==3.2.1", "junitparser==5.0.3",
+  "coverage==7.16.2", "jupyter", "nbconvert", "ipykernel", "gdown>=5.1", "tqdm", "pyyaml",
+]
+demo = ["streamlit==1.66.0", "pandas==3.0.6", "matplotlib==3.11.2"]
+dev = ["pytest==9.1.1"]
 
 [build-system]
 requires = ["setuptools>=68"]
