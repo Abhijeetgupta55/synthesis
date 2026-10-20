@@ -1,7 +1,9 @@
 """Phase 3.5-3.6 for LightGBM: Optuna TPE search, regularisation evidence, refit with early stopping.
 
-Search: 60 TPE trials on `train_sub` (1M rows, whole runs), objective = valA PR-AUC (LightGBM's average_precision),
-each trial early-stopped (100 rounds patience) and pruned by a median pruner on the intermediate PR-AUC.
+Search: 60 TPE trials on 500k training rows and a fixed 300k-row subsample of valA (whole runs in both), objective =
+valA PR-AUC (LightGBM's average_precision), each trial capped at 1,000 rounds, early-stopped (50 rounds patience) and
+pruned by a median pruner on the intermediate PR-AUC. (A first attempt with the full 1.2M valA rows took ~20 min per
+trial, because AP is recomputed every round.)
 Space: num_leaves, max_depth, min_child_samples, lambda_l1, lambda_l2, feature_fraction, bagging_fraction /
 bagging_freq, learning_rate. The best configuration is refitted on the full negative-sampled training data,
 again early-stopped on valA. The top-5 configurations are also scored on valA APFDc (domain metric).
@@ -40,7 +42,7 @@ def space(trial: optuna.Trial) -> dict:
          "feature_fraction": trial.suggest_float("feature_fraction", 0.4, 1.0),
          "bagging_fraction": trial.suggest_float("bagging_fraction", 0.5, 1.0),
          "bagging_freq": trial.suggest_categorical("bagging_freq", [0, 1, 5]),
-         "learning_rate": trial.suggest_float("learning_rate", 0.01, 0.2, log=True)}
+         "learning_rate": trial.suggest_float("learning_rate", 0.02, 0.2, log=True)}
     return p
 
 
@@ -56,10 +58,16 @@ def run_apfdc(frame: pd.DataFrame, p: np.ndarray) -> float:
     return float(v.groupby("project").a.mean().mean())
 
 
-def tune(cols: list[str], n_trials: int = 60, sub_rows: int = 1_000_000, seed: int = 0) -> dict:
+TUNE_TRAIN_ROWS = 500_000
+TUNE_VAL_ROWS = 300_000      # whole valA runs; AP is computed every round, so the full 1.2M rows cost ~20 min/trial
+MAX_ROUNDS, PATIENCE = 1000, 50
+
+
+def tune(cols: list[str], n_trials: int = 60, sub_rows: int = TUNE_TRAIN_ROWS, seed: int = 0) -> dict:
     rows = subsample_rows("train", sub_rows, seed)
     X, m = load("train", cols, ["y_fail", "weight"], rows=rows)
-    Xv, mv = load("valA", cols, ["y_fail", "project", "run_idx", "y_duration_s", "dur_ema_asof"])
+    vrows = subsample_rows("valA", TUNE_VAL_ROWS, seed + 1)
+    Xv, mv = load("valA", cols, ["y_fail", "project", "run_idx", "y_duration_s", "dur_ema_asof"], rows=vrows)
     w = m.weight.to_numpy()
     dtr = lgb.Dataset(X, m.y_fail.to_numpy(np.float32), weight=train_weight(w), free_raw_data=False,
                       params={"max_bin": 127, "feature_pre_filter": False})
@@ -76,8 +84,8 @@ def tune(cols: list[str], n_trials: int = 60, sub_rows: int = 1_000_000, seed: i
                 if trial.should_prune():
                     raise optuna.TrialPruned()
 
-        b = lgb.train(params, dtr, num_boost_round=2000, valid_sets=[dva], valid_names=["valA"],
-                      callbacks=[lgb.early_stopping(100, first_metric_only=True, verbose=False), prune_cb])
+        b = lgb.train(params, dtr, num_boost_round=MAX_ROUNDS, valid_sets=[dva], valid_names=["valA"],
+                      callbacks=[lgb.early_stopping(PATIENCE, first_metric_only=True, verbose=False), prune_cb])
         trial.set_user_attr("best_iteration", int(b.best_iteration))
         trial.set_user_attr("seconds", time.time() - t0)
         return float(b.best_score["valA"]["average_precision"])
@@ -106,7 +114,7 @@ def tune(cols: list[str], n_trials: int = 60, sub_rows: int = 1_000_000, seed: i
         imp = {"error": str(e)}
     figs(study)
     return {"study": study, "trials": trials, "top5": top5_out, "param_importance": imp, "dtr": dtr, "dva": dva,
-            "train_rows": int(len(rows))}
+            "train_rows": int(len(rows)), "val_rows": int(len(vrows))}
 
 
 def figs(study) -> None:
@@ -177,6 +185,7 @@ def run(cols: list[str], n_trials: int = 60) -> dict:
                 "best_iteration": int(b.best_iteration)}, "lgbm")
     out = {"trials": t["trials"], "top5": t["top5"], "best_params": best, "best_value": t["study"].best_value,
            "param_importance": t["param_importance"], "train_rows_tuning": t["train_rows"],
+           "val_rows_tuning": t["val_rows"], "max_rounds_tuning": MAX_ROUNDS, "patience_tuning": PATIENCE,
            "train_rows_refit": n_rows("train"), "refit_best_iteration": int(b.best_iteration),
            "refit_valA_pr_auc": float(b.best_score["valA"]["average_precision"]),
            "curves": curves, "space": "see stp/models/tune_lgbm.py::space", "unregularised_params": UNREG,

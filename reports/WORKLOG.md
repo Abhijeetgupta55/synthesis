@@ -168,3 +168,15 @@ made on validation in Phase 3.
   univariate statistics.
 - The large train/val gap that remains (≈ 0.83 vs 0.15) is out-of-time drift. This is why regularisation and
   early stopping matter here.
+- **Scope choice** (unweighted default LightGBM, valB PR-AUC): same-stage `hs` 0.179, all-stage `h` 0.152,
+  both 0.183 (34 features). The rule fixed in advance picks a single scope, so the choice is **hs**.
+- **LR**: the first grid's best C (1e-4) was at the grid edge, so the grid was extended to 1e-6. Elastic-net
+  C = 1e-4 is a true interior optimum: valA PR-AUC 0.1634, 14/25 coefficients zero. At C ≤ 1e-5, L1 and EN zero
+  every coefficient (PR-AUC → 0.003). L2 plateaus at 0.160.
+- **RF**: best depth 10 / leaf 20 / sqrt features, valA 0.182. Depth sweep (train / valA): 4 0.48/0.147,
+  8 0.63/0.188, 14 0.82/0.184, 24 0.90/0.181. Validation peaks near depth 8 while train keeps rising. The stage took
+  95 min, mostly the final 200-tree fit.
+- **LightGBM tuning, change of plan**: with the full 1.2M-row valA set, one Optuna trial took about 20 min, because
+  AP is recomputed every round (60 trials ≈ 20 h). Tuning now uses 500k training rows and a fixed 300k-row whole-run
+  subsample of valA, at most 1,000 rounds, patience 50, learning rate ≥ 0.02. The refit still uses all training rows
+  with early stopping on the full valA.
