@@ -1,0 +1,28 @@
+{
+  "results": {
+    "h": {
+      "n_features": 26,
+      "valA_pr_auc": 0.169635,
+      "valB_pr_auc": 0.152253,
+      "best_iteration": 318
+    },
+    "hs": {
+      "n_features": 25,
+      "valA_pr_auc": 0.17853,
+      "valB_pr_auc": 0.179259,
+      "best_iteration": 176
+    },
+    "both": {
+      "n_features": 34,
+      "valA_pr_auc": 0.181749,
+      "valB_pr_auc": 0.183162,
+      "best_iteration": 111
+    }
+  },
+  "choice": "hs",
+  "rule": "pick the single-scope variant with the higher valB PR-AUC; 'both' is reported for reference",
+  "_meta": {
+    "generated": "2026-10-20 20:18:02",
+    "git_sha": "16102cb"
+  }
+}

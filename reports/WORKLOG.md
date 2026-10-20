@@ -139,3 +139,32 @@ made on validation in Phase 3.
 - Leak effect per project (start order → as-of, All): at most −0.016 (FailCount TVM, ActiveMQ −0.015; LastFail Hadoop
   −0.016, TVM −0.013), most within ±0.005. Interpretation: the leaked outcome is usually the most recent of a
   *streak* of failures, so the as-of history still shows a recent failure one or two runs earlier.
+
+**2.3–2.6 As-of baselines** (`python -m stp.baselines.run_baselines` → `baselines.json`, `reports/BASELINES.md`)
+- Failed val+test runs: Kafka 15,523 (1,702 s), TVM 772, others 52–703.
+- Test split, macro APFDc (best simple baseline chosen on **val**):
+  All → ChangedOrNewFirst 0.863 (cbt_LastFail 0.851; paired Δ −0.012, CI excludes 0);
+  FirstFail-asof → QTF 0.823 (cbt_BM25 0.819, LastFail 0.188);
+  FirstFail-old → QTF 0.800; New/Edited → ChangedOrNewFirst 0.981.
+- History-only rules collapse on first-time failures, as in the paper, and QTF is the bar. A model must beat
+  QTF on FirstFail-old and ChangedOrNewFirst on All.
+- Small projects have fewer than 30 test runs (ActiveMQ 21, Log4j 26). Cells are marked † and only the pooled
+  small-8 macro is interpreted.
+
+---
+
+## 2026-10-20 · Phase 3: modelling
+
+- Data stage (806 s): training sample 3.6M rows / 81.6k positives (Kafka 6,000 of its failed runs, weight 3.72);
+  valA 1.2M rows, valB 1.4M, testC 1.9M (unsampled, ≤ 600 runs per project; small projects only 8–40 runs).
+- **Surprise: early stopping at round 1.** With inverse-probability sampling weights (up to 211), LightGBM's valA
+  PR-AUC was best after the first tree. Diagnosis on 500k rows:
+  - weighted: 0.128 → 0.094 at 150 rounds, while train rises 0.53 → 0.79;
+  - unweighted: 0.082 → 0.152 at 150 rounds.
+  A handful of heavily weighted negatives dominate the gradient, so the effective sample size is tiny.
+  **Decision:** train unweighted (`stp.models.common.USE_SAMPLE_WEIGHTS = False`) and remove the probability
+  distortion with isotonic calibration on unsampled valB. This follows the prompt's own design, which calibrates
+  on unsampled validation runs because sampling distorts probabilities. Weights are still used for the weighted
+  univariate statistics.
+- The large train/val gap that remains (≈ 0.83 vs 0.15) is out-of-time drift. This is why regularisation and
+  early stopping matter here.
