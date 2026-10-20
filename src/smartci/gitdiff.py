@@ -35,6 +35,16 @@ def default_base(repo: Path) -> str:
     return "HEAD~1"
 
 
+_JUNK_DIRS = {"__pycache__", ".pytest_cache", ".mypy_cache", ".tox", ".smartci", ".eggs", "build", "dist"}
+
+
+def _is_junk(path: str) -> bool:
+    """Untracked build/cache artefacts that are never part of a change (bytecode, caches, packaging output)."""
+    parts = path.replace("\\", "/").split("/")
+    return (path.endswith((".pyc", ".pyo")) or any(p in _JUNK_DIRS for p in parts[:-1])
+            or any(p.endswith(".egg-info") for p in parts))
+
+
 @dataclass
 class DiffResult:
     change: Change
@@ -83,7 +93,8 @@ def compute(repo: Path, base: str | None = None, include_worktree: bool = True,
     if include_worktree:
         # staged + unstaged vs HEAD (untracked files are listed by path only)
         text += git(repo, "diff", "-M", "--no-color", "HEAD")
-        untracked = git(repo, "ls-files", "--others", "--exclude-standard").splitlines()
+        untracked = [u for u in git(repo, "ls-files", "--others", "--exclude-standard").splitlines()
+                     if not _is_junk(u)]
     else:
         untracked = []
     recs: dict[str, dict] = {}

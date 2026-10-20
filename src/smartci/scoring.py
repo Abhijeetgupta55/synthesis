@@ -39,13 +39,14 @@ class Scored:
 
 class GlobalModel:
     def __init__(self, model_dir: Path | None = None):
-        import lightgbm as lgb
+        from smartci.treemodel import TextModel
 
         self.dir = Path(model_dir or os.environ.get("SMARTCI_MODEL_DIR") or MODEL_DIR)
         self.schema = json.loads((self.dir / "schema.json").read_text(encoding="utf-8"))
         cal = json.loads((self.dir / "calibration.json").read_text(encoding="utf-8"))
-        self.boosters = {"model": lgb.Booster(model_file=str(self.dir / "model.txt")),
-                         "model_coldstart": lgb.Booster(model_file=str(self.dir / "model_coldstart.txt"))}
+        # numpy evaluator: the plugin must not pay lightgbm's (scikit-learn's) import time on every session
+        self.trees = {k: TextModel(self.dir / f"{k}.txt") for k in ("model", "model_coldstart")}
+        self._boosters: dict = {}
         self.cal = {k: (np.asarray(v["x"]), np.asarray(v["y"])) for k, v in cal.items()}
         self.cols = {"model": [f["name"] for f in self.schema["features"]],
                      "model_coldstart": [f["name"] for f in self.schema["features_coldstart"]]}
@@ -57,7 +58,8 @@ class GlobalModel:
         return np.array([[float(r.get(c, self.defaults[c])) for c in cols] for r in rows], dtype=np.float32)
 
     def raw(self, rows: list[dict], which: str) -> np.ndarray:
-        return self.boosters[which].predict(self.matrix(rows, which))
+        """Uncalibrated P(fail) from the tree ensemble (what the calibrator was fitted on)."""
+        return self.trees[which].predict(self.matrix(rows, which))
 
     def calibrate(self, raw: np.ndarray, which: str) -> np.ndarray:
         x, y = self.cal[which]
@@ -65,7 +67,11 @@ class GlobalModel:
 
     def contributions(self, rows: list[dict], which: str) -> list[dict]:
         """Per-feature contributions in log-odds (LightGBM's built-in TreeSHAP)."""
-        c = self.boosters[which].predict(self.matrix(rows, which), pred_contrib=True)
+        import lightgbm as lgb  # only `smartci explain` needs exact TreeSHAP
+
+        if which not in self._boosters:
+            self._boosters[which] = lgb.Booster(model_file=str(self.dir / f"{which}.txt"))
+        c = self._boosters[which].predict(self.matrix(rows, which), pred_contrib=True)
         cols = self.cols[which]
         return [dict(zip(cols + ["_bias"], map(float, r))) for r in c]
 

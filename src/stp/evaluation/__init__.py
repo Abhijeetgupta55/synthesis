@@ -1,1 +1,1 @@
-"""evaluation: not implemented yet -- tomorrow. (Out of scope for the EDA phase.)"""
+"""Ordering metrics, the evaluation harness on the feature store, and PR-clustered bootstrap."""

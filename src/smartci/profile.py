@@ -46,13 +46,13 @@ def profile(repo: Path, base: str | None = None, runs: int = 2, pytest_args: lis
             print(f"smartci profile: run {k + 1}/{runs} {r.elapsed_s:.1f}s exit {r.returncode}", flush=True)
     finally:
         runner.remove_worktree(repo, wt)
-    frames = [x["frame"] for x in per_run if x["frame"] is not None]
-    files = sorted(set().union(*[set(f.test_file) for f in frames])) if frames else []
+    frames = [{x["test_file"]: x for x in r["frame"]} for r in per_run if r["frame"] is not None]
+    files = sorted(set().union(*[set(f) for f in frames])) if frames else []
     dur, outc = {}, {}
     for f in files:
-        vals = [fr.set_index("test_file").loc[f] for fr in frames if f in set(fr.test_file)]
-        dur[f] = float(np.mean([v.duration_s for v in vals]))
-        outc[f] = [bool(v.fail) for v in vals]
+        vals = [fr[f] for fr in frames if f in fr]
+        dur[f] = float(np.mean([v["duration_s"] for v in vals]))
+        outc[f] = [bool(v["fail"]) for v in vals]
     nd: dict[str, list[float]] = {}
     nfail: dict[str, list[bool]] = {}
     for x in per_run:
@@ -69,8 +69,8 @@ def profile(repo: Path, base: str | None = None, runs: int = 2, pytest_args: lis
            "flaky": flaky, "failing_on_base": failing,
            "suite_test_time_s": float(sum(dur.values())),
            "run_elapsed_s": [x["elapsed_s"] for x in per_run],
-           "overhead_s": [x["elapsed_s"] - float(x["frame"].duration_s.sum()) if x["frame"] is not None else None
-                          for x in per_run]}
+           "overhead_s": [x["elapsed_s"] - sum(v["duration_s"] for v in x["frame"]) if x["frame"] is not None
+                          else None for x in per_run]}
     (d / "profile.json").write_text(json.dumps(out, indent=1), encoding="utf-8")
     return out
 

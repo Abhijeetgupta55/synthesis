@@ -40,12 +40,17 @@ def build(repo: Path, base: str | None = None, pytest_args: list[str] = (), time
         cd = coverage.CoverageData(basename=str(data))
         cd.read()
         cache: dict = {}
+        idx = test_module_index(wt)
         tests: list[str] = []
         tidx: dict[str, int] = {}
         lines: dict[str, dict[str, list[int]]] = {}
         for mf in cd.measured_files():
             rel = Path(mf)
-            rel = rel.relative_to(wt) if rel.is_absolute() and str(rel).startswith(str(wt)) else rel
+            if rel.is_absolute():
+                try:
+                    rel = rel.relative_to(wt)
+                except ValueError:
+                    continue
             rel_s = rel.as_posix()
             by_line = cd.contexts_by_lineno(mf)
             out: dict[str, list[int]] = {}
@@ -54,7 +59,7 @@ def build(repo: Path, base: str | None = None, pytest_args: list[str] = (), time
                 for c in ctxs:
                     if not c:
                         continue
-                    f = _context_file(wt, c, cache)
+                    f = _context_file(idx, c, cache)
                     if f is None:
                         continue
                     if f not in tidx:
@@ -73,16 +78,32 @@ def build(repo: Path, base: str | None = None, pytest_args: list[str] = (), time
     return {"base_sha": sha, "n_source_files": len(lines), "n_test_files": len(tests), "elapsed_s": elapsed}
 
 
-def _context_file(wt: Path, ctx: str, cache: dict) -> str | None:
-    """'pkg.tests.test_x.TestCls.test_y' -> 'pkg/tests/test_x.py' (longest module prefix that is a file)."""
+def test_module_index(wt: Path) -> dict[str, str]:
+    """Every dotted-module suffix of every test file -> file. pytest imports a test module under a name that depends
+    on rootdir / packages ('test_ops' or 'tests.test_ops' or 'pkg.tests.test_ops'), and coverage's context uses it."""
+    idx: dict[str, str] = {}
+    for f in wt.rglob("*.py"):
+        rel = f.relative_to(wt).as_posix()
+        if rel.startswith(".") or "/." in rel:
+            continue
+        name = f.name
+        if not (name.startswith("test_") or name.endswith("_test.py")):
+            continue
+        parts = rel[:-3].split("/")
+        for k in range(len(parts)):
+            idx.setdefault(".".join(parts[k:]), rel)
+    return idx
+
+
+def _context_file(idx: dict[str, str], ctx: str, cache: dict) -> str | None:
+    """'pkg.tests.test_x.TestCls.test_y' or 'test_x.test_y' -> its test file (longest module prefix known)."""
     if ctx in cache:
         return cache[ctx]
     parts = ctx.split(".")
     found = None
-    for k in range(len(parts), 0, -1):
-        cand = "/".join(parts[:k]) + ".py"
-        if (wt / cand).exists():
-            found = cand
+    for k in range(len(parts) - 1, 0, -1):
+        found = idx.get(".".join(parts[:k]))
+        if found:
             break
     cache[ctx] = found
     return found

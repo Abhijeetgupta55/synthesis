@@ -1,8 +1,10 @@
 """The repository's own CI history in .smartci/, and as-of features computed from it.
 
 Scoring unit: the test *file* (a pytest module), the closest analogue of an LRTS test class.
-  .smartci/history.parquet  one row per (run, test file): run_id, start_ts, end_ts, stage, test_file, duration_s, fail
-  .smartci/runs.parquet     one row per run: run_id, start_ts, end_ts, commit, base, changed files (JSON list)
+  .smartci/history.jsonl  one line per (run, test file): run_id, start_ts, end_ts, stage, test_file, duration_s, fail
+  .smartci/runs.jsonl     one line per run: run_id, start_ts, end_ts, commit, base, changed files
+(JSON Lines rather than parquet: readable without tools, and the pytest plugin avoids importing pandas/pyarrow,
+which costs seconds per session.)
 `smartci record --junit report.xml --start <ts> --end <ts> [--commit SHA]` appends a run.
 Features use exactly the research pipeline's pure functions (stp.features.history / cofail), with the same as-of
 rule: a run is usable for a query at time t only if it ended at or before t.
@@ -14,8 +16,6 @@ import os
 import time
 import xml.etree.ElementTree as ET
 from pathlib import Path
-
-import pandas as pd
 
 from stp.features.cofail import RunRecord, cofail_features
 from stp.features.history import Event, HistoryParams, cost_features, history_features
@@ -79,27 +79,36 @@ def junit_cases(junit: Path) -> list[dict]:
     return out
 
 
-def parse_junit(repo: Path, junit: Path) -> pd.DataFrame:
+def parse_junit(repo: Path, junit: Path) -> list[dict]:
     """Per test file: summed duration, failed (any failure/error), counts. Skipped-only files count as passed."""
     root = ET.parse(junit).getroot()
-    rows, cache = [], {}
+    per: dict[str, dict] = {}
+    cache: dict = {}
     for tc in root.iter("testcase"):
         f = resolve_file(repo, tc.get("classname", ""), tc.get("file"), cache)
         if f is None:
             continue
-        failed = any(ch.tag in ("failure", "error") for ch in tc)
-        skipped = any(ch.tag == "skipped" for ch in tc)
-        rows.append((f, float(tc.get("time", 0) or 0), failed, skipped))
-    d = pd.DataFrame(rows, columns=["test_file", "duration_s", "fail", "skipped"])
-    if d.empty:
-        return pd.DataFrame(columns=["test_file", "duration_s", "fail", "n_cases", "n_failed"])
-    return d.groupby("test_file").agg(duration_s=("duration_s", "sum"), fail=("fail", "any"),
-                                      n_cases=("fail", "size"), n_failed=("fail", "sum")).reset_index()
+        x = per.setdefault(f, {"test_file": f, "duration_s": 0.0, "fail": False, "n_cases": 0, "n_failed": 0})
+        bad = any(ch.tag in ("failure", "error") for ch in tc)
+        x["duration_s"] += float(tc.get("time", 0) or 0)
+        x["fail"] = x["fail"] or bad
+        x["n_cases"] += 1
+        x["n_failed"] += int(bad)
+    return list(per.values())
+
+
+def _read_jsonl(f: Path) -> list[dict]:
+    return [json.loads(x) for x in f.read_text(encoding="utf-8").splitlines() if x.strip()] if f.exists() else []
+
+
+def _write_jsonl(f: Path, rows: list[dict]) -> None:
+    f.write_text("".join(json.dumps(r) + "\n" for r in rows), encoding="utf-8")
 
 
 def record(repo: Path, junit: Path, start: float, end: float, commit: str | None = None, base: str | None = None,
            changed_files: list[str] | None = None, run_id: str | None = None) -> str:
-    """Append one run to .smartci/. Changed files are computed with git when not given."""
+    """Append one run to .smartci/ (re-recording the same run_id replaces it). Changed files come from git
+    when not given."""
     repo = Path(repo)
     d = smartci_dir(repo)
     per = parse_junit(repo, junit)
@@ -110,42 +119,42 @@ def record(repo: Path, junit: Path, start: float, end: float, commit: str | None
         except Exception:  # noqa: BLE001  (no base / shallow clone: co-failure memory just gets no files)
             changed_files = []
     run_id = run_id or f"run-{int(start)}-{commit[:8] if commit else 'local'}"
-    h = per.assign(run_id=run_id, start_ts=float(start), end_ts=float(end), stage=STAGE)[
-        ["run_id", "start_ts", "end_ts", "stage", "test_file", "duration_s", "fail"]]
-    r = pd.DataFrame([{"run_id": run_id, "start_ts": float(start), "end_ts": float(end), "commit": commit or "",
-                       "base": base or "", "files": json.dumps(sorted(changed_files))}])
+    h = [{"run_id": run_id, "start_ts": float(start), "end_ts": float(end), "stage": STAGE,
+          "test_file": x["test_file"], "duration_s": x["duration_s"], "fail": x["fail"]} for x in per]
+    r = [{"run_id": run_id, "start_ts": float(start), "end_ts": float(end), "commit": commit or "",
+          "base": base or "", "files": sorted(changed_files)}]
     for name, new in (("history", h), ("runs", r)):
-        f = d / f"{name}.parquet"
-        old = pd.read_parquet(f) if f.exists() else None
-        out = new if old is None else pd.concat([old[old.run_id != run_id], new], ignore_index=True)
-        out.to_parquet(f, index=False)
+        f = d / f"{name}.jsonl"
+        _write_jsonl(f, [x for x in _read_jsonl(f) if x["run_id"] != run_id] + new)
     return run_id
 
 
 class History:
-    """Loaded .smartci history with as-of feature computation for a query time t."""
+    """Loaded .smartci history (JSON Lines, readable by eye) with as-of features for a query time t."""
 
     def __init__(self, repo: Path):
         d = state_dir(repo)
-        self.h = pd.read_parquet(d / "history.parquet") if (d / "history.parquet").exists() else pd.DataFrame(
-            columns=["run_id", "start_ts", "end_ts", "stage", "test_file", "duration_s", "fail"])
-        self.r = pd.read_parquet(d / "runs.parquet") if (d / "runs.parquet").exists() else pd.DataFrame(
-            columns=["run_id", "start_ts", "end_ts", "commit", "base", "files"])
-        self.r = self.r.sort_values(["start_ts", "run_id"]).reset_index(drop=True)
-        self.seq = {rid: i for i, rid in enumerate(self.r.run_id)}
+        self.r = sorted(_read_jsonl(d / "runs.jsonl"), key=lambda x: (x["start_ts"], x["run_id"]))
+        self.seq = {x["run_id"]: i for i, x in enumerate(self.r)}
+        self.by_file: dict[str, list[dict]] = {}
+        for x in _read_jsonl(d / "history.jsonl"):
+            self.by_file.setdefault(x["test_file"], []).append(x)
 
     def n_finished(self, t: float) -> int:
-        return int((self.r.end_ts <= t).sum())
+        return sum(1 for x in self.r if x["end_ts"] <= t)
 
     def events(self, test_file: str) -> list[Event]:
-        g = self.h[self.h.test_file == test_file]
-        return [Event(self.seq.get(rid, 0), float(s), float(e), st, bool(f), float(du))
-                for rid, s, e, st, f, du in zip(g.run_id, g.start_ts, g.end_ts, g.stage, g.fail, g.duration_s)]
+        return [Event(self.seq.get(x["run_id"], 0), float(x["start_ts"]), float(x["end_ts"]), x["stage"],
+                      bool(x["fail"]), float(x["duration_s"])) for x in self.by_file.get(test_file, [])]
 
     def records(self) -> list[RunRecord]:
-        fails = self.h[self.h.fail].groupby("run_id").test_file.apply(frozenset).to_dict()
-        return [RunRecord(self.seq[rid], float(e), frozenset(json.loads(fl)), fails.get(rid, frozenset()))
-                for rid, e, fl in zip(self.r.run_id, self.r.end_ts, self.r.files)]
+        fails: dict[str, set] = {}
+        for f, rows in self.by_file.items():
+            for x in rows:
+                if x["fail"]:
+                    fails.setdefault(x["run_id"], set()).add(f)
+        return [RunRecord(self.seq[x["run_id"]], float(x["end_ts"]), frozenset(x["files"]),
+                          frozenset(fails.get(x["run_id"], ()))) for x in self.r]
 
     def features(self, test_files: list[str], change_files: list[str], t: float | None = None,
                  params: HistoryParams = HistoryParams()) -> list[dict]:
