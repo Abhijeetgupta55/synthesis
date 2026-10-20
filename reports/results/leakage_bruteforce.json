@@ -1,6 +1,6 @@
 {
-  "n_runs": 45,
-  "n_match": 45,
+  "n_runs": 50,
+  "n_match": 50,
   "seed": 7,
   "columns_checked": [
     "h_n_fail",
@@ -42,11 +42,11 @@
     "y_ftf_asof_ss",
     "y_duration_s"
   ],
-  "n_rows_checked": 39623,
+  "n_rows_checked": 39796,
   "coverage": {
-    "rows_failing": 82,
-    "rows_test_file_in_diff": 82,
-    "rows_cofail_nonzero": 2421,
+    "rows_failing": 94,
+    "rows_test_file_in_diff": 83,
+    "rows_cofail_nonzero": 2464,
     "rows_new_test": 4
   },
   "runs": [
@@ -501,6 +501,86 @@
       "match": true
     },
     {
+      "n_tests_store": 40,
+      "n_tests_brute": 40,
+      "n_joined": 40,
+      "mismatches": [],
+      "sampled_tests": true,
+      "project": "kafka",
+      "run_idx": 28639,
+      "run_id": "kafka|PR-12743|6|JDK_11_and_Scala_2.13_Build",
+      "failed": false,
+      "n_fail": 0,
+      "n_test_file_in_diff": 0,
+      "n_cof_nonzero": 10,
+      "n_new": 0,
+      "match": true
+    },
+    {
+      "n_tests_store": 45,
+      "n_tests_brute": 45,
+      "n_joined": 45,
+      "mismatches": [],
+      "sampled_tests": true,
+      "project": "kafka",
+      "run_idx": 32692,
+      "run_id": "kafka|PR-13178|18|JDK_17_and_Scala_2.13_Build",
+      "failed": true,
+      "n_fail": 5,
+      "n_test_file_in_diff": 0,
+      "n_cof_nonzero": 8,
+      "n_new": 0,
+      "match": true
+    },
+    {
+      "n_tests_store": 1,
+      "n_tests_brute": 1,
+      "n_joined": 1,
+      "mismatches": [],
+      "sampled_tests": false,
+      "project": "kafka",
+      "run_idx": 44711,
+      "run_id": "kafka|PR-14746|23|JDK_21_and_Scala_2.13_Build",
+      "failed": false,
+      "n_fail": 0,
+      "n_test_file_in_diff": 1,
+      "n_cof_nonzero": 0,
+      "n_new": 0,
+      "match": true
+    },
+    {
+      "n_tests_store": 42,
+      "n_tests_brute": 42,
+      "n_joined": 42,
+      "mismatches": [],
+      "sampled_tests": true,
+      "project": "kafka",
+      "run_idx": 45028,
+      "run_id": "kafka|PR-14552|46|JDK_11_and_Scala_2.13_Build",
+      "failed": true,
+      "n_fail": 2,
+      "n_test_file_in_diff": 0,
+      "n_cof_nonzero": 14,
+      "n_new": 0,
+      "match": true
+    },
+    {
+      "n_tests_store": 45,
+      "n_tests_brute": 45,
+      "n_joined": 45,
+      "mismatches": [],
+      "sampled_tests": true,
+      "project": "kafka",
+      "run_idx": 50303,
+      "run_id": "kafka|PR-15429|1|JDK_17_and_Scala_2.13_Build",
+      "failed": true,
+      "n_fail": 5,
+      "n_test_file_in_diff": 0,
+      "n_cof_nonzero": 11,
+      "n_new": 0,
+      "match": true
+    },
+    {
       "n_tests_store": 211,
       "n_tests_brute": 211,
       "n_joined": 211,
@@ -727,7 +807,7 @@
     }
   ],
   "_meta": {
-    "generated": "2026-10-20 15:59:09",
-    "git_sha": "a613bd2"
+    "generated": "2026-10-20 19:32:19",
+    "git_sha": "2cc81c7"
   }
 }

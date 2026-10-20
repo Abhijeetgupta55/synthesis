@@ -6,7 +6,8 @@ Logistic regression (standardised, log1p features; sampling weights):
 Random forest (bagging):
   random search over max_depth, min_samples_leaf, max_features; a depth sweep with the train/valA PR-AUC gap
   shows how depth limits overfitting.
-Both are fitted on `train_sub` (1M rows, whole runs): saga and deep forests on the full sample would not fit the
+Both are fitted on whole-run subsamples of train (LR 500k rows, RF 400k rows): saga and deep forests on the full sample
+would not fit the
 RAM/time budget; the subsample is documented in MODELING.md. The chosen configuration is then refitted on a larger
 subsample (`refit_rows`).
 
@@ -37,7 +38,7 @@ def lr_model(penalty: str, C: float):
     return make_pipeline(StandardScaler(), LogisticRegression(C=C, max_iter=300, tol=1e-3, **kw))
 
 
-def tune_lr(cols: list[str], sub_rows: int = 1_000_000, refit_rows: int = 2_000_000, seed: int = 0) -> dict:
+def tune_lr(cols: list[str], sub_rows: int = 500_000, refit_rows: int = 1_500_000, seed: int = 0) -> dict:
     import matplotlib.pyplot as plt
 
     rows = subsample_rows("train", sub_rows, seed)

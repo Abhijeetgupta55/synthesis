@@ -129,3 +129,13 @@ made on validation in Phase 3.
   FailCount −0.0059, cbt_LastFail −0.0026, QTF −0.0011. FirstFail moves slightly *up* (+0.002 to +0.006). The macro
   effect is small although 46% of "last fail" values come from unfinished runs. Explanation pending a per-project
   look (Phase 2.6).
+
+**GATE 1: PASS** (2026-10-20)
+- (b) Brute force: **50/50 runs match** (39,796 rows; 94 failing, 83 own-file-in-diff, 2,464 non-zero co-failure,
+  4 new-test rows). The 5 Kafka runs used the sampled mode (all failing + all new + 40 random tests per run).
+- (c) Single-feature PR-AUC on training rows: none flagged (threshold 0.95). The maximum is 0.249 (Hive `cof_max`).
+  Per project the maxima are 0.055–0.11, e.g. Kafka 0.107 (`hs_fails_last_7d`).
+- (a) Synthetic overlap: passes. All 35 leakage, metric and baseline tests pass.
+- Leak effect per project (start order → as-of, All): at most −0.016 (FailCount TVM, ActiveMQ −0.015; LastFail Hadoop
+  −0.016, TVM −0.013), most within ±0.005. Interpretation: the leaked outcome is usually the most recent of a
+  *streak* of failures, so the as-of history still shows a recent failure one or two runs earlier.

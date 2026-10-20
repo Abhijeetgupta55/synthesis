@@ -129,7 +129,7 @@ def check_signal(neg_per_project: int = 200_000, seed: int = 7, threshold: float
                                "SEMI JOIN rs USING (run_idx)").fetchone()
         frac = min(1.0, neg_per_project / max(1, n_all - n_pos))
         d = con.sql(f"""SELECT {', '.join(feats)}, y_fail FROM read_parquet('{parts_glob(p)}') SEMI JOIN rs USING (run_idx)
-                        WHERE y_fail OR hash(run_idx * 1000003 + test_id + {seed}) % 1000000 < {int(frac * 1e6)}""").df()
+                        WHERE y_fail OR hash(run_idx::BIGINT * 1000003 + test_id + {seed}) % 1000000 < {int(frac * 1e6)}""").df()
         con.unregister("rs")
         w = np.where(d.y_fail, 1.0, 1.0 / frac)   # inverse-probability weights restore the population base rate
         per[p] = {}
