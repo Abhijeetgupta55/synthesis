@@ -80,9 +80,9 @@ def classification(cols_needed: list[str]) -> dict:
     """Classification metrics on testC for each base model, the ensembles, and the always-pass classifier."""
     cal = {m: load_model(f"cal_{m}") for m in BASE_MODELS}
     stack, vote = load_model("stack"), load_model("vote")
-    _, tc = load("testC", [cols_needed[0]], sorted(set(cols_needed) | set(H.COLUMNS) | {"y_fail", "y_ftf_asof",
+    _, tc = load("testC", [cols_needed[0]], sorted(set(cols_needed) | set(H.COLUMNS) | {"y_fail", "y_ftf_asof", "test_id",
                                                                                           "project", "run_idx"}))
-    _, vb = load("valB", [cols_needed[0]], sorted(set(cols_needed) | set(H.COLUMNS) | {"y_fail", "project", "run_idx"}))
+    _, vb = load("valB", [cols_needed[0]], sorted(set(cols_needed) | set(H.COLUMNS) | {"y_fail", "project", "run_idx", "test_id"}))
     from stp.models.calibrate import run_level
     y = tc.y_fail.to_numpy(bool)
     proj = tc.project.to_numpy()
