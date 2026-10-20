@@ -165,3 +165,14 @@ def error_correlation(y, preds: dict) -> dict:
     L = np.column_stack([logit(preds[m]) for m in names])
     R = pd.DataFrame(L).rank().corr(method="pearson").to_numpy()
     return {"names": names, "residual_corr": C.tolist(), "rank_corr": R.tolist()}
+
+
+def variant_methods(names: dict[str, str]) -> tuple[dict, list[str]]:
+    """Harness methods for LightGBM variants (stp.models.variants), {method name: saved variant name}."""
+    vs = {k: load_model(v) for k, v in names.items()}
+    cols = sorted(set(sum((v.cols for v in vs.values()), [])) | set(H.COLUMNS) | {"dur_ema_asof"})
+
+    def mk(v):
+        return lambda d, rng: -(v.predict(d) / (d["dur_ema_asof"].astype(np.float64) + 1e-3))
+
+    return {k: mk(v) for k, v in vs.items()}, cols

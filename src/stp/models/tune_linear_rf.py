@@ -26,7 +26,7 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 
 from stp.eda.common import PALETTE, savefig, style
-from stp.models.common import load, n_rows, save_model, subsample_rows
+from stp.models.common import train_weight, load, n_rows, save_model, subsample_rows
 from stp.results import save_result
 
 C_GRID = [1e-4, 1e-3, 1e-2, 1e-1, 1.0, 10.0]
@@ -45,7 +45,7 @@ def tune_lr(cols: list[str], sub_rows: int = 500_000, refit_rows: int = 1_500_00
     X, m = load("train", cols, ["y_fail", "weight"], linear=True, rows=rows)
     Xv, mv = load("valA", cols, ["y_fail"], linear=True)
     y, w, yv = m.y_fail.to_numpy(bool), m.weight.to_numpy(), mv.y_fail.to_numpy(bool)
-    w = w / w.mean()
+    w = train_weight(w)
     res, coefs = [], {}
     for pen in ("l2", "l1", "elasticnet"):
         for C in C_GRID:
@@ -55,7 +55,7 @@ def tune_lr(cols: list[str], sub_rows: int = 500_000, refit_rows: int = 1_500_00
             pt = mdl.predict_proba(X)[:, 1]
             coef = mdl[-1].coef_[0]
             r = {"penalty": pen, "C": C, "val_pr_auc": float(average_precision_score(yv, pv)),
-                 "train_pr_auc_weighted": float(average_precision_score(y, pt, sample_weight=w)),
+                 "train_pr_auc_weighted": float(average_precision_score(y, pt)),
                  "n_zero_coef": int((np.abs(coef) < 1e-10).sum()), "seconds": time.time() - t0}
             coefs[f"{pen}|{C}"] = dict(zip(cols, coef.tolist()))
             res.append(r)
@@ -91,7 +91,7 @@ def tune_lr(cols: list[str], sub_rows: int = 500_000, refit_rows: int = 1_500_00
     X2, m2 = load("train", cols, ["y_fail", "weight"], linear=True, rows=rows2)
     w2 = m2.weight.to_numpy()
     final = lr_model(best["penalty"], best["C"]).fit(X2, m2.y_fail.to_numpy(bool),
-                                                      logisticregression__sample_weight=w2 / w2.mean())
+                                                      logisticregression__sample_weight=train_weight(w2))
     save_model({"model": final, "cols": cols, "linear": True}, "lr")
     zero_by_C = {str(C): [c for c in cols if abs(coefs[f"l1|{C}"][c]) < 1e-10] for C in C_GRID}
     out = {"grid": res, "best": best, "coefficients": coefs, "l1_zeroed_by_C": zero_by_C,
@@ -113,7 +113,7 @@ def tune_rf(cols: list[str], sub_rows: int = 400_000, n_random: int = 10, seed: 
     X, m = load("train", cols, ["y_fail", "weight"], rows=rows)
     Xv, mv = load("valA", cols, ["y_fail"])
     y, w, yv = m.y_fail.to_numpy(bool), m.weight.to_numpy(), mv.y_fail.to_numpy(bool)
-    w = w / w.mean()
+    w = train_weight(w)
     rng = np.random.default_rng(seed)
     # depth is capped and leaves hold >= 5 samples: fully grown trees on 10^5-10^6 rows would need GBs of RAM
     space = {"max_depth": [6, 10, 14, 18], "min_samples_leaf": [5, 20, 100, 400],
@@ -127,7 +127,7 @@ def tune_rf(cols: list[str], sub_rows: int = 400_000, n_random: int = 10, seed: 
         pt = mdl.predict_proba(X)[:, 1]
         r = {**{k: (v if v is not None else "none") for k, v in cfg.items()},
              "val_pr_auc": float(average_precision_score(yv, pv)),
-             "train_pr_auc_weighted": float(average_precision_score(y, pt, sample_weight=w)),
+             "train_pr_auc_weighted": float(average_precision_score(y, pt)),
              "seconds": time.time() - t0}
         print(f"  [rf] {cfg} valA {r['val_pr_auc']:.4f} train {r['train_pr_auc_weighted']:.4f} {r['seconds']:.0f}s",
               flush=True)

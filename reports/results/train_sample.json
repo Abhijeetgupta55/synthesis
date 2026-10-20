@@ -1,0 +1,92 @@
+{
+  "K": 200,
+  "max_failed_runs_per_project": 6000,
+  "passing_frac": 0.1,
+  "per_project": {
+    "activemq": {
+      "runs": 161,
+      "failed_runs": 145,
+      "rows": 30052,
+      "positives": 408,
+      "failed_run_weight": 1.0,
+      "seconds": 4.03314
+    },
+    "hadoop": {
+      "runs": 628,
+      "failed_runs": 566,
+      "rows": 89205,
+      "positives": 3260,
+      "failed_run_weight": 1.0,
+      "seconds": 16.085694
+    },
+    "hbase": {
+      "runs": 321,
+      "failed_runs": 284,
+      "rows": 60550,
+      "positives": 572,
+      "failed_run_weight": 1.0,
+      "seconds": 9.631574
+    },
+    "hive": {
+      "runs": 1150,
+      "failed_runs": 1111,
+      "rows": 237798,
+      "positives": 10952,
+      "failed_run_weight": 1.0,
+      "seconds": 30.075456
+    },
+    "jackrabbit-oak": {
+      "runs": 805,
+      "failed_runs": 767,
+      "rows": 169493,
+      "positives": 9013,
+      "failed_run_weight": 1.0,
+      "seconds": 20.394738
+    },
+    "james": {
+      "runs": 2043,
+      "failed_runs": 1825,
+      "rows": 415860,
+      "positives": 10791,
+      "failed_run_weight": 1.0,
+      "seconds": 54.987494
+    },
+    "kafka": {
+      "runs": 7528,
+      "failed_runs": 6000,
+      "rows": 1527243,
+      "positives": 23046,
+      "failed_run_weight": 3.719833,
+      "seconds": 228.320924
+    },
+    "karaf": {
+      "runs": 181,
+      "failed_runs": 146,
+      "rows": 34694,
+      "positives": 228,
+      "failed_run_weight": 1.0,
+      "seconds": 3.998588
+    },
+    "log4j": {
+      "runs": 133,
+      "failed_runs": 108,
+      "rows": 26784,
+      "positives": 246,
+      "failed_run_weight": 1.0,
+      "seconds": 2.600014
+    },
+    "tvm": {
+      "runs": 6763,
+      "failed_runs": 4254,
+      "rows": 1012400,
+      "positives": 23059,
+      "failed_run_weight": 1.0,
+      "seconds": 177.38378
+    }
+  },
+  "doc": "Phase 3 training / calibration data from the feature store.\n\nNegative sampling (training runs only).\n  Every failing (run, test) row is kept. Per run, up to K passing rows are sampled in two strata:\n  'related' (the test shares a top module or a path prefix with the change, its file is in the change, or a name\n  token overlaps) gets up to K/2, the rest come from 'unrelated'. Related tests are a small share of a run but hold\n  most change-driven failures (EDA \u00a7F), so over-sampling them gives the model more informative negatives.\n  Each sampled negative carries weight = stratum size / sampled count, so weighted sums still estimate the\n  population. Run-level sampling (documented, for the 2 GB RAM budget): at most `max_failed_runs` failed training\n  runs per project (evenly spaced in time) and a fraction `passing_frac` of passing runs; run weights compensate.\nCalibration set: *unsampled* rows of a random subset of validation runs (all tests of each chosen run), because\nsampling distorts predicted probabilities and calibration must see the real base rate.\n\nOutputs: data/processed/train/<name>.parquet\n",
+  "_meta": {
+    "generated": "2026-10-20 19:47:27",
+    "git_sha": "4a95f78"
+  }
+}

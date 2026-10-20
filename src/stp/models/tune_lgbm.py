@@ -21,7 +21,7 @@ import pandas as pd
 
 from stp.eda.common import PALETTE, savefig, style
 from stp.evaluation.metrics import apfdc
-from stp.models.common import load, n_rows, save_model, subsample_rows
+from stp.models.common import train_weight, load, n_rows, save_model, subsample_rows
 from stp.results import save_result
 
 UNREG = {"num_leaves": 255, "max_depth": -1, "min_child_samples": 1, "min_sum_hessian_in_leaf": 1e-6,
@@ -61,7 +61,7 @@ def tune(cols: list[str], n_trials: int = 60, sub_rows: int = 1_000_000, seed: i
     X, m = load("train", cols, ["y_fail", "weight"], rows=rows)
     Xv, mv = load("valA", cols, ["y_fail", "project", "run_idx", "y_duration_s", "dur_ema_asof"])
     w = m.weight.to_numpy()
-    dtr = lgb.Dataset(X, m.y_fail.to_numpy(np.float32), weight=w / w.mean(), free_raw_data=False,
+    dtr = lgb.Dataset(X, m.y_fail.to_numpy(np.float32), weight=train_weight(w), free_raw_data=False,
                       params={"max_bin": 127, "feature_pre_filter": False})
     dva = lgb.Dataset(Xv, mv.y_fail.to_numpy(np.float32), reference=dtr)
 
@@ -168,7 +168,7 @@ def run(cols: list[str], n_trials: int = 60) -> dict:
     X, m = load("train", cols, ["y_fail", "weight"])
     Xv, mv = load("valA", cols, ["y_fail"])
     w = m.weight.to_numpy()
-    dtr = lgb.Dataset(X, m.y_fail.to_numpy(np.float32), weight=w / w.mean(), params={"max_bin": 127})
+    dtr = lgb.Dataset(X, m.y_fail.to_numpy(np.float32), weight=train_weight(w), params={"max_bin": 127})
     dva = lgb.Dataset(Xv, mv.y_fail.to_numpy(np.float32), reference=dtr)
     rec: dict = {}
     b = lgb.train({**BASE, **best}, dtr, num_boost_round=3000, valid_sets=[dva], valid_names=["valA"],

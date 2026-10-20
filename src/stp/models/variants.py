@@ -18,7 +18,7 @@ from sklearn.isotonic import IsotonicRegression
 from sklearn.metrics import average_precision_score
 
 from stp import paths
-from stp.models.common import TRAIN_DIR, has_model, load, load_model, save_model
+from stp.models.common import train_weight, TRAIN_DIR, has_model, load, load_model, save_model
 from stp.models.prep import columns, matrix
 
 ABLATIONS = {"A_history": ["history"], "B_cost": ["history", "cost"], "C_change": ["history", "cost", "change"],
@@ -55,7 +55,7 @@ def train_variant(name: str, cols: list[str], train_projects: list[str], eval_pr
     ev = eval_projects or train_projects
     Xa, ma = load("valA", cols, ["y_fail"], rows=_rows_for("valA", train_projects))
     w = m.weight.to_numpy()
-    dtr = lgb.Dataset(X, m.y_fail.to_numpy(np.float32), weight=w / w.mean(), params={"max_bin": 127})
+    dtr = lgb.Dataset(X, m.y_fail.to_numpy(np.float32), weight=train_weight(w), params={"max_bin": 127})
     dva = lgb.Dataset(Xa, ma.y_fail.to_numpy(np.float32), reference=dtr)
     b = lgb.train(params, dtr, 3000, valid_sets=[dva],
                   callbacks=[lgb.early_stopping(100, first_metric_only=True, verbose=False)])

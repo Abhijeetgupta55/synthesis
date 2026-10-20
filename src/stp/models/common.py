@@ -98,3 +98,18 @@ def per_project_pr_auc(y, p, project) -> dict:
 def dump(name: str, obj) -> None:
     MODEL_DIR.mkdir(parents=True, exist_ok=True)
     (MODEL_DIR / f"{name}.json").write_text(json.dumps(obj, indent=2, default=float), encoding="utf-8")
+
+
+# Sampling weights in training: OFF. Diagnosis (WORKLOG 2026-10-20): with inverse-probability weights up to ~200, a
+# few heavily weighted negatives dominate and LightGBM's validation PR-AUC falls after the first tree (0.128 -> 0.094
+# at 150 rounds), while unweighted training keeps improving (0.082 -> 0.152). Ranking within a run is what matters;
+# the probability distortion from sampling is removed by isotonic calibration on unsampled valB rows.
+USE_SAMPLE_WEIGHTS = False
+
+
+def train_weight(w):
+    """Training weights for a sampled frame's `weight` column (None = unweighted)."""
+    if not USE_SAMPLE_WEIGHTS:
+        return None
+    w = np.asarray(w, dtype=np.float64)
+    return w / w.mean()

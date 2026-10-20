@@ -1,0 +1,62 @@
+{
+  "per_project": {
+    "activemq": {
+      "runs": 17,
+      "rows": 15350,
+      "positives": 11
+    },
+    "hadoop": {
+      "runs": 74,
+      "rows": 51203,
+      "positives": 93
+    },
+    "hbase": {
+      "runs": 49,
+      "rows": 62201,
+      "positives": 31
+    },
+    "hive": {
+      "runs": 80,
+      "rows": 101928,
+      "positives": 460
+    },
+    "jackrabbit-oak": {
+      "runs": 62,
+      "rows": 121671,
+      "positives": 569
+    },
+    "james": {
+      "runs": 236,
+      "rows": 371001,
+      "positives": 507
+    },
+    "kafka": {
+      "runs": 600,
+      "rows": 926538,
+      "positives": 3573
+    },
+    "karaf": {
+      "runs": 27,
+      "rows": 6139,
+      "positives": 18
+    },
+    "log4j": {
+      "runs": 20,
+      "rows": 13244,
+      "positives": 21
+    },
+    "tvm": {
+      "runs": 600,
+      "rows": 248455,
+      "positives": 366
+    }
+  },
+  "run_frac": 0.25,
+  "max_runs": 600,
+  "split": "test",
+  "part": null,
+  "_meta": {
+    "generated": "2026-10-20 19:51:45",
+    "git_sha": "4a95f78"
+  }
+}

@@ -80,7 +80,7 @@ def gap_section(g: dict) -> str:
         for t in ("QTF", "LastFail_Asc", "FailCount_Desc", "cbt_LastFail_Asc"):
             a, b = g["macro"]["start_order"][var][t], g["macro"]["as_of"][var][t]
             rows.append([var, t, f"{a:.4f}", f"{b:.4f}", sgn(b - a, 4)])
-    return "\n".join(["## 3. Start order vs as-of, same features, same runs", "",
+    return "\n".join(["## 3. Start order vs as-of, same features, same runs (the leak effect)", "",
                       table(["Variant", "Technique", "Start order (paper)", "As-of", "Δ"], rows), ""])
 
 
