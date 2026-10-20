@@ -23,19 +23,6 @@ Our harness, LRTS's own start-order history features, the paper subset (stages w
 
 Evaluated runs: All 30,074, FirstFail 2,264 (paper: 30,074 and 2,264). **GATE 2: PASS.**
 
-## 3. Start order vs as-of, same features, same runs (the leak effect)
-
-| Variant | Technique | Start order (paper) | As-of | Δ |
-|---|---|---|---|---|
-| All | QTF | 0.6764 | 0.6753 | -0.0011 |
-| All | LastFail_Asc | 0.7942 | 0.7887 | -0.0056 |
-| All | FailCount_Desc | 0.7201 | 0.7142 | -0.0060 |
-| All | cbt_LastFail_Asc | 0.8359 | 0.8333 | -0.0027 |
-| FirstFail | QTF | 0.7985 | 0.8021 | +0.0036 |
-| FirstFail | LastFail_Asc | 0.4625 | 0.4644 | +0.0020 |
-| FirstFail | FailCount_Desc | 0.3105 | 0.3109 | +0.0004 |
-| FirstFail | cbt_LastFail_Asc | 0.7612 | 0.7674 | +0.0062 |
-
 ## 2. As-of baselines on our held-out test split
 
 All baselines use only as-of features (`stp/baselines/heuristics.py`). Failed runs of the build-level test split. Cells: macro APFDc with a 95% PR-clustered bootstrap CI; † = some project has < 30 runs. The best simple baseline per subset is chosen on **validation**, never on test.
@@ -111,6 +98,19 @@ Paired difference to QTF on test (macro, 95% CI, * = excludes 0): LastFail -0.60
 Runs per project: activemq 1, hadoop 15, hbase 4, hive 17, jackrabbit-oak 14, james 41, kafka 1015, karaf 3, tvm 47
 
 Paired difference to ChangedOrNewFirst on test (macro, 95% CI, * = excludes 0): QTF -0.203 [-0.249, -0.166] *; LastFail -0.432 [-0.486, -0.367] *; FailCount -0.625 [-0.664, -0.557] *; cbt_LastFail -0.235 [-0.279, -0.205] *; LastFail_tiesShort -0.359 [-0.410, -0.313] *; cbt_BM25 -0.082 [-0.108, -0.059] *; Oracle +0.004 [+0.002, +0.008] *
+
+## 3. Start order vs as-of, same features, same runs (the leak effect)
+
+| Variant | Technique | Start order (paper) | As-of | Δ |
+|---|---|---|---|---|
+| All | QTF | 0.6764 | 0.6753 | -0.0011 |
+| All | LastFail_Asc | 0.7942 | 0.7887 | -0.0056 |
+| All | FailCount_Desc | 0.7201 | 0.7142 | -0.0060 |
+| All | cbt_LastFail_Asc | 0.8359 | 0.8333 | -0.0027 |
+| FirstFail | QTF | 0.7985 | 0.8021 | +0.0036 |
+| FirstFail | LastFail_Asc | 0.4625 | 0.4644 | +0.0020 |
+| FirstFail | FailCount_Desc | 0.3105 | 0.3109 | +0.0004 |
+| FirstFail | cbt_LastFail_Asc | 0.7612 | 0.7674 | +0.0062 |
 
 ## 4. In plain words
 

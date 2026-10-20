@@ -114,7 +114,7 @@ def main() -> None:
         head.append(f"Feature store leakage check: {lb['n_match']}/{lb['n_runs']} random real runs recomputed by brute "
                     f"force match exactly ({lb['n_rows_checked']:,} rows).")
         head.append("")
-    text = "\n".join(head) + "\n" + gate2_section(g) + "\n" + gap_section(g) + "\n" + asof_section(b) + "\n" + explain(g, b)
+    text = "\n".join(head) + "\n" + gate2_section(g) + "\n" + asof_section(b) + "\n" + gap_section(g) + "\n" + explain(g, b)
     (paths.ROOT / "reports" / "BASELINES.md").write_text(text, encoding="utf-8")
     print("wrote reports/BASELINES.md")
 
