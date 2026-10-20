@@ -202,3 +202,9 @@ made on validation in Phase 3.
   inside a plateau are broken by the raw score (`iso(r) + 1e-9·r`). Probabilities are unchanged to 1e-9, and the
   ranking equals the raw model's. The same is done in `variants.Variant` and in smartci's exported calibrator. The
   classification and domain evaluations were re-run.
+- **NetworkX learn** (strict filter, since 2024-01-01): 87 candidates → **68 reproducible bugs (78%)**.
+  Excluded 19: no_failure 12, collection_error 4, fails_on_fix 3. So 7 commits could not run in today's pinned
+  environment. Rows from the first, loose-filter run were moved to `*_loose_filter_archive.jsonl` and are not used.
+  The adapter was not fitted yet: `learn` ran before the global model was exported. Re-run `fit_adapter` after
+  export. With 68 bugs, 41 adapt / 27 evaluate.
+- `mutate --n 300 --seed 42` started.
