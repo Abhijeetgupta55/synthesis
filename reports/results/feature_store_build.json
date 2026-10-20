@@ -59,13 +59,33 @@
       "n_runs": 2131,
       "n_tests": 1663,
       "n_stages": 1
+    },
+    "james": {
+      "rows": 10403308,
+      "rows_fail": 14705,
+      "rows_ftf_asof": 1172,
+      "seconds": 96.123042,
+      "bytes": 141343355,
+      "n_runs": 5838,
+      "n_tests": 2802,
+      "n_stages": 2
+    },
+    "tvm": {
+      "rows": 16249532,
+      "rows_fail": 31818,
+      "rows_ftf_asof": 4277,
+      "seconds": 215.567407,
+      "bytes": 271198342,
+      "n_runs": 40491,
+      "n_tests": 2275,
+      "n_stages": 19
     }
   },
-  "total_rows": 8598571,
-  "total_bytes": 148077844,
-  "total_seconds": 137.309374,
+  "total_rows": 35251411,
+  "total_bytes": 560619541,
+  "total_seconds": 448.999824,
   "_meta": {
-    "generated": "2026-10-20 15:06:33",
-    "git_sha": "ebe9eca"
+    "generated": "2026-10-20 15:12:04",
+    "git_sha": "947da55"
   }
 }

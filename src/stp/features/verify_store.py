@@ -52,12 +52,18 @@ def compare(store_rows: pd.DataFrame, brute: pd.DataFrame) -> dict:
     return res
 
 
-def check_bruteforce(n_runs: int, seed: int) -> dict:
+def check_bruteforce(n_runs: int, seed: int, projects: list[str] | None = None) -> dict:
+    """projects=None checks all; a subset re-checks those projects and keeps earlier results for the others."""
     con = connect()
-    rng = np.random.default_rng(seed)
     per = max(1, n_runs // len(paths.PROJECTS))
     results = []
-    for p in paths.PROJECTS:
+    todo = projects or paths.PROJECTS
+    prev = paths.RESULTS / "leakage_bruteforce.json"
+    if projects and prev.exists():
+        import json
+        results = [r for r in json.loads(prev.read_text())["runs"] if r["project"] not in projects]
+    for p in todo:
+        rng = np.random.default_rng([seed, paths.PROJECTS.index(p)])
         if not store_ready(p):
             print(f"  [bruteforce] {p}: store not built, skipped")
             continue
@@ -84,6 +90,7 @@ def check_bruteforce(n_runs: int, seed: int) -> dict:
             results.append(r)
             print(f"  [bruteforce] {p} run {ri}: {len(st)} tests, match={r['match']}", flush=True)
         print(f"  [bruteforce] {p}: {time.time() - t0:.0f}s", flush=True)
+    results.sort(key=lambda r: (paths.PROJECTS.index(r["project"]), r["run_idx"]))
     n_ok = sum(r["match"] for r in results)
     out = {"n_runs": len(results), "n_match": n_ok, "seed": seed, "columns_checked": CHECK_COLS,
            "n_rows_checked": int(sum(r["n_joined"] for r in results)),
@@ -139,9 +146,10 @@ def main() -> None:
     ap.add_argument("--runs", type=int, default=50)
     ap.add_argument("--seed", type=int, default=7)
     ap.add_argument("--only", default="bruteforce,signal")
+    ap.add_argument("--projects", default=None)
     a = ap.parse_args()
     if "bruteforce" in a.only:
-        check_bruteforce(a.runs, a.seed)
+        check_bruteforce(a.runs, a.seed, a.projects.split(",") if a.projects else None)
     if "signal" in a.only:
         check_signal(seed=a.seed)
 

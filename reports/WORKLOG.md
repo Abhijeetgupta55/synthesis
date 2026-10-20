@@ -51,3 +51,45 @@ Notes and decisions
 
 **GATE 0: PASS.** All five facts were recomputed and logged. The data contradicts none of them in substance; there is
 one count difference (fact 5) and one definitional difference (fact 2).
+
+---
+
+## 2026-10-20 · Phase 1: leak-free foundations
+
+**Housekeeping surprise.** `.gitignore` had an unanchored `data/` rule, so `src/stp/data/` (download, build_tables,
+audit) had never been committed. It is now anchored to `/data/` and the files are committed.
+
+**1.1 Split** (`python -m stp.data.splits` → `data/processed/splits_build.parquet`, `reports/results/splits.json`)
+- Builds are ordered by build start = min stage timestamp, then cut 70/15/15 per project. No build spans two splits;
+  the EDA's run-level split had put 58 TVM builds across splits.
+- Rolling origin: 30-day windows from the train/val boundary, 1 (Log4j) to 19 (Karaf) windows per project.
+- As-of end = start + clip(build_duration, 1 s, **24 h**). 135 runs are capped.
+
+**1.2 As-of rule** Run Q informs run R iff Q.end ≤ R.start. Two history scopes are always computed: `h_*` (all stages
+of the project, with an `h_last_fail_same_stage` indicator) and `hs_*` (same stage only). The choice between them is
+made on validation in Phase 3.
+
+**1.3 Features** (`src/stp/features/{history,change,cofail,tokens,testmap,schema}.py`, pure functions on plain inputs)
+- `fails_last_7d/30d` count failures that *became known* (end time) within the window. `days_since_last_fail` uses
+  the failing run's *start*. `last_outcome_asof` is the outcome in the most recently *finished* run.
+- `fail_rate` = (n_fail + 20 · 0.0025) / (n_runs + 20). This is fixed Bayesian smoothing toward the pooled
+  per-row failure rate (252k / 104M ≈ 0.24%).
+- Cost: the duration comes from same-stage history, else all-stage history, else the median EMA of the run's seen
+  tests, else 1 s. `dur_source` records which.
+- Path features drop layout (src/main/java…), generic (org, apache, util…) and project-name tokens. With that
+  normalisation, "aligned prefix overlap" reduces to the longest common prefix between the test's directory path and
+  any suffix of a changed file's directory path. That form can be computed with a trie.
+- BM25: the corpus is the run's own test list, so IDF never uses tests not yet known. Query weight 1 + ln(count);
+  k1 = 1.2, b = 0.75.
+- Co-failure: file-level rate cof(f, x) / (nchg(f) + 1), with backoff to the parent directory for files never
+  changed before. Aggregated as max, sum and the raw file-level count max.
+- Changes are keyed by (build, trunk_sha, head_sha), not by build. 1,546 build ids map to more than one SHA pair
+  (TVM reuses ids across Jenkins jobs), and keying by build alone would hand an earlier stage the diff of a later job.
+
+**1.4 Store** (`python -m stp.data.build_diffs`, `python -m stp.features.store`)
+- Diff extraction re-reads the raw compare JSON. It matches the EDA change table on files and additions for 100% of
+  Log4j changes. TVM's extraction log shows 36,921 s of wall time, i.e. the machine slept mid-run; the job resumed
+  fine.
+- The store is built in one chronological streaming pass per project with per-test state arrays (not ASOF joins).
+  Runs are applied in end order, and sliding windows are decremented when a failure's end leaves the window.
+  Small projects take 5–96 s; TVM (16.2M rows) takes 216 s.
