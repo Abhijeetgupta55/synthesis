@@ -31,9 +31,10 @@ TIE = 1e-9   # see Calibrated.predict
 def raw_predict(entry: dict, X_raw: dict | pd.DataFrame) -> np.ndarray:
     X = matrix(X_raw, entry["cols"], entry.get("linear", False))
     m = entry["model"]
+    # float64 always: sklearn's LR returns float32 for float32 input, which would swallow the 1e-9 tie-break below
     if hasattr(m, "predict_proba"):
-        return m.predict_proba(X)[:, 1]
-    return m.predict(X, num_iteration=entry.get("best_iteration"))
+        return np.asarray(m.predict_proba(X)[:, 1], dtype=np.float64)
+    return np.asarray(m.predict(X, num_iteration=entry.get("best_iteration")), dtype=np.float64)
 
 
 def logit(p):
