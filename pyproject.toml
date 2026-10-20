@@ -16,6 +16,12 @@ dependencies = [
   "coverage>=7.4",
 ]
 
+[project.scripts]
+smartci = "smartci.cli:main"
+
+[project.entry-points.pytest11]
+smartci = "smartci.plugin"
+
 [project.optional-dependencies]
 # Exact pins for the research pipeline (Python 3.11 .venv); see requirements-lock.txt for the full lock.
 research = [
@@ -33,6 +39,9 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+smartci = ["model/*.txt", "model/*.json", "model/*.md"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

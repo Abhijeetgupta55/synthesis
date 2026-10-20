@@ -79,13 +79,23 @@
       "n_runs": 40491,
       "n_tests": 2275,
       "n_stages": 19
+    },
+    "kafka": {
+      "rows": 68441191,
+      "rows_fail": 174171,
+      "rows_ftf_asof": 3073,
+      "seconds": 1053.289322,
+      "bytes": 1126285319,
+      "n_runs": 53554,
+      "n_tests": 2465,
+      "n_stages": 24
     }
   },
-  "total_rows": 35251411,
-  "total_bytes": 560619541,
-  "total_seconds": 448.999824,
+  "total_rows": 103692602,
+  "total_bytes": 1686904860,
+  "total_seconds": 1502.289147,
   "_meta": {
-    "generated": "2026-10-20 15:12:04",
-    "git_sha": "947da55"
+    "generated": "2026-10-20 15:29:40",
+    "git_sha": "274cc85"
   }
 }
