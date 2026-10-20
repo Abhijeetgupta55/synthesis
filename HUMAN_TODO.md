@@ -20,3 +20,6 @@ Each item has exact steps. Remove an item once it is done.
    `.github/workflows/smartci-compare.yml` and `.github/workflows/smartci-shadow.yml`, and commit.
    Check course policy first: the LRTS data itself is *not* in the repo (it is git-ignored); only code,
    generated results JSON and reports are.
+4. **Optional, speeds up the NetworkX runs:** WSL's VM holds ~0.8 GB (`vmmemWSL`). If you don't need WSL right now,
+   run `wsl --shutdown` in PowerShell. Closing Chrome frees another ~1 GB. Collecting NetworkX's 10,120 tests took
+   289 s under the current memory pressure.

@@ -29,7 +29,7 @@ from stp.eda.common import PALETTE, savefig, style
 from stp.models.common import train_weight, load, n_rows, save_model, subsample_rows
 from stp.results import save_result
 
-C_GRID = [1e-4, 1e-3, 1e-2, 1e-1, 1.0, 10.0]
+C_GRID = [1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1.0, 10.0]
 
 
 def lr_model(penalty: str, C: float):
