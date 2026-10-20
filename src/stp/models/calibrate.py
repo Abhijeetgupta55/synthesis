@@ -25,6 +25,7 @@ from stp.models.common import load, load_model, save_model
 from stp.models.prep import matrix
 
 BASE_MODELS = ["lr", "rf", "lgbm"]
+TIE = 1e-9   # see Calibrated.predict
 
 
 def raw_predict(entry: dict, X_raw: dict | pd.DataFrame) -> np.ndarray:
@@ -53,7 +54,7 @@ class Calibrated:
             return r
         if method == "platt":
             return self.platt.predict_proba(logit(r)[:, None])[:, 1]
-        return self.iso.predict(r)
+        return self.iso.predict(r) + TIE * r  # isotonic is a step function; +1e-9*raw breaks its plateaus by the raw score (calibration unchanged, ranking kept)
 
 
 def run_level(frame: pd.DataFrame) -> tuple[np.ndarray, np.ndarray]:

@@ -35,7 +35,8 @@ class Variant:
         return self.booster.predict(matrix(d, self.cols), num_iteration=self.best_iteration)
 
     def predict(self, d):
-        return self.iso.predict(self.raw(d))
+        r = self.raw(d)
+        return self.iso.predict(r) + 1e-9 * r  # isotonic is a step function; +1e-9*raw breaks its plateaus by the raw score (calibration unchanged, ranking kept)
 
 
 def _rows_for(name: str, projects: list[str]) -> np.ndarray:
@@ -66,7 +67,8 @@ def train_variant(name: str, cols: list[str], train_projects: list[str], eval_pr
     v = Variant(b, cols, iso, int(b.best_iteration))
     save_model(v, f"var_{name}")
     Xt, mt = load("testC", cols, ["y_fail", "y_ftf_asof"], rows=_rows_for("testC", ev))
-    pt = iso.predict(b.predict(Xt, num_iteration=b.best_iteration))
+    rt = b.predict(Xt, num_iteration=b.best_iteration)
+    pt = iso.predict(rt) + 1e-9 * rt
     info = {"name": name, "cols": cols, "train_projects": train_projects, "eval_projects": ev,
             "train_rows": int(len(rows)), "best_iteration": int(b.best_iteration),
             "valB_pr_auc": float(average_precision_score(mb.y_fail, rb)),

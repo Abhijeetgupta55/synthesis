@@ -192,3 +192,13 @@ made on validation in Phase 3.
   functions…"). The strict filter keeps fix/bug/regression/issue keywords or `closes/fixes/resolves #N`, and finds
   **87** candidates since 2024. This matches fact 6 of the prompt ("about 87 commits"). Learn was restarted. Rows
   produced under the old filter are ignored when bugs are loaded.
+- **Tuning result**: 60 TPE trials in 46 min after the change. Best valA PR-AUC 0.2079. The top-5 configurations
+  score 0.901–0.905 valA APFDc.
+- **Classification (testC, first pass)**: LightGBM PR-AUC 0.207 with isotonic vs 0.218 with Platt, at equal Brier
+  (0.00255 / 0.00256). RF 0.180 / 0.195, LR 0.174 / 0.193. Soft vote 0.220, stacking 0.227. ROC-AUC is about 0.95
+  for every model. Model residuals are 0.98–0.99 correlated.
+- **Design fix: isotonic loses ranking.** Isotonic regression is a step function, so it maps many raw scores onto
+  one plateau, and average precision (and ordering) loses that resolution. Isotonic stays the calibrator, but ties
+  inside a plateau are broken by the raw score (`iso(r) + 1e-9·r`). Probabilities are unchanged to 1e-9, and the
+  ranking equals the raw model's. The same is done in `variants.Variant` and in smartci's exported calibrator. The
+  classification and domain evaluations were re-run.

@@ -63,7 +63,7 @@ class GlobalModel:
 
     def calibrate(self, raw: np.ndarray, which: str) -> np.ndarray:
         x, y = self.cal[which]
-        return np.interp(raw, x, y)
+        return np.interp(raw, x, y) + 1e-9 * raw  # isotonic is a step function; +1e-9*raw breaks its plateaus by the raw score (calibration unchanged, ranking kept)
 
     def contributions(self, rows: list[dict], which: str) -> list[dict]:
         """Per-feature contributions in log-odds (LightGBM's built-in TreeSHAP)."""
