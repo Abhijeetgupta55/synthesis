@@ -36,3 +36,26 @@ eda:
   ttff_max_failed_runs_per_project: 300   # Phase 3.G stratified sample size
   ttff_random_shuffles: 20
   min_first_fail_runs_in_test: 30
+
+# Project-name tokens carry no information about *which* code changed; dropped from every token bag.
+project_stopwords:
+  activemq: [activemq]
+  hadoop: [hadoop]
+  hbase: [hbase, hadoop]
+  hive: [hive, hadoop]
+  jackrabbit-oak: [jackrabbit, oak]
+  james: [james]
+  kafka: [kafka]
+  karaf: [karaf]
+  log4j: [logging, log4j, log]   # "log4j" tokenises to "log"
+  tvm: [tvm]
+
+# Phase 1 feature constants (documented in reports/FEATURES.md)
+features:
+  patch_max_chars: 200000      # per change: patch text beyond this is ignored (GitHub truncates huge patches anyway)
+  ema_alpha: 0.3               # dur_ema_asof
+  fail_rate_prior: 0.0025      # ~ pooled P(fail) per (run, test class) row; smoothing target
+  fail_rate_strength: 20       # pseudo-runs of prior
+  bm25_k1: 1.2
+  bm25_b: 0.75
+  days_never: 9999.0           # days_since_last_fail_asof when the test never failed (as-of)

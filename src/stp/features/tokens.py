@@ -1,12 +1,11 @@
 """Tokenisation and path normalisation shared by every change-relatedness feature (LRTS and smartci).
 
-A test id and a changed file are both turned into a *directory path* and a *token bag*:
-  test 'org.apache.kafka.streams.kstream.FooTest' -> dirs [org, apache, kafka, streams, kstream], name 'FooTest'
-  test 'tests/python/relay/test_op.py'            -> dirs [relay] (root segments dropped), name 'test_op'
-  file 'streams/src/main/java/org/apache/kafka/streams/kstream/Foo.java'
-                                                  -> dirs [streams, org, apache, kafka, streams, kstream], name 'Foo'
-Root segments that only encode build layout (src, main, test, java, ...) are dropped so that test and source trees
-line up; nothing here is project-specific except the optional extra stopwords a caller passes in.
+A test id and a changed file are both turned into a normalised *directory path* and a *token bag*:
+  test 'org.apache.kafka.streams.kstream.FooTest' -> dirs (streams, kstream)      [project stopword 'kafka']
+  test 'tests/python/relay/test_op.py'            -> dirs (relay,)
+  file 'streams/src/main/java/org/apache/kafka/streams/kstream/Foo.java' -> dirs (streams, streams, kstream)
+Layout-only segments (src, main, test, java, ...), generic tokens (org, apache, util, ...) and the caller's
+project-name stopwords are dropped so that test and source trees line up. Nothing else is project-specific.
 """
 from __future__ import annotations
 
@@ -46,57 +45,49 @@ def token_set(s: str, extra_stop: frozenset[str] = frozenset()) -> set[str]:
     return set(tokenize(s, extra_stop))
 
 
-def file_dirs(path: str) -> list[str]:
-    """Directory components of a file path with layout-only segments removed."""
+def _keep_dir(d: str, extra_stop: frozenset[str]) -> bool:
+    dl = d.lower()
+    return bool(dl) and dl not in ROOT_SEGMENTS and dl not in STOPWORDS and dl not in extra_stop
+
+
+def file_dirs(path: str, extra_stop: frozenset[str] = frozenset()) -> tuple[str, ...]:
+    """Normalised directory components of a file path: lowercase, layout-only and generic segments removed."""
     parts = path.replace("\\", "/").split("/")[:-1]
-    return [p for p in parts if p and p.lower() not in ROOT_SEGMENTS]
+    return tuple(p.lower() for p in parts if _keep_dir(p, extra_stop))
 
 
-def test_dirs(test_id: str) -> list[str]:
-    """Directory/package components of a test id (via its mapped file path), layout segments removed."""
+def test_dirs(test_id: str, extra_stop: frozenset[str] = frozenset()) -> tuple[str, ...]:
+    """Normalised directory/package components of a test id, via its mapped file path."""
     sufs = test_path_suffixes(test_id)
-    if not sufs:
-        return []
-    return file_dirs(sufs[0])
+    return file_dirs(sufs[0], extra_stop) if sufs else ()
 
 
-def test_name(test_id: str) -> str:
+def test_text(test_id: str) -> str:
+    """Text whose tokens describe a test: its mapped file path without extension, else the raw id."""
     sufs = test_path_suffixes(test_id)
-    if sufs:
-        return sufs[0].rsplit("/", 1)[-1].rsplit(".", 1)[0]
-    return test_id
+    return sufs[0].rsplit(".", 1)[0] if sufs else test_id
 
 
-def top_module(dirs: list[str], extra_stop: frozenset[str] = frozenset()) -> str | None:
-    """First directory component that is not a generic token (org, apache, the project name, ...)."""
-    for d in dirs:
-        dl = d.lower()
-        if dl not in STOPWORDS and dl not in extra_stop and dl not in ROOT_SEGMENTS:
-            return dl
-    return None
+def top_module(dirs: tuple[str, ...]) -> str | None:
+    """First normalised directory component (e.g. 'streams' for Kafka Streams, 'relay' for TVM Relay)."""
+    return dirs[0] if dirs else None
 
 
-def aligned_prefix_overlap(t_dirs: list[str], f_dirs: list[str]) -> float:
-    """Longest common directory prefix of the test path and a file path, normalised by the test path length.
-
-    The file path is aligned at the first occurrence of the test's first component (so a leading module directory
-    such as 'streams/' in 'streams/.../org/apache/...' does not break the match); with no occurrence, both paths
-    are compared from their start. Returns a value in [0, 1]; 0 if the test has no directory path.
-    """
+def aligned_prefix_overlap(t_dirs: tuple[str, ...], f_dirs: tuple[str, ...]) -> float:
+    """Longest common prefix between the test's directory path and any suffix of the file's directory path,
+    divided by the test path length. Aligning on suffixes lets 'streams/.../streams/kstream' match a test in
+    package 'streams.kstream' although the file path starts with a module directory. Value in [0, 1]."""
     if not t_dirs:
         return 0.0
-    tl = [d.lower() for d in t_dirs]
-    fl = [d.lower() for d in f_dirs]
-    starts = [i for i, d in enumerate(fl) if d == tl[0]] or [0]
     best = 0
-    for s in starts:
+    for s in range(len(f_dirs)):
         n = 0
-        for a, b in zip(tl, fl[s:]):
+        for a, b in zip(t_dirs, f_dirs[s:]):
             if a != b:
                 break
             n += 1
         best = max(best, n)
-    return best / len(tl)
+    return best / len(t_dirs)
 
 
 def diff_token_counts(paths: list[str], patches: list[str | None], max_chars: int = 200_000,

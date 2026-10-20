@@ -1,0 +1,71 @@
+{
+  "projects": {
+    "activemq": {
+      "rows": 379243,
+      "rows_fail": 501,
+      "rows_ftf_asof": 171,
+      "seconds": 7.323623,
+      "bytes": 5265803,
+      "n_runs": 446,
+      "n_tests": 1126,
+      "n_stages": 1
+    },
+    "karaf": {
+      "rows": 156701,
+      "rows_fail": 416,
+      "rows_ftf_asof": 90,
+      "seconds": 5.329666,
+      "bytes": 2311596,
+      "n_runs": 726,
+      "n_tests": 243,
+      "n_stages": 1
+    },
+    "hbase": {
+      "rows": 1095402,
+      "rows_fail": 1214,
+      "rows_ftf_asof": 530,
+      "seconds": 15.73683,
+      "bytes": 17289918,
+      "n_runs": 1018,
+      "n_tests": 1956,
+      "n_stages": 4
+    },
+    "hadoop": {
+      "rows": 1154052,
+      "rows_fail": 3968,
+      "rows_ftf_asof": 1143,
+      "seconds": 28.718696,
+      "bytes": 21600589,
+      "n_runs": 1980,
+      "n_tests": 3191,
+      "n_stages": 1
+    },
+    "jackrabbit-oak": {
+      "rows": 3055030,
+      "rows_fail": 12096,
+      "rows_ftf_asof": 988,
+      "seconds": 35.834302,
+      "bytes": 47803286,
+      "n_runs": 1654,
+      "n_tests": 2158,
+      "n_stages": 1
+    },
+    "hive": {
+      "rows": 2758143,
+      "rows_fail": 13211,
+      "rows_ftf_asof": 725,
+      "seconds": 44.366258,
+      "bytes": 53806652,
+      "n_runs": 2131,
+      "n_tests": 1663,
+      "n_stages": 1
+    }
+  },
+  "total_rows": 8598571,
+  "total_bytes": 148077844,
+  "total_seconds": 137.309374,
+  "_meta": {
+    "generated": "2026-10-20 15:06:33",
+    "git_sha": "ebe9eca"
+  }
+}
