@@ -93,3 +93,39 @@ made on validation in Phase 3.
 - The store is built in one chronological streaming pass per project with per-test state arrays (not ASOF joins).
   Runs are applied in end order, and sliding windows are decremented when a failure's end leaves the window.
   Small projects take 5–96 s; TVM (16.2M rows) takes 216 s.
+- Kafka store: 68.4M rows, 1,126 MB, 1,053 s. Total store 104.0M rows ≈ 1.7 GB (estimate was 2.8 GB).
+
+**1.5 Leakage tests** (`tests/test_leakage.py`, `python -m stp.features.verify_store`)
+- (a) Synthetic overlapping runs through the real streaming builder: passes. A run that has not finished is invisible.
+  Results that finish exactly at t are usable.
+- (b) Brute force from raw tables with the pure reference functions: **45/45 runs match** for the 9 non-Kafka projects
+  (39,623 rows; every feature, label and duration; integers and booleans exact, floats to 1e-6 relative).
+  The first Kafka attempt was stopped after 50 min without finishing one run: rebuilding ~1,300 tests × ~30k events
+  in pure Python under ~400 MB free RAM is too slow. Runs with > 600 tests are now checked on all failing tests,
+  all new tests and 40 random tests. Every feature column is still checked. The cost fallback needs all tests and is
+  computed fully whenever a sampled test is unseen.
+
+---
+
+## 2026-10-20 · Phase 2: harness, GATE 2
+
+- Metrics: APFDc equals LRTS's own `eval_metric.compute_metrics` (imported in a test) to 1e-12. TTFF includes the
+  failing test's own duration, because that is when `pytest -x` reports it. (The prompt said "before"; this is a
+  deliberate deviation.)
+- **LRTS evaluation detail found in their code.** The shipped `eval_main` calls `eval_tcp_on_build` without
+  `use_ordered_tests`, so filters only select runs. The published FirstFail outcomes nevertheless *remove* filtered
+  failing tests for 9 projects; only 22.7% of QTF FirstFail runs have APFDc equal to their All value. **For TVM they do
+  not.** The 429 published TVM FirstFail runs equal our All values run by run (mean |Δ| 0.0008 QTF). With removal,
+  only 5 TVM runs would keep a failure. That count agrees with LRTS's own `dataset_filter.csv`, where the stage-unique
+  filter keeps a failure in 0.6% of TVM failed runs. LRTS's `filter_builds` on `dataset_filter.csv` reproduces the
+  paper's run rows exactly for all 10 projects.
+- First attempt: GATE 2 **FAILED** on FirstFail (QTF −0.028, cbt_LastFail −0.030, FailCount +0.013), entirely from
+  TVM (5 vs 429 runs). All variant: within 0.001.
+- Fix: reproduce the *published* protocol. Use the `filter_builds` run set; remove filtered failures except for TVM.
+  The macro values with removal applied everywhere are kept in `gate2_reproduction.json → tvm_quirk`.
+- **GATE 2: PASS.** All 8 cells are within ±0.005: All QTF −0.0006, LastFail −0.0008, FailCount +0.0001,
+  cbt_LastFail −0.0001; FirstFail QTF +0.0005, LastFail −0.0045, FailCount −0.0015, cbt_LastFail −0.0008.
+- **Leak effect, same features and same runs, start order → as-of** (macro): All LastFail −0.0055,
+  FailCount −0.0059, cbt_LastFail −0.0026, QTF −0.0011. FirstFail moves slightly *up* (+0.002 to +0.006). The macro
+  effect is small although 46% of "last fail" values come from unfinished runs. Explanation pending a per-project
+  look (Phase 2.6).

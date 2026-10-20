@@ -1,7 +1,7 @@
 """GATE 1 checks on the built feature store.
 
   bruteforce   N random real runs (stratified: N/10 per project, half of them failed runs): every feature and label
-               of every test in the run is recomputed from raw tables with the pure reference functions
+               of every test in the run (runs with > 600 tests: all failing, all new and 40 random tests) is recomputed from raw tables with the pure reference functions
                (stp.features.bruteforce) and compared with the store. Integer/boolean columns must be equal; float
                columns must agree to 1e-6 relative (summation order and libm `log` can differ in the last bits).
   signal       single-feature PR-AUC on a sample of training rows (all positives + random negatives, PR-AUC
@@ -26,6 +26,8 @@ from stp.features.store import parts_glob, store_dir, store_ready
 from stp.results import connect, save_result
 
 CHECK_COLS = [c for c in FEATURES if c != "semantic_sim"] + LABELS + EVAL_ONLY
+SAMPLE_ABOVE = 600      # runs with more tests are checked on a sample (pure-Python history is O(events))
+SAMPLE_N = 40
 
 
 def _dtype(c: str) -> str:
@@ -81,8 +83,16 @@ def check_bruteforce(n_runs: int, seed: int, projects: list[str] | None = None) 
             st = st.merge(tests, on="test_id")
             q = ctx.runs[(ctx.runs.pr_name == run.pr_name) & (ctx.runs.build_id == run.build_id)
                          & (ctx.runs.stage_id == run.stage_id)].iloc[0]
-            bf = ctx.recompute(q)
+            sample = None
+            if len(st) > SAMPLE_ABOVE:   # Kafka-sized runs: all failing + all new + 40 random tests (documented)
+                pick_t = set(st.testclass[st.y_fail | st.is_new_test])
+                others = st.testclass[~st.testclass.isin(pick_t)].to_numpy()
+                pick_t |= set(rng.choice(others, min(SAMPLE_N, len(others)), replace=False))
+                sample = sorted(pick_t)
+                st = st[st.testclass.isin(pick_t)]
+            bf = ctx.recompute(q, sample)
             r = compare(st, bf)
+            r["sampled_tests"] = sample is not None
             r.update(project=p, run_idx=int(ri), run_id=run.run_id, failed=bool(run.failed),
                      n_fail=int(st.y_fail.sum()), n_test_file_in_diff=int(st.test_file_in_diff.sum()),
                      n_cof_nonzero=int((st.cof_max > 0).sum()), n_new=int(st.is_new_test.sum()))

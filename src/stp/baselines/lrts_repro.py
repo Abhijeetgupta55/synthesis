@@ -16,6 +16,12 @@ Protocol (LRTS evaluation/eval_main.py, eval_tcp.py, extract_hist_features.py):
                FirstFail  failing tests that are not first failures (per project+stage, paper universe), are
                           JIRA-flaky (name ends with a listed class whose fix is after the run), or failed in only
                           some stages of the build are removed from the run; runs with no failure left are dropped
+  run set      FirstFail runs are those LRTS's eval_main.filter_builds selects from metadata/dataset_filter.csv
+               (failure condition OR transition condition); this reproduces the paper's run rows exactly
+  TVM quirk    the published TVM FirstFail outcomes are computed on the *unfiltered* failure lists of the selected
+               runs (they equal our All values run by run, mean |diff| 0.0008), while the other 9 projects remove
+               filtered failing tests. We reproduce the published protocol (NO_REMOVAL_PROJECTS) and report it as an
+               inconsistency of the artifact: with removal, only 5 TVM runs would keep a failure.
   aggregation  mean over seeds per run, over runs per project, macro over projects
 
 Mode `as_of` changes only the history rule: run Q is applied to the state of run R iff Q.end <= R.start
@@ -46,6 +52,18 @@ TARGETS = {  # docs/PROMPT.md fact 7 (paper protocol, macro APFDc_uniqueBug)
     "FirstFail": {"QTF": 0.798, "LastFail_Asc": 0.467, "FailCount_Desc": 0.312, "cbt_LastFail_Asc": 0.762},
 }
 EVAL_DIR = paths.PROCESSED / "eval"
+NO_REMOVAL_PROJECTS = {"tvm"}
+FILTERS = ["first", "jira", "stageunique"]
+
+
+def firstfail_selected() -> pd.DataFrame:
+    """(project, pr_name, build_id, stage_id) rows LRTS's filter_builds keeps for d_first_jira_stageunique."""
+    d = pd.read_csv(paths.LRTS_DATASET_FILTER_CSV, dtype={"stage_id": str, "pr_name": str})
+    ff, tt = d.num_fail_class > 0, d.num_trans_class > 0
+    for f in FILTERS:
+        ff &= d["num_fail_class+" + ("first_failure" if f == "first" else f + "_for_fail")] > 0
+        tt &= d["num_trans_class+" + ("first_trans" if f == "first" else f + "_for_trans")] > 0
+    return d[ff | tt][["project", "pr_name", "build_id", "stage_id"]].drop_duplicates()
 
 
 def iter_store_runs(project: str, columns: list[str]):
@@ -164,11 +182,33 @@ def paper_values() -> pd.DataFrame:
     return b.groupby(["variant", "tcp", "project"]).APFDc_uniqueBug.agg(["mean", "count"]).rename(columns={"count": "size"}).reset_index()
 
 
-def main() -> None:
-    frames = [run_project(p) for p in paths.PROJECTS if store_ready(p)]
-    df = pd.concat(frames, ignore_index=True)
-    EVAL_DIR.mkdir(parents=True, exist_ok=True)
-    df.to_parquet(EVAL_DIR / "lrts_repro_runs.parquet", index=False)
+def aggregate(df: pd.DataFrame) -> pd.DataFrame:
+    """Apply the published FirstFail run set and the TVM no-removal quirk to per-run results."""
+    sel = firstfail_selected()
+    frames = []
+    for p, g in df.groupby("project"):
+        runs = pd.read_parquet(store_dir(p) / "runs.parquet", columns=["run_idx", "pr_name", "build_id", "stage_id"])
+        s = sel[sel.project == p].merge(runs, on=["pr_name", "build_id", "stage_id"]).run_idx
+        all_ = g[g.variant == "All"]
+        ff = g[(g.variant == "FirstFail") & g.run_idx.isin(s)]
+        if p in NO_REMOVAL_PROJECTS:
+            ff = all_[all_.run_idx.isin(s)].assign(variant="FirstFail")
+        frames += [all_, ff]
+    return pd.concat(frames, ignore_index=True)
+
+
+def main(aggregate_only: bool = False) -> None:
+    f = EVAL_DIR / "lrts_repro_runs.parquet"
+    if aggregate_only and f.exists():
+        df = pd.read_parquet(f)
+    else:
+        frames = [run_project(p) for p in paths.PROJECTS if store_ready(p)]
+        df = pd.concat(frames, ignore_index=True)
+        EVAL_DIR.mkdir(parents=True, exist_ok=True)
+        df.to_parquet(f, index=False)
+    raw_ff = df[df.variant == "FirstFail"].dropna(subset=["apfdc"])
+    consistent = raw_ff.groupby(["mode", "tcp", "project"]).apfdc.mean().groupby(["mode", "tcp"]).mean()
+    df = aggregate(df)
     per = df.dropna(subset=["apfdc"]).groupby(["mode", "variant", "tcp", "project"]).apfdc.agg(["mean", "size"])
     per = per.reset_index()
     pv = paper_values()
@@ -192,6 +232,11 @@ def main() -> None:
             out["gate"][f"{var}|{tech}"] = {"target": target, "ours": ours, "diff": diff, "pass": passed,
                                             "as_of": out["macro"]["as_of"][var][tech]}
     out["gate_pass"] = ok
+    out["tvm_quirk"] = {"no_removal_projects": sorted(NO_REMOVAL_PROJECTS),
+                        "firstfail_macro_with_removal_everywhere": {f"{m}|{t}": float(v) for (m, t), v in consistent.items()},
+                        "tvm_firstfail_runs_with_removal": int(raw_ff[(raw_ff.project == "tvm")
+                                                                      & (raw_ff["mode"] == "start_order")
+                                                                      & (raw_ff.tcp == "QTF")].run_idx.nunique())}
     save_result("gate2_reproduction", out)
     for k, v in out["gate"].items():
         print(f"{k:28s} target {v['target']:.3f}  ours {v['ours']:.4f}  diff {v['diff']:+.4f}  "
@@ -200,4 +245,5 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    import sys
+    main(aggregate_only="--aggregate-only" in sys.argv)

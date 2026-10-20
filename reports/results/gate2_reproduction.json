@@ -1,0 +1,564 @@
+{
+  "protocol": "GATE 2: reproduce the LRTS paper's history baselines with our own harness, then re-run them as-of.\n\nProtocol (LRTS evaluation/eval_main.py, eval_tcp.py, extract_hist_features.py):\n  universe     runs of the paper subset (artifact/metadata/dataset.csv); stages with > 50 runs\n  features     per (project, stage), runs walked in start order; for run N the features use runs 1..N-1:\n               failure_count, last_failure (1 if the previous run of the test failed, +1 per later pass, 0 if new),\n               last_duration (0 if new)\n  techniques   QTF            ascending last_duration + eps\n               LastFail_Asc   ascending last_failure + eps\n               FailCount_Desc ascending 1 / (failure_count + eps)\n               cbt_LastFail_Asc ascending (last_failure + eps) * (last_duration + eps)\n               Random         uniform priority\n               ties broken uniformly at random; 10 seeds averaged per run (eps = 1e-6)\n  metric       APFDc_uniqueBug with durations + 0.001 (stp.evaluation.metrics.apfdc)\n  variants     All        every failed run\n               FirstFail  failing tests that are not first failures (per project+stage, paper universe), are\n                          JIRA-flaky (name ends with a listed class whose fix is after the run), or failed in only\n                          some stages of the build are removed from the run; runs with no failure left are dropped\n  run set      FirstFail runs are those LRTS's eval_main.filter_builds selects from metadata/dataset_filter.csv\n               (failure condition OR transition condition); this reproduces the paper's run rows exactly\n  TVM quirk    the published TVM FirstFail outcomes are computed on the *unfiltered* failure lists of the selected\n               runs (they equal our All values run by run, mean |diff| 0.0008), while the other 9 projects remove\n               filtered failing tests. We reproduce the published protocol (NO_REMOVAL_PROJECTS) and report it as an\n               inconsistency of the artifact: with removal, only 5 TVM runs would keep a failure.\n  aggregation  mean over seeds per run, over runs per project, macro over projects\n\nMode `as_of` changes only the history rule: run Q is applied to the state of run R iff Q.end <= R.start\n(end = start + capped build_duration). Everything else is identical, so the gap between the modes is the effect\nof the concurrency leak.\n\nOutputs: reports/results/gate2_reproduction.json, data/processed/eval/lrts_repro_runs.parquet\nUsage:   python -m stp.baselines.lrts_repro\n",
+  "per_project": {
+    "as_of": {
+      "All": {
+        "FailCount_Desc": {
+          "activemq": 0.763336,
+          "hadoop": 0.732464,
+          "hbase": 0.694557,
+          "hive": 0.638217,
+          "jackrabbit-oak": 0.777151,
+          "james": 0.696382,
+          "kafka": 0.759178,
+          "karaf": 0.669669,
+          "log4j": 0.82926,
+          "tvm": 0.581378
+        },
+        "LastFail_Asc": {
+          "activemq": 0.811357,
+          "hadoop": 0.768909,
+          "hbase": 0.798212,
+          "hive": 0.73089,
+          "jackrabbit-oak": 0.843749,
+          "james": 0.783915,
+          "kafka": 0.832105,
+          "karaf": 0.72399,
+          "log4j": 0.847537,
+          "tvm": 0.746142
+        },
+        "QTF": {
+          "activemq": 0.629616,
+          "hadoop": 0.613919,
+          "hbase": 0.601071,
+          "hive": 0.58508,
+          "jackrabbit-oak": 0.722139,
+          "james": 0.650249,
+          "kafka": 0.622963,
+          "karaf": 0.648873,
+          "log4j": 0.853961,
+          "tvm": 0.824961
+        },
+        "Random": {
+          "activemq": 0.495313,
+          "hadoop": 0.501151,
+          "hbase": 0.496357,
+          "hive": 0.502405,
+          "jackrabbit-oak": 0.496492,
+          "james": 0.499299,
+          "kafka": 0.499018,
+          "karaf": 0.50053,
+          "log4j": 0.496783,
+          "tvm": 0.500505
+        },
+        "cbt_LastFail_Asc": {
+          "activemq": 0.818145,
+          "hadoop": 0.819794,
+          "hbase": 0.781047,
+          "hive": 0.771146,
+          "jackrabbit-oak": 0.889745,
+          "james": 0.811836,
+          "kafka": 0.868726,
+          "karaf": 0.768117,
+          "log4j": 0.921573,
+          "tvm": 0.882696
+        }
+      },
+      "FirstFail": {
+        "FailCount_Desc": {
+          "activemq": 0.449809,
+          "hadoop": 0.29829,
+          "hbase": 0.463417,
+          "hive": 0.119665,
+          "jackrabbit-oak": 0.302969,
+          "james": 0.246381,
+          "kafka": 0.148912,
+          "karaf": 0.313087,
+          "log4j": 0.420488,
+          "tvm": 0.346182
+        },
+        "LastFail_Asc": {
+          "activemq": 0.597416,
+          "hadoop": 0.433463,
+          "hbase": 0.613956,
+          "hive": 0.28769,
+          "jackrabbit-oak": 0.441524,
+          "james": 0.447549,
+          "kafka": 0.332327,
+          "karaf": 0.38214,
+          "log4j": 0.569738,
+          "tvm": 0.538252
+        },
+        "QTF": {
+          "activemq": 0.751099,
+          "hadoop": 0.741823,
+          "hbase": 0.731162,
+          "hive": 0.86111,
+          "jackrabbit-oak": 0.806969,
+          "james": 0.77537,
+          "kafka": 0.93334,
+          "karaf": 0.708969,
+          "log4j": 0.823693,
+          "tvm": 0.88751
+        },
+        "Random": {
+          "activemq": 0.49097,
+          "hadoop": 0.501023,
+          "hbase": 0.491309,
+          "hive": 0.498227,
+          "jackrabbit-oak": 0.493973,
+          "james": 0.493664,
+          "kafka": 0.49727,
+          "karaf": 0.520906,
+          "log4j": 0.50671,
+          "tvm": 0.502811
+        },
+        "cbt_LastFail_Asc": {
+          "activemq": 0.769358,
+          "hadoop": 0.711884,
+          "hbase": 0.747362,
+          "hive": 0.737992,
+          "jackrabbit-oak": 0.76587,
+          "james": 0.718986,
+          "kafka": 0.87051,
+          "karaf": 0.645406,
+          "log4j": 0.816079,
+          "tvm": 0.890356
+        }
+      }
+    },
+    "start_order": {
+      "All": {
+        "FailCount_Desc": {
+          "activemq": 0.778535,
+          "hadoop": 0.742203,
+          "hbase": 0.688802,
+          "hive": 0.638425,
+          "jackrabbit-oak": 0.784253,
+          "james": 0.698539,
+          "kafka": 0.761179,
+          "karaf": 0.671358,
+          "log4j": 0.840225,
+          "tvm": 0.597614
+        },
+        "LastFail_Asc": {
+          "activemq": 0.815654,
+          "hadoop": 0.784751,
+          "hbase": 0.79617,
+          "hive": 0.730008,
+          "jackrabbit-oak": 0.851217,
+          "james": 0.785103,
+          "kafka": 0.834432,
+          "karaf": 0.729751,
+          "log4j": 0.856013,
+          "tvm": 0.759337
+        },
+        "QTF": {
+          "activemq": 0.644005,
+          "hadoop": 0.613728,
+          "hbase": 0.601343,
+          "hive": 0.58878,
+          "jackrabbit-oak": 0.723301,
+          "james": 0.649648,
+          "kafka": 0.622921,
+          "karaf": 0.649563,
+          "log4j": 0.849711,
+          "tvm": 0.821216
+        },
+        "Random": {
+          "activemq": 0.499563,
+          "hadoop": 0.510414,
+          "hbase": 0.500578,
+          "hive": 0.50474,
+          "jackrabbit-oak": 0.496061,
+          "james": 0.500829,
+          "kafka": 0.499846,
+          "karaf": 0.498512,
+          "log4j": 0.503031,
+          "tvm": 0.500347
+        },
+        "cbt_LastFail_Asc": {
+          "activemq": 0.822334,
+          "hadoop": 0.829204,
+          "hbase": 0.784673,
+          "hive": 0.771498,
+          "jackrabbit-oak": 0.892109,
+          "james": 0.811014,
+          "kafka": 0.870086,
+          "karaf": 0.769978,
+          "log4j": 0.921165,
+          "tvm": 0.887267
+        }
+      },
+      "FirstFail": {
+        "FailCount_Desc": {
+          "activemq": 0.435888,
+          "hadoop": 0.297796,
+          "hbase": 0.454814,
+          "hive": 0.117812,
+          "jackrabbit-oak": 0.295892,
+          "james": 0.247752,
+          "kafka": 0.14599,
+          "karaf": 0.298002,
+          "log4j": 0.459093,
+          "tvm": 0.352192
+        },
+        "LastFail_Asc": {
+          "activemq": 0.572022,
+          "hadoop": 0.434604,
+          "hbase": 0.611186,
+          "hive": 0.288297,
+          "jackrabbit-oak": 0.440678,
+          "james": 0.44552,
+          "kafka": 0.331645,
+          "karaf": 0.379365,
+          "log4j": 0.582751,
+          "tvm": 0.538489
+        },
+        "QTF": {
+          "activemq": 0.747217,
+          "hadoop": 0.74539,
+          "hbase": 0.735005,
+          "hive": 0.858265,
+          "jackrabbit-oak": 0.801647,
+          "james": 0.771102,
+          "kafka": 0.933069,
+          "karaf": 0.681858,
+          "log4j": 0.824871,
+          "tvm": 0.886195
+        },
+        "Random": {
+          "activemq": 0.477508,
+          "hadoop": 0.505675,
+          "hbase": 0.50773,
+          "hive": 0.499451,
+          "jackrabbit-oak": 0.495425,
+          "james": 0.50369,
+          "kafka": 0.498394,
+          "karaf": 0.519486,
+          "log4j": 0.469471,
+          "tvm": 0.498756
+        },
+        "cbt_LastFail_Asc": {
+          "activemq": 0.75921,
+          "hadoop": 0.713956,
+          "hbase": 0.750809,
+          "hive": 0.723598,
+          "jackrabbit-oak": 0.767878,
+          "james": 0.713985,
+          "kafka": 0.86977,
+          "karaf": 0.606189,
+          "log4j": 0.817469,
+          "tvm": 0.889336
+        }
+      }
+    }
+  },
+  "macro": {
+    "as_of": {
+      "All": {
+        "FailCount_Desc": 0.714159,
+        "LastFail_Asc": 0.788681,
+        "QTF": 0.675283,
+        "Random": 0.498785,
+        "cbt_LastFail_Asc": 0.833282
+      },
+      "FirstFail": {
+        "FailCount_Desc": 0.31092,
+        "LastFail_Asc": 0.464406,
+        "QTF": 0.802105,
+        "Random": 0.499686,
+        "cbt_LastFail_Asc": 0.76738
+      }
+    },
+    "start_order": {
+      "All": {
+        "FailCount_Desc": 0.720113,
+        "LastFail_Asc": 0.794243,
+        "QTF": 0.676422,
+        "Random": 0.501392,
+        "cbt_LastFail_Asc": 0.835933
+      },
+      "FirstFail": {
+        "FailCount_Desc": 0.310523,
+        "LastFail_Asc": 0.462456,
+        "QTF": 0.798462,
+        "Random": 0.497559,
+        "cbt_LastFail_Asc": 0.76122
+      }
+    }
+  },
+  "paper_macro": {
+    "All": {
+      "FailCount_Desc": 0.720229,
+      "LastFail_Asc": 0.795112,
+      "QTF": 0.676549,
+      "Random": 0.502091,
+      "cbt_LastFail_Asc": 0.836057
+    },
+    "FirstFail": {
+      "FailCount_Desc": 0.311812,
+      "LastFail_Asc": 0.467304,
+      "QTF": 0.798078,
+      "Random": 0.504295,
+      "cbt_LastFail_Asc": 0.762305
+    }
+  },
+  "n_runs": {
+    "as_of": {
+      "All": {
+        "FailCount_Desc": 30074,
+        "LastFail_Asc": 30074,
+        "QTF": 30074,
+        "Random": 30074,
+        "cbt_LastFail_Asc": 30074
+      },
+      "FirstFail": {
+        "FailCount_Desc": 2264,
+        "LastFail_Asc": 2264,
+        "QTF": 2264,
+        "Random": 2264,
+        "cbt_LastFail_Asc": 2264
+      }
+    },
+    "start_order": {
+      "All": {
+        "FailCount_Desc": 30074,
+        "LastFail_Asc": 30074,
+        "QTF": 30074,
+        "Random": 30074,
+        "cbt_LastFail_Asc": 30074
+      },
+      "FirstFail": {
+        "FailCount_Desc": 2264,
+        "LastFail_Asc": 2264,
+        "QTF": 2264,
+        "Random": 2264,
+        "cbt_LastFail_Asc": 2264
+      }
+    }
+  },
+  "paper_n_runs": {
+    "All": {
+      "FailCount_Desc": 30074,
+      "LastFail_Asc": 30074,
+      "QTF": 30074,
+      "Random": 30074,
+      "cbt_LastFail_Asc": 30074
+    },
+    "FirstFail": {
+      "FailCount_Desc": 2264,
+      "LastFail_Asc": 2264,
+      "QTF": 2264,
+      "Random": 2264,
+      "cbt_LastFail_Asc": 2264
+    }
+  },
+  "gate": {
+    "All|QTF": {
+      "target": 0.677,
+      "ours": 0.676422,
+      "diff": -0.000578,
+      "pass": true,
+      "as_of": 0.675283
+    },
+    "All|LastFail_Asc": {
+      "target": 0.795,
+      "ours": 0.794243,
+      "diff": -0.000757,
+      "pass": true,
+      "as_of": 0.788681
+    },
+    "All|FailCount_Desc": {
+      "target": 0.72,
+      "ours": 0.720113,
+      "diff": 0.000113,
+      "pass": true,
+      "as_of": 0.714159
+    },
+    "All|cbt_LastFail_Asc": {
+      "target": 0.836,
+      "ours": 0.835933,
+      "diff": -6.7e-05,
+      "pass": true,
+      "as_of": 0.833282
+    },
+    "FirstFail|QTF": {
+      "target": 0.798,
+      "ours": 0.798462,
+      "diff": 0.000462,
+      "pass": true,
+      "as_of": 0.802105
+    },
+    "FirstFail|LastFail_Asc": {
+      "target": 0.467,
+      "ours": 0.462456,
+      "diff": -0.004544,
+      "pass": true,
+      "as_of": 0.464406
+    },
+    "FirstFail|FailCount_Desc": {
+      "target": 0.312,
+      "ours": 0.310523,
+      "diff": -0.001477,
+      "pass": true,
+      "as_of": 0.31092
+    },
+    "FirstFail|cbt_LastFail_Asc": {
+      "target": 0.762,
+      "ours": 0.76122,
+      "diff": -0.00078,
+      "pass": true,
+      "as_of": 0.76738
+    }
+  },
+  "paper_per_project": {
+    "All": {
+      "FailCount_Desc": {
+        "activemq": 0.782634,
+        "hadoop": 0.742453,
+        "hbase": 0.691142,
+        "hive": 0.638695,
+        "jackrabbit-oak": 0.783928,
+        "james": 0.698885,
+        "kafka": 0.761336,
+        "karaf": 0.672632,
+        "log4j": 0.834186,
+        "tvm": 0.596396
+      },
+      "LastFail_Asc": {
+        "activemq": 0.82222,
+        "hadoop": 0.784964,
+        "hbase": 0.800179,
+        "hive": 0.730528,
+        "jackrabbit-oak": 0.85099,
+        "james": 0.785482,
+        "kafka": 0.834507,
+        "karaf": 0.728997,
+        "log4j": 0.85272,
+        "tvm": 0.760532
+      },
+      "QTF": {
+        "activemq": 0.644341,
+        "hadoop": 0.613749,
+        "hbase": 0.601215,
+        "hive": 0.588789,
+        "jackrabbit-oak": 0.723335,
+        "james": 0.649961,
+        "kafka": 0.623033,
+        "karaf": 0.649325,
+        "log4j": 0.850501,
+        "tvm": 0.82124
+      },
+      "Random": {
+        "activemq": 0.501852,
+        "hadoop": 0.50541,
+        "hbase": 0.496623,
+        "hive": 0.499682,
+        "jackrabbit-oak": 0.500344,
+        "james": 0.500383,
+        "kafka": 0.499069,
+        "karaf": 0.511177,
+        "log4j": 0.505102,
+        "tvm": 0.501267
+      },
+      "cbt_LastFail_Asc": {
+        "activemq": 0.823202,
+        "hadoop": 0.829328,
+        "hbase": 0.783776,
+        "hive": 0.771433,
+        "jackrabbit-oak": 0.892036,
+        "james": 0.811162,
+        "kafka": 0.870126,
+        "karaf": 0.770074,
+        "log4j": 0.922193,
+        "tvm": 0.887237
+      }
+    },
+    "FirstFail": {
+      "FailCount_Desc": {
+        "activemq": 0.447393,
+        "hadoop": 0.299215,
+        "hbase": 0.45954,
+        "hive": 0.120361,
+        "jackrabbit-oak": 0.296979,
+        "james": 0.249068,
+        "kafka": 0.147715,
+        "karaf": 0.30435,
+        "log4j": 0.445427,
+        "tvm": 0.348071
+      },
+      "LastFail_Asc": {
+        "activemq": 0.588821,
+        "hadoop": 0.433275,
+        "hbase": 0.625064,
+        "hive": 0.290201,
+        "jackrabbit-oak": 0.437734,
+        "james": 0.447422,
+        "kafka": 0.332082,
+        "karaf": 0.379764,
+        "log4j": 0.59932,
+        "tvm": 0.539353
+      },
+      "QTF": {
+        "activemq": 0.747967,
+        "hadoop": 0.744649,
+        "hbase": 0.735058,
+        "hive": 0.855998,
+        "jackrabbit-oak": 0.801156,
+        "james": 0.771432,
+        "kafka": 0.933281,
+        "karaf": 0.679411,
+        "log4j": 0.825233,
+        "tvm": 0.886594
+      },
+      "Random": {
+        "activemq": 0.515472,
+        "hadoop": 0.50874,
+        "hbase": 0.498416,
+        "hive": 0.50371,
+        "jackrabbit-oak": 0.490771,
+        "james": 0.506094,
+        "kafka": 0.501022,
+        "karaf": 0.524142,
+        "log4j": 0.494687,
+        "tvm": 0.499898
+      },
+      "cbt_LastFail_Asc": {
+        "activemq": 0.761363,
+        "hadoop": 0.714555,
+        "hbase": 0.751007,
+        "hive": 0.729149,
+        "jackrabbit-oak": 0.768424,
+        "james": 0.714379,
+        "kafka": 0.87046,
+        "karaf": 0.606417,
+        "log4j": 0.817787,
+        "tvm": 0.88951
+      }
+    }
+  },
+  "gate_pass": true,
+  "tvm_quirk": {
+    "no_removal_projects": [
+      "tvm"
+    ],
+    "firstfail_macro_with_removal_everywhere": {
+      "as_of|FailCount_Desc": 0.326302,
+      "as_of|LastFail_Asc": 0.470576,
+      "as_of|QTF": 0.773349,
+      "as_of|Random": 0.497406,
+      "as_of|cbt_LastFail_Asc": 0.73834,
+      "start_order|FailCount_Desc": 0.325304,
+      "start_order|LastFail_Asc": 0.468602,
+      "start_order|QTF": 0.769838,
+      "start_order|Random": 0.495684,
+      "start_order|cbt_LastFail_Asc": 0.732282
+    },
+    "tvm_firstfail_runs_with_removal": 5
+  },
+  "_meta": {
+    "generated": "2026-10-20 19:26:45",
+    "git_sha": "dafffd6"
+  }
+}

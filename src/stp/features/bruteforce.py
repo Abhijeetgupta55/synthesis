@@ -103,10 +103,20 @@ class ProjectContext:
         all_tests = rows.testclass.tolist()
         tests = test_sample if test_sample is not None else all_tests
         t, stage = float(run.start_ts), run.stage_id
-        # history for every test of the run (the cost fallback is a median over all of them)
+        # History for the requested tests. The cost fallback (median EMA over all seen tests of the run) is only used
+        # by tests with no finished history; if the sample contains one, history is computed for every test.
         hist = {tc: history_features([], t, stage, self.hp) for tc in all_tests}
-        for tc, evs in self.iter_events(all_tests):
+        for tc, evs in self.iter_events(tests):
             hist[tc] = history_features(evs, t, stage, self.hp)
+        if test_sample is not None and any(hist[tc]["_dur_src"] == 0 for tc in tests):
+            rest = [tc for tc in all_tests if tc not in set(tests)]
+            for tc, evs in self.iter_events(rest):
+                hist[tc] = history_features(evs, t, stage, self.hp)
+        elif test_sample is not None:
+            # fallback unused by the sampled tests: give the others a dummy seen source so the median is not consulted
+            for tc in all_tests:
+                if tc not in set(tests):
+                    hist[tc] = {**hist[tc], "_dur_src": 1, "_dur_last": 1.0, "_dur_ema": 1.0}
         cost = dict(zip(all_tests, cost_features([hist[tc] for tc in all_tests])))
         change = raw_change(self.project, run.pr_name, run.build_id, run.trunk_sha, run.build_head_sha)
         size = change_size_features(change, self.stop)
