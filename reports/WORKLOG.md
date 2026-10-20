@@ -180,3 +180,15 @@ made on validation in Phase 3.
   AP is recomputed every round (60 trials ≈ 20 h). Tuning now uses 500k training rows and a fixed 300k-row whole-run
   subsample of valA, at most 1,000 rounds, patience 50, learning rate ≥ 0.02. The refit still uses all training rows
   with early stopping on the full valA.
+
+## 2026-10-20 · Phase 5 (started early): NetworkX
+
+- Pinned at `abf2feda2252` (2026-10-17). Separate venv (Python 3.12; NetworkX needs ≥ 3.12). 10,120 tests collected.
+  Collection alone took 289 s under memory pressure.
+- `coverage-map`: 262 source files, 259 of 267 test files, 28,014 covered lines. The suite under coverage with
+  per-test contexts took 8,154 s while competing with model training.
+- **Candidate filter fix.** The first filter accepted any `#123`. Every squash-merged NetworkX subject ends with its
+  PR number, so that admitted 293 commits since 2024, including features and refactors ("Enable backend-only
+  functions…"). The strict filter keeps fix/bug/regression/issue keywords or `closes/fixes/resolves #N`, and finds
+  **87** candidates since 2024. This matches fact 6 of the prompt ("about 87 commits"). Learn was restarted. Rows
+  produced under the old filter are ignored when bugs are loaded.

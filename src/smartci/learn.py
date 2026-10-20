@@ -28,7 +28,10 @@ from pathlib import Path
 from smartci import history, runner
 from smartci.gitdiff import git
 
-FIX_RE = re.compile(r"\b(fix(es|ed)?|bug(s)?|regression|issue|closes)\b|#\d+", re.I)
+# Fix keywords or an explicit issue-closing reference. A bare "(#1234)" is NOT enough: squash-merged PRs end every
+# subject with their PR number, which would admit features and refactors (NetworkX since 2024: 293 vs 87 candidates).
+FIX_RE = re.compile(r"\b(fix(es|ed|ing)?|bug(s|fix|fixes)?|regression|issue)\b|\b(closes|fixes|resolves)\s+#\d+|\bgh-\d+",
+                    re.I)
 
 
 def is_test_file(path: str) -> bool:
@@ -173,8 +176,8 @@ def load_bugs(repo: Path) -> list[dict]:
     f = history.state_dir(repo) / "bugs.jsonl"
     if not f.exists():
         return []
-    return sorted((json.loads(x) for x in f.read_text(encoding="utf-8").splitlines() if x.strip()),
-                  key=lambda b: b["date"])
+    bugs = (json.loads(x) for x in f.read_text(encoding="utf-8").splitlines() if x.strip())
+    return sorted((b for b in bugs if FIX_RE.search(b["subject"])), key=lambda b: b["date"])
 
 
 def summary(repo: Path, n_candidates: int | None = None) -> dict:
