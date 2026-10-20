@@ -10,3 +10,13 @@ Each item has exact steps. Remove an item once it is done.
    (Jobs are resumable per project, so an interruption costs only the unfinished project.)
 2. **Free RAM if possible.** Only about 2 GB of 16 GB is free. Closing browsers and IDE windows during the feature
    build and model training makes them faster. Nothing breaks if you don't.
+3. **Publish the repository (needed by the GitHub Action and the public CI proof).**
+   ```bash
+   # create an empty repo on GitHub first, e.g. <you>/smart-ci-tcp, then:
+   git remote add origin https://github.com/<you>/smart-ci-tcp.git
+   git push -u origin master
+   ```
+   Then replace the placeholder `OWNER` with your GitHub user name in `action.yml`,
+   `.github/workflows/smartci-compare.yml` and `.github/workflows/smartci-shadow.yml`, and commit.
+   Check course policy first: the LRTS data itself is *not* in the repo (it is git-ignored); only code,
+   generated results JSON and reports are.

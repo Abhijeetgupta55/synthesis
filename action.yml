@@ -1,0 +1,47 @@
+name: smartci
+description: >
+  Run the pytest test files most likely to fail for this change first (nothing is skipped), or record smartci's
+  ranking in shadow mode without changing the order. Persists the repo's smartci history with actions/cache.
+inputs:
+  mode:
+    description: "'prioritise' (pytest --smartci) or 'shadow' (pytest --smartci-shadow: rank, keep the order)"
+    default: prioritise
+  base:
+    description: git ref to diff against (default origin/<default branch>)
+    default: ""
+  pytest-args:
+    description: extra arguments for pytest
+    default: ""
+  smartci-spec:
+    description: pip requirement for smartci (a path, a git URL or a version)
+    default: "smartci @ git+https://github.com/OWNER/smart-ci-tcp.git"
+runs:
+  using: composite
+  steps:
+    - name: Restore smartci history
+      uses: actions/cache@v4
+      with:
+        path: .smartci
+        key: smartci-${{ runner.os }}-${{ github.ref_name }}-${{ github.run_id }}
+        restore-keys: |
+          smartci-${{ runner.os }}-${{ github.ref_name }}-
+          smartci-${{ runner.os }}-
+    - name: Install smartci
+      shell: bash
+      run: python -m pip install "${{ inputs.smartci-spec }}"
+    - name: Run pytest with smartci
+      shell: bash
+      run: |
+        set +e
+        BASE="${{ inputs.base }}"
+        if [ -z "$BASE" ]; then BASE="origin/${{ github.event.repository.default_branch }}"; fi
+        git fetch --no-tags --depth=200 origin "${{ github.event.repository.default_branch }}" || true
+        FLAG="--smartci"; [ "${{ inputs.mode }}" = "shadow" ] && FLAG="--smartci-shadow"
+        START=$(date +%s.%N)
+        echo "smartci: start $(date -u +%H:%M:%S.%N)"
+        python -m pytest $FLAG --smartci-base "$BASE" -o junit_family=xunit1 --junitxml=smartci-junit.xml ${{ inputs.pytest-args }}
+        CODE=$?
+        END=$(date +%s.%N)
+        echo "smartci: end $(date -u +%H:%M:%S.%N)"
+        smartci record --junit smartci-junit.xml --start "$START" --end "$END" --commit "$GITHUB_SHA" --base "$BASE" || true
+        exit $CODE

@@ -1,0 +1,22 @@
+# Example: shadow mode. CI keeps its normal order; smartci only records what it *would* have run first, plus the
+# real outcomes. After some failing runs, `smartci report` says how much earlier (or later) the first failure
+# would have surfaced, against the current order and the simple baselines.
+# Copy into the repo under test. Not run on this research repository itself.
+name: smartci-shadow
+on: [push, pull_request]
+jobs:
+  test:
+    if: github.repository != 'OWNER/smart-ci-tcp'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - run: python -m pip install -e ".[test]" || python -m pip install -e . pytest
+      - uses: OWNER/smart-ci-tcp@main
+        with:
+          mode: shadow
+      - name: smartci report
+        if: always()
+        run: smartci report || true

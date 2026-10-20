@@ -52,4 +52,11 @@ def export(main_variant: str, coldstart_variant: str = "var_coldstart") -> dict:
                           "date_ranges": splits["date_range"]},
     }
     (OUT / "schema.json").write_text(json.dumps(schema, indent=2), encoding="utf-8")
+    # the installable tool ships its own copy (package data), so `pip install smartci` needs no research files
+    pkg = paths.ROOT / "src" / "smartci" / "model"
+    pkg.mkdir(parents=True, exist_ok=True)
+    import shutil
+    for f in ("model.txt", "model_coldstart.txt", "calibration.json", "schema.json", "MODEL_CARD.md"):
+        if (OUT / f).exists():
+            shutil.copyfile(OUT / f, pkg / f)
     return schema
