@@ -51,16 +51,20 @@ class Sim:
             self.nodes.setdefault(n.split("::", 1)[0], []).append(n)
         self.nd = p["nodeid_durations"]
         self.flaky_nodes = set(p.get("flaky_nodeids", []))
+        self.ovh = float(p.get("per_test_overhead_s", 0.0))       # measured by `smartci profile`
+        self.file_cost = {f: self.dur[f] + self.ovh * len(self.nodes.get(f, [])) for f in self.files}
 
     def ttff(self, order: list[str], failing: set[str]) -> float:
+        """Seconds from the first test's start until the first failing test finishes: profiled test durations plus
+        the measured per-test framework overhead for every test that runs."""
         t = 0.0
         for f in order:
             fails_here = [n for n in self.nodes.get(f, []) if n in failing]
             if not fails_here:
-                t += self.dur[f]
+                t += self.file_cost[f]
                 continue
             for n in self.nodes[f]:
-                t += self.nd.get(n, 0.0)
+                t += self.nd.get(n, 0.0) + self.ovh
                 if n in failing:
                     return t
         return float("nan")
@@ -108,7 +112,7 @@ def run(repo: Path, which: str = "both") -> dict:
     stop = frozenset({repo.name.lower().replace("-", "")})
     url = github_url(repo)
     adapter = (history.state_dir(repo) / "adapter.json").exists()
-    items, skipped_pre = [], []
+    items, skipped_pre, rebased = [], [], {}
     if which in ("mined", "both"):
         # mined bugs are evaluated on today's code (the profiled base) once `learn.rebase` has run: the failing
         # tests are those that fail on base + the bug's diff; bugs that no longer apply / fail are skipped (listed).
@@ -118,6 +122,7 @@ def run(repo: Path, which: str = "both") -> dict:
             if b.get("base_status", "ok") != "ok":
                 skipped_pre.append({"id": b["fix_sha"], "kind": "mined", "reason": f"rebase: {b['base_status']}"})
         usable = [b for b in bugs if b.get("base_status", "ok") == "ok"]
+        rebased = {b["fix_sha"]: b.get("base_status") == "ok" for b in bugs}
         held = learn.split_adapt_eval(usable)[1] if adapter else usable
         for b in held:
             fails = b.get("failing_nodeids_base") or b["failing_nodeids"]
@@ -137,7 +142,9 @@ def run(repo: Path, which: str = "both") -> dict:
                             f"failing file not in profile: {missing[:3]}"})
             continue
         change, patches = bug_change(diff, stop)
-        t = date if date is not None else _t.time()
+        # bugs are evaluated on today's code (rebased mined bugs, mutants), so features are as of now, exactly
+        # what the plugin sees in a real `smartci compare`; unrebased mined bugs keep their fix date
+        t = _t.time() if (date is None or kind == "mutant" or rebased.get(bid)) else date
         ords = orderings(repo, sim, change, patches, t, model, cmap, hist)
         r = {"kind": kind, "id": bid, "url": link, "title": title, "n_failing_tests": len(failing),
              "failing_files": sorted(failing_files), "failing_nodeids": sorted(failing), "ttff_s": {}, "apfdc": {}}
@@ -146,7 +153,7 @@ def run(repo: Path, which: str = "both") -> dict:
             r["ttff_s"][name] = sim.ttff(o, failing)
             r["apfdc"][name] = sim.apfdc(o, failing_files)
             k = min(o.index(f) for f in failing_files) + 1     # files run until the first failing one (for the demo)
-            r["prefix"][name] = [[f, round(sim.dur[f], 4)] for f in o[:k]]
+            r["prefix"][name] = [[f, round(sim.file_cost[f], 4)] for f in o[:k]]
         rng = np.random.default_rng(0)
         tt, aa = [], []
         for _ in range(RANDOM_SEEDS):
@@ -157,7 +164,8 @@ def run(repo: Path, which: str = "both") -> dict:
         r["smartci_rank_of_first_failing_file"] = min(ords["smartci"].index(f) for f in failing_files) + 1
         rows.append(r)
     res = {"repo": str(repo), "profile_base_sha": p["base_sha"], "suite_test_time_s": p["suite_test_time_s"],
-           "n_test_files": len(sim.files), "set": which, "adapter_used": adapter, "bugs": rows, "skipped": skipped,
+           "n_test_files": len(sim.files), "set": which, "adapter_used": adapter,
+           "per_test_overhead_s": sim.ovh, "bugs": rows, "skipped": skipped,
            "summary": summarise(rows)}
     d = history.state_dir(repo)
     (d / "backtest.json").write_text(json.dumps(res, indent=1, default=float), encoding="utf-8")

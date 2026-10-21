@@ -63,7 +63,15 @@ def pytest_collection_modifyitems(session, config, items):
     try:
         diff = gitdiff.compute(root, config.getoption("smartci_base"))
         model = GlobalModel()
-        scored = score(root, files, diff.change, t=t0, model=model)
+        covering = None
+        from smartci import coverage_map
+        from smartci.scoring import load_adapter
+        ad = load_adapter(root)
+        if ad and ad.get("uses_coverage"):
+            cmap = coverage_map.load(root)
+            if cmap is not None:
+                covering = coverage_map.covering_tests(cmap, diff.patch_by_file)
+        scored = score(root, files, diff.change, t=t0, model=model, covering=covering)
     except Exception as e:  # noqa: BLE001  (never break a test run: fall back to pytest's order)
         tw = config.pluginmanager.get_plugin("terminalreporter")
         if tw:

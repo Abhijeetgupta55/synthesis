@@ -347,3 +347,17 @@ test files for file-level ordering. Strict-filter fix candidates since 2023 (sha
   31/244/25. All (318): vs coverage-first 36/250/32, vs default 315/0/3.
   **Finding:** smartci is about 100× faster to the first failure than pytest's default order on real NetworkX bugs,
   and on par with, but not better than, the simple coverage-first / changed-files-first rules.
+- **GATE 5 second attempt: real ≠ simulated, simulation fixed** (the prompt requires fixing before reporting).
+  For bug d8081795 both orders failed on the same test as simulated, but the times differed: default 78.4 s real vs
+  43.3 s simulated; smartci 23.6 s vs 0.27 s. Causes:
+  1. *Per-test framework overhead is missing from the simulation.* JUnit durations exclude pytest's own work
+     between tests (hooks, reporting). That is ~10 ms × ~3,000 tests ≈ 35 s here. `profile` now measures the
+     test-phase wall time with `--smartci-timing`, derives `per_test_overhead_s` = (wall − Σ durations) / n_tests,
+     and the simulator adds it once per executed test.
+  2. *The plugin did not pass the coverage signal* to the adapter, while the backtest did, so the real smartci order
+     differed from the simulated one. The plugin now computes `covering` from the coverage map when the adapter
+     uses it.
+  3. *As-of time.* The backtest scored rebased mined bugs as of their 2024 fix date (no history), whereas the plugin
+     scores as of now (profile runs are history). Since rebased bugs and mutants run on today's code, the backtest
+     now scores them as of now.
+  NetworkX re-profiled, adapter refit, backtest and GATE 5 re-run.
