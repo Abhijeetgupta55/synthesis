@@ -339,3 +339,11 @@ test files for file-level ordering. Strict-filter fix candidates since 2023 (sha
   listed. The backtest, the adapter split and `compare` all use the same rebased state. Receipts and timing files
   older than the current compare run are ignored. `smartci learn` now runs `rebase` automatically after mining when
   a profile exists.
+- **NetworkX rebase** onto base `abf2feda2252`: 68 mined bugs → 46 ok, 21 no_apply (the code has moved since the fix),
+  1 no_failure. Adapter refit on the 28 older usable bugs (intercept 4.24, logit 1.84, coverage 3.47); 18 evaluated.
+- **Backtest (rebased)**: mined (18) smartci median 0.55 s (APFDc 0.956) vs default 77.4 s, coverage-first 0.27 s
+  (0.916), changed-files-first 0.75 s (0.985). W/T/L vs coverage-first 5/6/7, vs changed-files-first 1/6/11.
+  Mutants (300): smartci 0.02 s (0.990), coverage-first 0.04 s (0.988), default 84.5 s; W/T/L vs coverage-first
+  31/244/25. All (318): vs coverage-first 36/250/32, vs default 315/0/3.
+  **Finding:** smartci is about 100× faster to the first failure than pytest's default order on real NetworkX bugs,
+  and on par with, but not better than, the simple coverage-first / changed-files-first rules.
