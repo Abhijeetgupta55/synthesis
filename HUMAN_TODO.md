@@ -5,6 +5,10 @@ Each item has exact steps. Remove an item once it is done.
 
 ## Open
 
+0. **Plug the laptop into mains power for timing runs** (GATE 5, `smartci profile`, `smartci compare`, live demos).
+   On battery Windows throttled the CPU to ~42% of nominal; NetworkX tests then ran ~2.3x slower than profiled and
+   GATE 5 (simulated vs real time) cannot be judged. Then tell Claude Code "power is connected" so it re-runs
+   `smartci profile` and `python live_demo/gate5.py --repo external/networkx --seed 5`.
 1. **Keep the machine awake during long jobs.** The Phase 1 feature-store build and Phase 3 tuning run for hours.
    On Windows: Settings → System → Power → "When plugged in, put my device to sleep after" → **Never**, while jobs run.
    (Jobs are resumable per project, so an interruption costs only the unfinished project.)

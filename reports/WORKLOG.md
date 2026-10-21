@@ -361,3 +361,11 @@ test files for file-level ordering. Strict-filter fix candidates since 2023 (sha
      scores as of now (profile runs are history). Since rebased bugs and mutants run on today's code, the backtest
      now scores them as of now.
   NetworkX re-profiled, adapter refit, backtest and GATE 5 re-run.
+- **GATE 5 third attempt, a new finding: the machine was on battery.** In bug 56c7b0d0's default lane, real per-file
+  durations were uniformly ~2.35× the profiled ones (traveling salesman 10.4 → 25.8 s, Gomory–Hu 8.5 → 20.9 s), in
+  tests unrelated to the bug. So this is machine speed, not the bug. Windows reported battery discharging (77%) and
+  processor performance at 42% of nominal. The two profile runs also differed by 1.5× (246 s vs 374 s test phase).
+  The smartci lane matched well where the prefix is short (d3e01821: real 129.2 s vs simulated 126.7 s).
+  Decision: GATE 5 is judged only on mains power with a profile measured under the same conditions (HUMAN_TODO 0).
+  `gate5.py` also reports a speed-normalised check (simulation × per-run speed factor measured from the files run
+  before the failure) as a diagnostic.

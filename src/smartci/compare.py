@@ -133,6 +133,7 @@ def _summ(stdout: str, rc: int, elapsed: float, repo: Path, wt: Path, started: f
     lines = FAILED_RE.search(stdout)
     return {"returncode": rc, "elapsed_s": elapsed, "failed_line": lines.group(0) if lines else None,
             "first_failure_after_s": ff.get("elapsed_s"), "first_failure_nodeid": ff.get("nodeid"),
+            "file_durations_s": {k: v.get("duration_s") for k, v in (rec.get("results") or {}).items()},
             "receipt": str(rec_path) if rec_path else None, "stdout_tail": "\n".join(stdout.splitlines()[-25:]),
             "n_failed_lines": len(m)}
 

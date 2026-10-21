@@ -227,8 +227,10 @@ def fit_adapter(repo: Path, min_adapt: int = 20) -> dict:
     X, y = [], []
     for b in adapt:
         ch, patches = bug_change(b["source_diff"], stop)
-        rows = feature_rows(repo, sim.files, ch, float(b["date"]), stop, hist)
-        which = "model" if hist.n_finished(float(b["date"])) >= 5 else "model_coldstart"
+        # rebased bugs run on today's code, so their features are as of now (what the plugin sees when it scores)
+        t_b = time.time() if b.get("base_status") == "ok" else float(b["date"])
+        rows = feature_rows(repo, sim.files, ch, t_b, stop, hist)
+        which = "model" if hist.n_finished(t_b) >= 5 else "model_coldstart"
         p = model.calibrate(model.raw(rows, which), which)
         z = np.log(np.clip(p, 1e-7, 1 - 1e-7) / (1 - np.clip(p, 1e-7, 1 - 1e-7)))
         cov = coverage_map.covering_tests(cmap, patches) if cmap else {}
