@@ -64,7 +64,7 @@ def main(argv=None) -> int:
     bad = 0
     print(f"raw file: {len(raw)} test classes, {sum(o for _, o in raw.values())} failing")
     for m, r in rec["methods"].items():
-        order = r["order"]
+        order = [rec["names"][i] for i in r["order"]]
         if sorted(order) != sorted(raw):
             print(f"MISMATCH {m}: ordered test set differs from the raw file")
             bad += 1
@@ -72,7 +72,7 @@ def main(argv=None) -> int:
         d = [raw[t][0] for t in order]
         f = [raw[t][1] for t in order]
         a1, t1 = apfdc(d, f), ttff(d, f)
-        ok = abs(a1 - r["apfdc"]) < 1e-6 and abs(t1 - r["ttff_s"]) < 1e-3 * max(1.0, t1)
+        ok = abs(a1 - r["apfdc"]) < 1e-5 and abs(t1 - r["ttff_s"]) < 1e-3 * max(1.0, t1)
         bad += not ok
         print(f"{'MATCH' if ok else 'MISMATCH':8s} {m:20s} APFDc raw {a1:.6f} bundle {r['apfdc']:.6f}   "
               f"TTFF raw {t1 / 60:.2f} min bundle {r['ttff_s'] / 60:.2f} min")

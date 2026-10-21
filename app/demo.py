@@ -63,6 +63,15 @@ def race(lanes: dict[str, list[tuple[str, float, bool]]], title: str, unit: str 
     plt.close(fig)
 
 
+def decode(rec: dict) -> dict:
+    """Bundle runs store names once and orders as indices; expand to names / per-test dicts."""
+    names = rec["names"]
+    rec["tests"] = {n: {"duration_s": d, "fail": bool(f)} for n, d, f in zip(names, rec["duration_s"], rec["fail"])}
+    for r in rec["methods"].values():
+        r["order"] = [names[i] for i in r["order"]]
+    return rec
+
+
 # ------------------------------------------------------------------------------------------------- pages
 def page_repo():
     st.header("Try it on a real repo")
@@ -124,7 +133,7 @@ def page_lrts():
     proj = st.selectbox("Project", ["(any)"] + projects)
     pool = [x for x in idx if proj == "(any)" or x["project"] == proj]
     item = pool[rng.randrange(len(pool))]
-    rec = load_json(str(BUNDLE / item["file"]))
+    rec = decode(load_json(str(BUNDLE / item["file"])))
     st.subheader(f"{rec['project']} · {rec['pr_name']} · build {rec['build_id']} · stage {rec['stage_id']}")
     st.write(f"{rec['n_tests']} test classes, {rec['n_fail']} failing, summed test time "
              f"{rec['suite_s'] / 60:.0f} min, started {rec['start']} (held-out test split).")

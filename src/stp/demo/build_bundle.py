@@ -1,7 +1,8 @@
 """Build demo_bundle/ (< 100 MB): everything the Streamlit demo shows, precomputed *only* for the LRTS study.
 
-  demo_bundle/lrts/<project>/<pr>_<build>_<stage>.json   one held-out failed test-split run: per method the real
-        ordering (test class names), APFDc and time to first failure; per test duration and outcome; the model's top
+  demo_bundle/lrts/<project>/<pr>_<build>_<stage>.json   one held-out failed test-split run: test class names
+        once ("names"), their durations and outcomes, and per method the real ordering (indices into "names"),
+        APFDc and time to first failure; the model's top
         SHAP reasons for its first 10 tests; the Apache PR link. `python -m stp.demo.verify` recomputes these numbers
         from the raw LRTS csv.zip.
   demo_bundle/lrts/index.json                            list of bundled runs (seeded stratified sample)
@@ -78,7 +79,7 @@ def build_lrts(per_project: int, seed: int) -> list[dict]:
             for name in METHODS:
                 order = np.lexsort((r.random(len(dur)), prio[name]))
                 a, t = _metrics(order, dur, fail)
-                methods[name] = {"order": [names[i] for i in order], "apfdc": a, "ttff_s": t}
+                methods[name] = {"order": order.tolist(), "apfdc": a, "ttff_s": t}   # indices into "names"
             top = np.argsort(prio["smartci (LightGBM)"], kind="stable")[:10]
             from stp.models.prep import matrix
             contrib = booster.predict(matrix({c: d[c][top] for c in model.cols}, model.cols), pred_contrib=True,
@@ -92,7 +93,7 @@ def build_lrts(per_project: int, seed: int) -> list[dict]:
             rec = {"project": p, "pr_name": pr, "build_id": int(m.build_id), "stage_id": str(m.stage_id),
                    "start": pd.to_datetime(m.start_ts, unit="s").strftime("%Y-%m-%d %H:%M"),
                    "pr_url": f"https://github.com/{GITHUB[p]}/pull/{pr.split('-')[-1]}" if pr.startswith("PR-") else None,
-                   "tests": {n: {"duration_s": float(x), "fail": bool(y)} for n, x, y in zip(names, dur, fail)},
+                   "names": names, "duration_s": [round(float(x), 4) for x in dur], "fail": [int(y) for y in fail],
                    "n_tests": len(names), "n_fail": int(fail.sum()), "suite_s": float(dur.sum()),
                    "methods": methods, "smartci_reasons": reasons}
             fname = f"{pr}_{int(m.build_id)}_{m.stage_id}.json".replace("/", "_")
