@@ -55,6 +55,20 @@ def main() -> int:
             row[f"{lane}_sim_s"] = b["ttff_s"][key]
             row[f"{lane}_elapsed_s"] = run.get("elapsed_s")
             row[f"{lane}_failed_line"] = run.get("failed_line")
+            row[f"{lane}_first_nodeid"] = run.get("first_failure_nodeid")
+        # machine-speed factor of *this* compare run: real / profiled durations of the default lane's files that ran
+        # completely before the failure (tests unrelated to the bug). Diagnostic only: it separates simulation logic
+        # (order, first failure, accumulation) from ambient speed (battery throttling, thermal, other load).
+        real_fd = res.get("runs", {}).get("default", {}).get("file_durations_s") or {}
+        pre = [f for f, _ in b["prefix"]["default"][:-1]]
+        prof_sum = sum(prof["durations"].get(f, 0.0) for f in pre)
+        real_sum = sum(real_fd.get(f) or 0.0 for f in pre)
+        row["speed_factor"] = real_sum / prof_sum if prof_sum > 5 and real_fd else None
+        for lane in ("default", "smartci"):
+            if row["speed_factor"] and row[f"{lane}_real_s"] is not None:
+                scaled = row[f"{lane}_sim_s"] * row["speed_factor"]
+                row[f"{lane}_sim_scaled_s"] = scaled
+                row[f"{lane}_rel_err_scaled"] = (row[f"{lane}_real_s"] - scaled) / max(scaled, 1e-9)
         rows.append(row)
         print(f"  {b['kind']:6s} {b['id'][:30]:30s} default real {row['default_real_s']} sim {row['default_sim_s']:.2f} | "
               f"smartci real {row['smartci_real_s']} sim {row['smartci_sim_s']:.2f}", flush=True)
@@ -68,7 +82,13 @@ def main() -> int:
             ok = real is not None and abs(real - sim) <= 0.1 * sim + max(overhead, 0.0)
             r[f"{lane}_pass"] = bool(ok)
             ok_all &= ok
+    import statistics
+    sf = [r["speed_factor"] for r in rows if r.get("speed_factor")]
+    errs = [r[f"{l}_rel_err_scaled"] for r in rows for l in ("default", "smartci") if r.get(f"{l}_rel_err_scaled") is not None
+            and r[f"{l}_sim_s"] > 5]
     out = {"repo": repo.name, "seed": a.seed, "measured_overhead_s": overhead, "profile_startup_overhead_s": startup,
+           "speed_factors": sf, "median_abs_rel_err_after_speed_scaling_(sim>5s)":
+               statistics.median([abs(e) for e in errs]) if errs else None,
            "rule": "|real - simulated| <= 0.1*simulated + overhead", "runs": rows, "gate5_pass": bool(ok_all),
            "n_pass": sum(r["default_pass"] + r["smartci_pass"] for r in rows), "n_checks": 2 * len(rows),
            "generated": time.strftime("%Y-%m-%d %H:%M:%S")}
