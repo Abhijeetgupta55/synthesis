@@ -329,3 +329,13 @@ test files for file-level ordering. Strict-filter fix candidates since 2023 (sha
   vs 0.988), effectively a tie. Against default: 27/0/0 and 296/1/3.
   Note: "best simple baseline" in the backtest is the best rule *on the same bugs* (no separate validation). That is
   optimistic for the baseline and therefore conservative for smartci.
+- **GATE 5 first attempt stopped; design inconsistency fixed.** The backtest simulated mined bugs on *today's* suite
+  (profile at HEAD), but `compare` re-ran each bug at its old fix commit. For bug 32b2c75e, that commit's test file
+  errors during collection under today's pytest (`PytestRemovedIn10Warning` plus `filterwarnings = error`), so the
+  "real" run measured something else. The script also read a stale receipt, because every compare worktree has the
+  same path.
+  Fix: new `learn.rebase` applies every mined bug to the profiled base (today's code) with `git apply --3way`, runs its
+  touched tests there and records `failing_nodeids_base`. Bugs that no longer apply or no longer fail are excluded and
+  listed. The backtest, the adapter split and `compare` all use the same rebased state. Receipts and timing files
+  older than the current compare run are ignored. `smartci learn` now runs `rebase` automatically after mining when
+  a profile exists.

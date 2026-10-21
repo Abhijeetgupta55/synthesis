@@ -34,9 +34,15 @@ def prepare(repo: Path, bug: str, wt: Path) -> dict:
         return {"kind": "working-tree", "expected": None}
     if match:
         b = bugs[match[0]]
+        if b.get("base_status") == "ok":     # same state as the backtest: today's code + the reintroduced bug
+            runner.reset_worktree(wt, b["base_sha"])
+            _apply(wt, b["source_diff"], three_way=True)
+            return {"kind": "mined", "id": b["fix_sha"], "expected": b["failing_nodeids_base"], "title": b["subject"],
+                    "state": "profiled base + bug"}
         runner.reset_worktree(wt, b["fix_sha"])
         _apply(wt, b["source_diff"])
-        return {"kind": "mined", "id": b["fix_sha"], "expected": b["failing_nodeids"], "title": b["subject"]}
+        return {"kind": "mined", "id": b["fix_sha"], "expected": b["failing_nodeids"], "title": b["subject"],
+                "state": "fix commit + reverted source (not comparable with the backtest)"}
     if bug in muts:
         m = muts[bug]
         runner.reset_worktree(wt, m["base_sha"])
@@ -45,13 +51,13 @@ def prepare(repo: Path, bug: str, wt: Path) -> dict:
     raise SystemExit(f"smartci compare: unknown bug '{bug}' (fix sha prefix, mutant id, or 'working-tree')")
 
 
-def _apply(wt: Path, diff: str) -> None:
+def _apply(wt: Path, diff: str, three_way: bool = False) -> None:
     if not diff.strip():
         return
     with tempfile.NamedTemporaryFile("w", suffix=".patch", delete=False, encoding="utf-8", newline="\n") as fh:
         fh.write(diff if diff.endswith("\n") else diff + "\n")
         name = fh.name
-    git(wt, "apply", "--whitespace=nowarn", name)
+    git(wt, "apply", "--whitespace=nowarn", *(["--3way"] if three_way else []), name)
     Path(name).unlink(missing_ok=True)
 
 
@@ -77,6 +83,9 @@ def compare(repo: Path, bug: str, mode: str = "sequential", python: str | None =
     env = {"SMARTCI_DIR": str(sdir)}
     try:
         procs = {}
+        started = time.time()
+        for f in sdir.glob("timing_*.json"):
+            f.unlink()
         for name, wt in wts.items():
             cmd = _cmd(python, name == "smartci", list(pytest_args), sdir / f"timing_{name}.json")
             t0 = time.perf_counter()
@@ -87,10 +96,11 @@ def compare(repo: Path, bug: str, mode: str = "sequential", python: str | None =
             else:
                 r = subprocess.run(cmd, cwd=wt, env=runner.env_for(wt, env), capture_output=True, text=True,
                                    encoding="utf-8", errors="replace", timeout=timeout)
-                res["runs"][name] = _summ(r.stdout + r.stderr, r.returncode, time.perf_counter() - t0, repo, wt)
+                res["runs"][name] = _summ(r.stdout + r.stderr, r.returncode, time.perf_counter() - t0, repo, wt,
+                                          started)
         for name, (p, t0, wt) in procs.items():
             out, _ = p.communicate(timeout=timeout)
-            res["runs"][name] = _summ(out, p.returncode, time.perf_counter() - t0, repo, wt)
+            res["runs"][name] = _summ(out, p.returncode, time.perf_counter() - t0, repo, wt, started)
     finally:
         for wt in wts.values():
             runner.remove_worktree(repo, wt)
@@ -102,7 +112,7 @@ def compare(repo: Path, bug: str, mode: str = "sequential", python: str | None =
     return res
 
 
-def _summ(stdout: str, rc: int, elapsed: float, repo: Path, wt: Path) -> dict:
+def _summ(stdout: str, rc: int, elapsed: float, repo: Path, wt: Path, started: float = 0.0) -> dict:
     sdir = history.state_dir(repo)
     rec_path = None
     rec: dict = {}
@@ -112,6 +122,8 @@ def _summ(stdout: str, rc: int, elapsed: float, repo: Path, wt: Path) -> dict:
         timing.unlink()
     else:
         for f in sorted((sdir / "receipts").glob("*.json"), reverse=True):
+            if f.stat().st_mtime < started:      # a receipt from an earlier compare of the same worktree path
+                break
             r = receipts.read(f)
             if Path(r.get("repo", "")) == wt.resolve():
                 rec_path, rec = f, r

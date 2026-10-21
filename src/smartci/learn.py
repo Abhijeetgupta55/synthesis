@@ -213,7 +213,7 @@ def fit_adapter(repo: Path, min_adapt: int = 20) -> dict:
 
     repo = Path(repo).resolve()
     d = history.state_dir(repo)
-    bugs = load_bugs(repo)
+    bugs = [b for b in load_bugs(repo) if b.get("base_status", "ok") == "ok"]   # same bugs the backtest uses
     adapt, ev = split_adapt_eval(bugs)
     f = d / "adapter.json"
     if len(adapt) < min_adapt:
@@ -232,7 +232,7 @@ def fit_adapter(repo: Path, min_adapt: int = 20) -> dict:
         p = model.calibrate(model.raw(rows, which), which)
         z = np.log(np.clip(p, 1e-7, 1 - 1e-7) / (1 - np.clip(p, 1e-7, 1 - 1e-7)))
         cov = coverage_map.covering_tests(cmap, patches) if cmap else {}
-        fails = set(b["failing_files"])
+        fails = set(b.get("failing_files_base") or b["failing_files"])
         for fl, zi in zip(sim.files, z):
             X.append([zi, float(cov.get(fl, 0) > 0)])
             y.append(fl in fails)
@@ -243,3 +243,58 @@ def fit_adapter(repo: Path, min_adapt: int = 20) -> dict:
          "n_eval_bugs": len(ev), "adapt_until": int(adapt[-1]["date"]), "n_rows": int(len(y))}
     f.write_text(json.dumps(a, indent=1), encoding="utf-8")
     return a
+
+
+def rebase(repo: Path, timeout: float = 900, python: str | None = None) -> dict:
+    """Re-apply every mined bug to the *profiled base* (today's code) and record which tests fail there.
+
+    The backtest simulates on today's suite (profile durations and order), so the bug must also be evaluated on
+    today's code: base + the bug's source diff (git apply --3way). Bugs whose diff no longer applies, or whose touched
+    tests no longer fail on today's code, are marked and excluded from the backtest (listed, not hidden).
+    Adds to each bug: base_sha, base_status ('ok' | 'no_apply' | 'no_failure' | 'timeout'), failing_nodeids_base,
+    failing_files_base.
+    """
+    import subprocess
+    import tempfile
+
+    from smartci import profile as prof
+
+    repo = Path(repo).resolve()
+    d = history.state_dir(repo)
+    base = prof.load(repo)["base_sha"]
+    f = d / "bugs.jsonl"
+    rows = [json.loads(x) for x in f.read_text(encoding="utf-8").splitlines() if x.strip()]
+    wt = runner.worktree(repo, "rebase", base)
+    stats: dict[str, int] = {}
+    try:
+        for i, b in enumerate(rows):
+            if b.get("base_sha") == base and "base_status" in b:
+                stats[b["base_status"]] = stats.get(b["base_status"], 0) + 1
+                continue
+            runner.reset_worktree(wt, base)
+            with tempfile.NamedTemporaryFile("w", suffix=".patch", delete=False, encoding="utf-8", newline="\n") as fh:
+                fh.write(b["source_diff"] if b["source_diff"].endswith("\n") else b["source_diff"] + "\n")
+            r = subprocess.run(["git", "-C", str(wt), "apply", "--3way", fh.name], capture_output=True, text=True)
+            Path(fh.name).unlink(missing_ok=True)
+            b["base_sha"] = base
+            conflict = r.returncode != 0 or "conflict" in (r.stderr or "").lower()
+            if conflict:
+                b["base_status"], b["failing_nodeids_base"], b["failing_files_base"] = "no_apply", [], []
+            else:
+                tests = [t for t in b["touched_test_files"] if (wt / t).exists()]
+                junit = d / "learn" / f"{b['fix_sha'][:10]}_base.xml"
+                pr = runner.run_pytest(wt, ["-q", *tests], junit=junit, timeout=timeout, python=python)
+                fails = []
+                if junit.exists():
+                    fails = sorted(c["nodeid"] for c in history.junit_cases(junit) if c["failed"] and c["kind"] == "test")
+                b["base_status"] = "timeout" if pr.timed_out else ("ok" if fails else "no_failure")
+                b["failing_nodeids_base"] = fails
+                b["failing_files_base"] = sorted({n.split("::", 1)[0] for n in fails})
+            stats[b["base_status"]] = stats.get(b["base_status"], 0) + 1
+            print(f"  [rebase {i + 1}/{len(rows)}] {b['fix_sha'][:10]} {b['base_status']} "
+                  f"({len(b['failing_nodeids_base'])} failing)", flush=True)
+            f.write_text("".join(json.dumps(x) + "\n" for x in rows), encoding="utf-8")
+    finally:
+        runner.reset_worktree(wt, base)
+        runner.remove_worktree(repo, wt)
+    return {"base_sha": base, "status": stats}

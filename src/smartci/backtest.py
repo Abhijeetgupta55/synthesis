@@ -108,16 +108,25 @@ def run(repo: Path, which: str = "both") -> dict:
     stop = frozenset({repo.name.lower().replace("-", "")})
     url = github_url(repo)
     adapter = (history.state_dir(repo) / "adapter.json").exists()
-    items = []
+    items, skipped_pre = [], []
     if which in ("mined", "both"):
+        # mined bugs are evaluated on today's code (the profiled base) once `learn.rebase` has run: the failing
+        # tests are those that fail on base + the bug's diff; bugs that no longer apply / fail are skipped (listed).
+        # The adapt / evaluate split is made on the usable bugs only, exactly as in learn.fit_adapter.
         bugs = learn.load_bugs(repo)
-        held = learn.split_adapt_eval(bugs)[1] if adapter else bugs
-        items += [("mined", b["fix_sha"], b["source_diff"], b["failing_nodeids"], float(b["date"]),
-                   f"{url}/commit/{b['fix_sha']}" if url else None, b["subject"]) for b in held]
+        for b in bugs:
+            if b.get("base_status", "ok") != "ok":
+                skipped_pre.append({"id": b["fix_sha"], "kind": "mined", "reason": f"rebase: {b['base_status']}"})
+        usable = [b for b in bugs if b.get("base_status", "ok") == "ok"]
+        held = learn.split_adapt_eval(usable)[1] if adapter else usable
+        for b in held:
+            fails = b.get("failing_nodeids_base") or b["failing_nodeids"]
+            items.append(("mined", b["fix_sha"], b["source_diff"], fails, float(b["date"]),
+                          f"{url}/commit/{b['fix_sha']}" if url else None, b["subject"]))
     if which in ("mutants", "both"):
         items += [("mutant", m["mutant_id"], m["diff"], m["failing_nodeids"], None, None,
                    f"{m['operator']} at {m['file']}:{m['line']}") for m in mutate.load_mutants(repo)]
-    rows, skipped = [], []
+    rows, skipped = [], list(skipped_pre)
     import time as _t
     for kind, bid, diff, fails, date, link, title in items:
         failing = {n for n in fails if n not in sim.flaky_nodes}

@@ -37,6 +37,9 @@ def cmd_learn(a):
     from smartci import learn
     s = learn.learn(_repo(a), a.since, a.max, a.timeout, a.python)
     print(json.dumps(s, indent=1))
+    from smartci import profile as prof
+    if (prof.history.state_dir(_repo(a)) / "profile.json").exists():
+        print(json.dumps(learn.rebase(_repo(a), a.timeout, a.python), indent=1))
     print(json.dumps(learn.fit_adapter(_repo(a)), indent=1))
 
 
