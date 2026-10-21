@@ -173,3 +173,12 @@ def test_mutate_on_fixture(fx):
     _ = time
     _ = np
     _ = gitdiff
+
+
+def test_mutation_operators():
+    from smartci.mutate import apply, sites
+    src = "def f(x):\n    if x > 1 and x < 5:\n        return x + 1\n    return 0\n"
+    ops = {s[4] for s in sites(src, {2, 3, 4})}
+    assert ops == {"compare", "boolop", "constant", "return", "arith", "negate"}
+    neg = [apply(src, s) for s in sites(src, {2}) if s[4] == "negate"][0]
+    assert "if not (x > 1 and x < 5):" in neg

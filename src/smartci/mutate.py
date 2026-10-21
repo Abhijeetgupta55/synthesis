@@ -35,6 +35,11 @@ def sites(src: str, covered: set[int]) -> list[tuple[int, int, int, int, str]]:
     tree = ast.parse(src)
     out = []
     for node in ast.walk(tree):
+        if isinstance(node, ast.If):            # the if statement spans lines; its *test* must be on one line
+            t = node.test
+            if t.lineno == t.end_lineno and t.lineno in covered:
+                out.append((t.lineno, t.col_offset, t.end_lineno, t.end_col_offset, "negate"))
+            continue
         if not hasattr(node, "lineno") or node.lineno != getattr(node, "end_lineno", None):
             continue
         if node.lineno not in covered:
@@ -51,10 +56,6 @@ def sites(src: str, covered: set[int]) -> list[tuple[int, int, int, int, str]]:
         elif isinstance(node, ast.Return) and node.value is not None and not (
                 isinstance(node.value, ast.Constant) and node.value.value is None):
             out.append((*pos, "return"))
-        elif isinstance(node, ast.If):
-            t = node.test
-            if t.lineno == t.end_lineno:
-                out.append((t.lineno, t.col_offset, t.end_lineno, t.end_col_offset, "negate"))
     return sorted(set(out))
 
 

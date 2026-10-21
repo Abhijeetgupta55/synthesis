@@ -296,3 +296,13 @@ test files for file-level ordering. Strict-filter fix candidates since 2023 (sha
   caused the 4.7 GB orphan, and "120 s" timeouts took up to 271 s. `smartci.runner.run_pytest` now kills the whole
   process tree (`taskkill /F /T`). Test: a 60 s test with a 5 s timeout returns after 5.5 s and leaves no process.
   Mutate was restarted (resumable).
+
+## 2026-10-21 · NetworkX mutants
+
+- `mutate --n 300 --seed 42` finished: **300 mutants kept of 393 attempts** (76% killed by ≥ 1 existing test).
+  Excluded: survived 68, timeout 23, error 2. Operators: compare 115, constant 98, return 42, arith 35, boolop 10.
+  The run included a ~1.5 h machine sleep (lid closed, 14:44–16:15).
+- **Bug found after generation: negated conditions were never produced.** An `if` statement spans several lines,
+  and the single-line filter discarded it before the `If` branch. Fixed, with a unit test
+  (`test_mutation_operators`). The NetworkX set (seed 42) is **not** regenerated, because that would change a set
+  drawn with a logged seed; REAL_WORLD.md states that it contains no negated-condition mutants.
