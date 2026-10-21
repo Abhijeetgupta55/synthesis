@@ -279,3 +279,15 @@ ablation variant does either.
   NetworkX with a quiet machine and reported.
 - Between the first test's start and the failure report there is ~0.7–1.2 s beyond the tests' own durations,
   probably pytest building the failure report. This was measured under CPU load from mutate, so it is noisy.
+
+## 2026-10-21 · Phase 5.2: second repository selection
+
+Criteria: pure-Python install on Windows, pytest, suite ≥ 1 min, ≥ 30 reproducible mined bugs since 2023, and enough
+test files for file-level ordering. Strict-filter fix candidates since 2023 (shallow clones):
+- **attrs**: 15 candidates. Fails the ≥ 30 criterion even at 100% reproduction.
+- **black**: 34 candidates, but only 14 test files, with most tests in `test_black.py`; file-level ordering has
+  little to work with. At NetworkX's 78% reproduction rate, about 26 bugs (< 30).
+- **pydantic**: 277 candidates, 244 test files. It depends on a compiled `pydantic-core` pinned exactly per commit,
+  so many old commits are expected to fail under one pinned environment.
+- **sympy**: 500 candidates, 633 test files, pure Python. **Chosen.** The full suite is very long, so a documented
+  subset of subpackages is used; it will be chosen by measured suite time on a quiet machine.
