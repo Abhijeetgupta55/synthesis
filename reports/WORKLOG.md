@@ -375,3 +375,7 @@ test files for file-level ordering. Strict-filter fix candidates since 2023 (sha
   simulation in every run. Cause: CPU throttled on battery (42% of nominal) relative to when the profile was measured.
   Kept as `gate5_networkx_battery.json`. **The authoritative GATE 5 is pending a re-run on mains power** with a
   fresh profile (HUMAN_TODO 0). Not reported as a pass anywhere.
+- **sympy subset** (pinned `b386392cd62e`, 2026-10-19, own Python 3.12 venv): core, sets, logic, ntheory,
+  combinatorics, polys and simplify (144 test files). sympy's own config skips slow tests. Chosen as the core
+  algebra stack with enough test files for file-level ordering. 215 strict fix candidates since 2023 touch tests in
+  the subset. `learn --paths` mines only those, so every mined bug lands inside the profiled suite.
