@@ -249,3 +249,20 @@ made on validation in Phase 3.
   in every group (Kafka 0.953, TVM 0.991, small-8 0.786).
 - Bug: the regime-shift check compared every subset against the All baseline. Fixed to use each subset's own best
   baseline; summary to be re-run.
+- **Interpretation**: the top SHAP features are hs_fail_rate 0.91, dur_ema_asof 0.44, hs_n_runs_seen 0.39 and
+  hs_days_since_last_fail 0.32. Spearman agreement with the |LR coefficient| ranking is only 0.14: the trees rely on
+  duration × history interactions that LR cannot express.
+  **Error analysis:** the 20 worst-ranked first-time failures are almost all *long* tests (Hive Iceberg CRUD at position
+  0.994, Kafka connect-file tests at 0.94–0.96). Duration raises p, but p/d divides by it, so long never-failed tests
+  go last. QTF also runs them last but does not first spend time on recently failing tests.
+- **Export**: `models/global` and `src/smartci/model` hold `var_tr_all_to_tvm` (25 features) and the cold-start
+  variant (13 features: cost + change). `tests/test_export.py` 3/3 passes: it scores with `stp.paths` blocked, the
+  numpy evaluator equals lightgbm, and the packaged copy is byte-identical.
+- **Rolling origin (baselines)**: 18,149 failed runs over every 30-day window of val+test (737 FirstFail-asof, 479
+  FirstFail-old). The best baseline per subset matches the test split. Models are evaluated at a single origin; this
+  is a stated limitation.
+
+**GATE 3: PASS** (deliverables gate). FEATURES.md, MODELING.md and VIVA_NOTES.md are generated from results JSON;
+every rubric item has a table and a figure. Plain statement: **the model beats cbt_LastFail on All** (+0.020
+[+0.008, +0.032]), **it does not beat the best simple baseline (QTF) on FirstFail-old or FirstFail-asof**, and no
+ablation variant does either.

@@ -1,0 +1,1006 @@
+{
+  "shap_mean_abs": {
+    "hs_n_fail": 0.015778,
+    "hs_days_since_last_fail": 0.319799,
+    "hs_fails_last_7d": 0.01717,
+    "hs_fails_last_30d": 0.021793,
+    "hs_last_outcome": 0.00734,
+    "hs_n_transitions": 0.089653,
+    "hs_n_runs_seen": 0.392819,
+    "hs_fail_rate": 0.90772,
+    "is_new_test": 0.000958,
+    "dur_last_asof": 0.315683,
+    "dur_ema_asof": 0.441638,
+    "dur_source": 0.000368,
+    "test_file_in_diff": 0.009974,
+    "same_top_module": 0.023077,
+    "path_prefix_overlap": 0.100673,
+    "name_token_overlap": 0.14969,
+    "bm25_test_vs_diff": 0.052359,
+    "chg_n_files": 0.058466,
+    "chg_additions": 0.115836,
+    "chg_deletions": 0.099569,
+    "chg_n_top_modules": 0.076803,
+    "has_change_data": 0.0,
+    "cof_max": 0.076513,
+    "cof_sum": 0.192386,
+    "cof_count_max": 0.01567
+  },
+  "lr_abs_coef": {
+    "hs_n_fail": 0.126083,
+    "hs_days_since_last_fail": 0.391804,
+    "hs_fails_last_7d": 0.148945,
+    "hs_fails_last_30d": 0.107996,
+    "hs_last_outcome": 0.088358,
+    "hs_n_transitions": 0.101349,
+    "hs_n_runs_seen": 0.236866,
+    "hs_fail_rate": 0.043112,
+    "is_new_test": 0.0,
+    "dur_last_asof": 0.0,
+    "dur_ema_asof": 0.030803,
+    "dur_source": 0.0,
+    "test_file_in_diff": 0.096874,
+    "same_top_module": 0.0,
+    "path_prefix_overlap": 0.0,
+    "name_token_overlap": 0.0,
+    "bm25_test_vs_diff": 0.0,
+    "chg_n_files": 0.0,
+    "chg_additions": 0.0,
+    "chg_deletions": 0.0,
+    "chg_n_top_modules": 0.0,
+    "has_change_data": 0.0,
+    "cof_max": 0.194279,
+    "cof_sum": 0.073852,
+    "cof_count_max": 0.002272
+  },
+  "spearman_shap_vs_lr": 0.136169,
+  "n_shap_rows": 20000,
+  "n_ftf_testC": 284,
+  "ftf_position_frac_median": 0.384196,
+  "worst20": [
+    {
+      "project": "hive",
+      "run_idx": 2129,
+      "testclass": "org.apache.iceberg.mr.hive.TestHiveIcebergCRUD",
+      "position_frac": 0.99441,
+      "features": {
+        "hs_n_fail": 0.0,
+        "hs_days_since_last_fail": 9999.0,
+        "hs_fails_last_7d": 0.0,
+        "hs_fails_last_30d": 0.0,
+        "hs_last_outcome": 0.0,
+        "hs_n_transitions": 0.0,
+        "hs_n_runs_seen": 1.0,
+        "hs_fail_rate": 0.002381,
+        "is_new_test": 0.0,
+        "dur_last_asof": 2134.2771,
+        "dur_ema_asof": 2134.2771,
+        "dur_source": 2.0,
+        "test_file_in_diff": 0.0,
+        "same_top_module": 1.0,
+        "path_prefix_overlap": 0.5,
+        "name_token_overlap": 1.0,
+        "bm25_test_vs_diff": 20.394701,
+        "chg_n_files": 98.0,
+        "chg_additions": 131.0,
+        "chg_deletions": 131.0,
+        "chg_n_top_modules": 35.0,
+        "has_change_data": 1.0,
+        "cof_max": 0.0,
+        "cof_sum": 0.0,
+        "cof_count_max": 0.0
+      },
+      "top_shap": [
+        {
+          "feature": "dur_ema_asof",
+          "shap": 1.243411
+        },
+        {
+          "feature": "hs_n_runs_seen",
+          "shap": 1.086589
+        },
+        {
+          "feature": "hs_fail_rate",
+          "shap": 1.069104
+        }
+      ]
+    },
+    {
+      "project": "kafka",
+      "run_idx": 47179,
+      "testclass": "org.apache.kafka.connect.file.FileStreamSourceTaskTest",
+      "position_frac": 0.958253,
+      "features": {
+        "hs_n_fail": 0.0,
+        "hs_days_since_last_fail": 9999.0,
+        "hs_fails_last_7d": 0.0,
+        "hs_fails_last_30d": 0.0,
+        "hs_last_outcome": 0.0,
+        "hs_n_transitions": 0.0,
+        "hs_n_runs_seen": 1473.0,
+        "hs_fail_rate": 3.3e-05,
+        "is_new_test": 0.0,
+        "dur_last_asof": 18.298,
+        "dur_ema_asof": 16.112812,
+        "dur_source": 2.0,
+        "test_file_in_diff": 0.0,
+        "same_top_module": 0.0,
+        "path_prefix_overlap": 0.0,
+        "name_token_overlap": 0.0,
+        "bm25_test_vs_diff": 22.864216,
+        "chg_n_files": 3.0,
+        "chg_additions": 100.0,
+        "chg_deletions": 0.0,
+        "chg_n_top_modules": 1.0,
+        "has_change_data": 1.0,
+        "cof_max": 0.0,
+        "cof_sum": 0.0,
+        "cof_count_max": 0.0
+      },
+      "top_shap": [
+        {
+          "feature": "dur_ema_asof",
+          "shap": 0.728353
+        },
+        {
+          "feature": "hs_fail_rate",
+          "shap": -0.668445
+        },
+        {
+          "feature": "dur_last_asof",
+          "shap": 0.574216
+        }
+      ]
+    },
+    {
+      "project": "hive",
+      "run_idx": 2129,
+      "testclass": "org.apache.iceberg.mr.hive.TestHiveIcebergTagOperation",
+      "position_frac": 0.957372,
+      "features": {
+        "hs_n_fail": 0.0,
+        "hs_days_since_last_fail": 9999.0,
+        "hs_fails_last_7d": 0.0,
+        "hs_fails_last_30d": 0.0,
+        "hs_last_outcome": 0.0,
+        "hs_n_transitions": 0.0,
+        "hs_n_runs_seen": 249.0,
+        "hs_fail_rate": 0.000186,
+        "is_new_test": 0.0,
+        "dur_last_asof": 50.699001,
+        "dur_ema_asof": 168.174576,
+        "dur_source": 2.0,
+        "test_file_in_diff": 0.0,
+        "same_top_module": 1.0,
+        "path_prefix_overlap": 0.5,
+        "name_token_overlap": 1.0,
+        "bm25_test_vs_diff": 23.924425,
+        "chg_n_files": 98.0,
+        "chg_additions": 131.0,
+        "chg_deletions": 131.0,
+        "chg_n_top_modules": 35.0,
+        "has_change_data": 1.0,
+        "cof_max": 0.0,
+        "cof_sum": 0.0,
+        "cof_count_max": 0.0
+      },
+      "top_shap": [
+        {
+          "feature": "dur_ema_asof",
+          "shap": 0.988846
+        },
+        {
+          "feature": "dur_last_asof",
+          "shap": 0.718454
+        },
+        {
+          "feature": "chg_n_top_modules",
+          "shap": 0.394025
+        }
+      ]
+    },
+    {
+      "project": "james",
+      "run_idx": 4945,
+      "testclass": "org.apache.james.rrt.postgres.RewriteTablesTest",
+      "position_frac": 0.95,
+      "features": {
+        "hs_n_fail": 0.0,
+        "hs_days_since_last_fail": 9999.0,
+        "hs_fails_last_7d": 0.0,
+        "hs_fails_last_30d": 0.0,
+        "hs_last_outcome": 0.0,
+        "hs_n_transitions": 0.0,
+        "hs_n_runs_seen": 182.0,
+        "hs_fail_rate": 0.000248,
+        "is_new_test": 0.0,
+        "dur_last_asof": 9.821,
+        "dur_ema_asof": 12.824286,
+        "dur_source": 2.0,
+        "test_file_in_diff": 0.0,
+        "same_top_module": 0.0,
+        "path_prefix_overlap": 0.0,
+        "name_token_overlap": 1.0,
+        "bm25_test_vs_diff": 0.146762,
+        "chg_n_files": 10.0,
+        "chg_additions": 245.0,
+        "chg_deletions": 10.0,
+        "chg_n_top_modules": 1.0,
+        "has_change_data": 1.0,
+        "cof_max": 0.0,
+        "cof_sum": 0.0,
+        "cof_count_max": 0.0
+      },
+      "top_shap": [
+        {
+          "feature": "dur_ema_asof",
+          "shap": 0.818672
+        },
+        {
+          "feature": "dur_last_asof",
+          "shap": 0.387459
+        },
+        {
+          "feature": "hs_days_since_last_fail",
+          "shap": -0.284262
+        }
+      ]
+    },
+    {
+      "project": "kafka",
+      "run_idx": 47179,
+      "testclass": "org.apache.kafka.connect.file.FileStreamSinkConnectorTest",
+      "position_frac": 0.943481,
+      "features": {
+        "hs_n_fail": 0.0,
+        "hs_days_since_last_fail": 9999.0,
+        "hs_fails_last_7d": 0.0,
+        "hs_fails_last_30d": 0.0,
+        "hs_last_outcome": 0.0,
+        "hs_n_transitions": 0.0,
+        "hs_n_runs_seen": 1473.0,
+        "hs_fail_rate": 3.3e-05,
+        "is_new_test": 0.0,
+        "dur_last_asof": 14.224,
+        "dur_ema_asof": 10.831752,
+        "dur_source": 2.0,
+        "test_file_in_diff": 0.0,
+        "same_top_module": 0.0,
+        "path_prefix_overlap": 0.0,
+        "name_token_overlap": 0.0,
+        "bm25_test_vs_diff": 22.864216,
+        "chg_n_files": 3.0,
+        "chg_additions": 100.0,
+        "chg_deletions": 0.0,
+        "chg_n_top_modules": 1.0,
+        "has_change_data": 1.0,
+        "cof_max": 0.0,
+        "cof_sum": 0.0,
+        "cof_count_max": 0.0
+      },
+      "top_shap": [
+        {
+          "feature": "dur_ema_asof",
+          "shap": 0.694937
+        },
+        {
+          "feature": "hs_fail_rate",
+          "shap": -0.657558
+        },
+        {
+          "feature": "dur_last_asof",
+          "shap": 0.567907
+        }
+      ]
+    },
+    {
+      "project": "kafka",
+      "run_idx": 47179,
+      "testclass": "org.apache.kafka.server.log.remote.metadata.storage.ClassLoaderAwareRemoteLogMetadataManagerTest",
+      "position_frac": 0.942839,
+      "features": {
+        "hs_n_fail": 0.0,
+        "hs_days_since_last_fail": 9999.0,
+        "hs_fails_last_7d": 0.0,
+        "hs_fails_last_30d": 0.0,
+        "hs_last_outcome": 0.0,
+        "hs_n_transitions": 0.0,
+        "hs_n_runs_seen": 1473.0,
+        "hs_fail_rate": 3.3e-05,
+        "is_new_test": 0.0,
+        "dur_last_asof": 13.409,
+        "dur_ema_asof": 10.828238,
+        "dur_source": 2.0,
+        "test_file_in_diff": 0.0,
+        "same_top_module": 0.0,
+        "path_prefix_overlap": 0.0,
+        "name_token_overlap": 0.0,
+        "bm25_test_vs_diff": 9.938746,
+        "chg_n_files": 3.0,
+        "chg_additions": 100.0,
+        "chg_deletions": 0.0,
+        "chg_n_top_modules": 1.0,
+        "has_change_data": 1.0,
+        "cof_max": 0.0,
+        "cof_sum": 0.0,
+        "cof_count_max": 0.0
+      },
+      "top_shap": [
+        {
+          "feature": "dur_ema_asof",
+          "shap": 0.698503
+        },
+        {
+          "feature": "hs_fail_rate",
+          "shap": -0.667983
+        },
+        {
+          "feature": "dur_last_asof",
+          "shap": 0.558636
+        }
+      ]
+    },
+    {
+      "project": "hbase",
+      "run_idx": 862,
+      "testclass": "org.apache.hadoop.hbase.regionserver.TestRegionReplicas",
+      "position_frac": 0.936972,
+      "features": {
+        "hs_n_fail": 0.0,
+        "hs_days_since_last_fail": 9999.0,
+        "hs_fails_last_7d": 0.0,
+        "hs_fails_last_30d": 0.0,
+        "hs_last_outcome": 0.0,
+        "hs_n_transitions": 0.0,
+        "hs_n_runs_seen": 329.0,
+        "hs_fail_rate": 0.000143,
+        "is_new_test": 0.0,
+        "dur_last_asof": 102.500999,
+        "dur_ema_asof": 105.000328,
+        "dur_source": 2.0,
+        "test_file_in_diff": 0.0,
+        "same_top_module": 0.0,
+        "path_prefix_overlap": 0.0,
+        "name_token_overlap": 1.0,
+        "bm25_test_vs_diff": 15.391443,
+        "chg_n_files": 2.0,
+        "chg_additions": 230.0,
+        "chg_deletions": 24.0,
+        "chg_n_top_modules": 2.0,
+        "has_change_data": 1.0,
+        "cof_max": 0.0,
+        "cof_sum": 0.0,
+        "cof_count_max": 0.0
+      },
+      "top_shap": [
+        {
+          "feature": "dur_ema_asof",
+          "shap": 0.91173
+        },
+        {
+          "feature": "dur_last_asof",
+          "shap": 0.636134
+        },
+        {
+          "feature": "hs_n_runs_seen",
+          "shap": 0.235062
+        }
+      ]
+    },
+    {
+      "project": "tvm",
+      "run_idx": 37449,
+      "testclass": "ctypes.tests.python.meta_schedule.test_meta_schedule_space_cuda",
+      "position_frac": 0.935039,
+      "features": {
+        "hs_n_fail": 0.0,
+        "hs_days_since_last_fail": 9999.0,
+        "hs_fails_last_7d": 0.0,
+        "hs_fails_last_30d": 0.0,
+        "hs_last_outcome": 0.0,
+        "hs_n_transitions": 0.0,
+        "hs_n_runs_seen": 472.0,
+        "hs_fail_rate": 0.000102,
+        "is_new_test": 0.0,
+        "dur_last_asof": 4.117,
+        "dur_ema_asof": 4.119207,
+        "dur_source": 2.0,
+        "test_file_in_diff": 0.0,
+        "same_top_module": 0.0,
+        "path_prefix_overlap": 0.0,
+        "name_token_overlap": 0.0,
+        "bm25_test_vs_diff": 2.082633,
+        "chg_n_files": 16.0,
+        "chg_additions": 50.0,
+        "chg_deletions": 43.0,
+        "chg_n_top_modules": 3.0,
+        "has_change_data": 1.0,
+        "cof_max": 0.0,
+        "cof_sum": 0.0,
+        "cof_count_max": 0.0
+      },
+      "top_shap": [
+        {
+          "feature": "dur_last_asof",
+          "shap": 0.431266
+        },
+        {
+          "feature": "dur_ema_asof",
+          "shap": 0.385569
+        },
+        {
+          "feature": "hs_days_since_last_fail",
+          "shap": -0.299661
+        }
+      ]
+    },
+    {
+      "project": "tvm",
+      "run_idx": 38188,
+      "testclass": "ctypes.tests.python.tir-transform.test_tir_transform_inject_rolling_buffer",
+      "position_frac": 0.924847,
+      "features": {
+        "hs_n_fail": 0.0,
+        "hs_days_since_last_fail": 9999.0,
+        "hs_fails_last_7d": 0.0,
+        "hs_fails_last_30d": 0.0,
+        "hs_last_outcome": 0.0,
+        "hs_n_transitions": 0.0,
+        "hs_n_runs_seen": 51.0,
+        "hs_fail_rate": 0.000704,
+        "is_new_test": 0.0,
+        "dur_last_asof": 9.621,
+        "dur_ema_asof": 9.828384,
+        "dur_source": 2.0,
+        "test_file_in_diff": 0.0,
+        "same_top_module": 0.0,
+        "path_prefix_overlap": 0.0,
+        "name_token_overlap": 0.0,
+        "bm25_test_vs_diff": 3.799521,
+        "chg_n_files": 6.0,
+        "chg_additions": 122.0,
+        "chg_deletions": 40.0,
+        "chg_n_top_modules": 3.0,
+        "has_change_data": 1.0,
+        "cof_max": 0.0,
+        "cof_sum": 0.0,
+        "cof_count_max": 0.0
+      },
+      "top_shap": [
+        {
+          "feature": "dur_ema_asof",
+          "shap": 0.750862
+        },
+        {
+          "feature": "hs_n_runs_seen",
+          "shap": 0.470623
+        },
+        {
+          "feature": "dur_last_asof",
+          "shap": 0.357437
+        }
+      ]
+    },
+    {
+      "project": "tvm",
+      "run_idx": 38188,
+      "testclass": "cython.tests.python.tir-transform.test_tir_transform_inject_rolling_buffer",
+      "position_frac": 0.923313,
+      "features": {
+        "hs_n_fail": 0.0,
+        "hs_days_since_last_fail": 9999.0,
+        "hs_fails_last_7d": 0.0,
+        "hs_fails_last_30d": 0.0,
+        "hs_last_outcome": 0.0,
+        "hs_n_transitions": 0.0,
+        "hs_n_runs_seen": 51.0,
+        "hs_fail_rate": 0.000704,
+        "is_new_test": 0.0,
+        "dur_last_asof": 9.594,
+        "dur_ema_asof": 9.787177,
+        "dur_source": 2.0,
+        "test_file_in_diff": 0.0,
+        "same_top_module": 0.0,
+        "path_prefix_overlap": 0.0,
+        "name_token_overlap": 0.0,
+        "bm25_test_vs_diff": 3.799521,
+        "chg_n_files": 6.0,
+        "chg_additions": 122.0,
+        "chg_deletions": 40.0,
+        "chg_n_top_modules": 3.0,
+        "has_change_data": 1.0,
+        "cof_max": 0.0,
+        "cof_sum": 0.0,
+        "cof_count_max": 0.0
+      },
+      "top_shap": [
+        {
+          "feature": "dur_ema_asof",
+          "shap": 0.750862
+        },
+        {
+          "feature": "hs_n_runs_seen",
+          "shap": 0.470623
+        },
+        {
+          "feature": "dur_last_asof",
+          "shap": 0.357437
+        }
+      ]
+    },
+    {
+      "project": "hive",
+      "run_idx": 2129,
+      "testclass": "org.apache.hadoop.hive.metastore.txn.TestTxnUtils",
+      "position_frac": 0.923131,
+      "features": {
+        "hs_n_fail": 0.0,
+        "hs_days_since_last_fail": 9999.0,
+        "hs_fails_last_7d": 0.0,
+        "hs_fails_last_30d": 0.0,
+        "hs_last_outcome": 0.0,
+        "hs_n_transitions": 0.0,
+        "hs_n_runs_seen": 2118.0,
+        "hs_fail_rate": 2.3e-05,
+        "is_new_test": 0.0,
+        "dur_last_asof": 6.999,
+        "dur_ema_asof": 6.296121,
+        "dur_source": 2.0,
+        "test_file_in_diff": 0.0,
+        "same_top_module": 1.0,
+        "path_prefix_overlap": 0.5,
+        "name_token_overlap": 1.0,
+        "bm25_test_vs_diff": 28.163,
+        "chg_n_files": 98.0,
+        "chg_additions": 131.0,
+        "chg_deletions": 131.0,
+        "chg_n_top_modules": 35.0,
+        "has_change_data": 1.0,
+        "cof_max": 0.0,
+        "cof_sum": 0.0,
+        "cof_count_max": 0.0
+      },
+      "top_shap": [
+        {
+          "feature": "hs_fail_rate",
+          "shap": -0.720875
+        },
+        {
+          "feature": "dur_ema_asof",
+          "shap": 0.580213
+        },
+        {
+          "feature": "dur_last_asof",
+          "shap": 0.534063
+        }
+      ]
+    },
+    {
+      "project": "tvm",
+      "run_idx": 37449,
+      "testclass": "ctypes.tests.python.meta_schedule.test_meta_schedule_space_cpu",
+      "position_frac": 0.917323,
+      "features": {
+        "hs_n_fail": 0.0,
+        "hs_days_since_last_fail": 9999.0,
+        "hs_fails_last_7d": 0.0,
+        "hs_fails_last_30d": 0.0,
+        "hs_last_outcome": 0.0,
+        "hs_n_transitions": 0.0,
+        "hs_n_runs_seen": 472.0,
+        "hs_fail_rate": 0.000102,
+        "is_new_test": 0.0,
+        "dur_last_asof": 7.314,
+        "dur_ema_asof": 7.286083,
+        "dur_source": 2.0,
+        "test_file_in_diff": 0.0,
+        "same_top_module": 0.0,
+        "path_prefix_overlap": 0.0,
+        "name_token_overlap": 0.0,
+        "bm25_test_vs_diff": 2.082633,
+        "chg_n_files": 16.0,
+        "chg_additions": 50.0,
+        "chg_deletions": 43.0,
+        "chg_n_top_modules": 3.0,
+        "has_change_data": 1.0,
+        "cof_max": 0.0,
+        "cof_sum": 0.0,
+        "cof_count_max": 0.0
+      },
+      "top_shap": [
+        {
+          "feature": "dur_ema_asof",
+          "shap": 0.580638
+        },
+        {
+          "feature": "dur_last_asof",
+          "shap": 0.411297
+        },
+        {
+          "feature": "hs_days_since_last_fail",
+          "shap": -0.286014
+        }
+      ]
+    },
+    {
+      "project": "tvm",
+      "run_idx": 37449,
+      "testclass": "ctypes.tests.python.meta_schedule.test_meta_schedule_space_cuda_async",
+      "position_frac": 0.913386,
+      "features": {
+        "hs_n_fail": 0.0,
+        "hs_days_since_last_fail": 9999.0,
+        "hs_fails_last_7d": 0.0,
+        "hs_fails_last_30d": 0.0,
+        "hs_last_outcome": 0.0,
+        "hs_n_transitions": 0.0,
+        "hs_n_runs_seen": 472.0,
+        "hs_fail_rate": 0.000102,
+        "is_new_test": 0.0,
+        "dur_last_asof": 1.78,
+        "dur_ema_asof": 1.777972,
+        "dur_source": 2.0,
+        "test_file_in_diff": 0.0,
+        "same_top_module": 0.0,
+        "path_prefix_overlap": 0.0,
+        "name_token_overlap": 0.0,
+        "bm25_test_vs_diff": 1.974136,
+        "chg_n_files": 16.0,
+        "chg_additions": 50.0,
+        "chg_deletions": 43.0,
+        "chg_n_top_modules": 3.0,
+        "has_change_data": 1.0,
+        "cof_max": 0.0,
+        "cof_sum": 0.0,
+        "cof_count_max": 0.0
+      },
+      "top_shap": [
+        {
+          "feature": "hs_days_since_last_fail",
+          "shap": -0.306064
+        },
+        {
+          "feature": "hs_fail_rate",
+          "shap": -0.247968
+        },
+        {
+          "feature": "dur_last_asof",
+          "shap": 0.225894
+        }
+      ]
+    },
+    {
+      "project": "tvm",
+      "run_idx": 37449,
+      "testclass": "cython.tests.python.meta_schedule.test_meta_schedule_space_cuda",
+      "position_frac": 0.909449,
+      "features": {
+        "hs_n_fail": 0.0,
+        "hs_days_since_last_fail": 9999.0,
+        "hs_fails_last_7d": 0.0,
+        "hs_fails_last_30d": 0.0,
+        "hs_last_outcome": 0.0,
+        "hs_n_transitions": 0.0,
+        "hs_n_runs_seen": 472.0,
+        "hs_fail_rate": 0.000102,
+        "is_new_test": 0.0,
+        "dur_last_asof": 3.699,
+        "dur_ema_asof": 3.762633,
+        "dur_source": 2.0,
+        "test_file_in_diff": 0.0,
+        "same_top_module": 0.0,
+        "path_prefix_overlap": 0.0,
+        "name_token_overlap": 0.0,
+        "bm25_test_vs_diff": 2.082633,
+        "chg_n_files": 16.0,
+        "chg_additions": 50.0,
+        "chg_deletions": 43.0,
+        "chg_n_top_modules": 3.0,
+        "has_change_data": 1.0,
+        "cof_max": 0.0,
+        "cof_sum": 0.0,
+        "cof_count_max": 0.0
+      },
+      "top_shap": [
+        {
+          "feature": "dur_last_asof",
+          "shap": 0.430668
+        },
+        {
+          "feature": "dur_ema_asof",
+          "shap": 0.385334
+        },
+        {
+          "feature": "hs_days_since_last_fail",
+          "shap": -0.299632
+        }
+      ]
+    },
+    {
+      "project": "tvm",
+      "run_idx": 37449,
+      "testclass": "cython.tests.python.meta_schedule.test_meta_schedule_space_cuda_async",
+      "position_frac": 0.903543,
+      "features": {
+        "hs_n_fail": 0.0,
+        "hs_days_since_last_fail": 9999.0,
+        "hs_fails_last_7d": 0.0,
+        "hs_fails_last_30d": 0.0,
+        "hs_last_outcome": 0.0,
+        "hs_n_transitions": 0.0,
+        "hs_n_runs_seen": 472.0,
+        "hs_fail_rate": 0.000102,
+        "is_new_test": 0.0,
+        "dur_last_asof": 1.624,
+        "dur_ema_asof": 1.645806,
+        "dur_source": 2.0,
+        "test_file_in_diff": 0.0,
+        "same_top_module": 0.0,
+        "path_prefix_overlap": 0.0,
+        "name_token_overlap": 0.0,
+        "bm25_test_vs_diff": 1.974136,
+        "chg_n_files": 16.0,
+        "chg_additions": 50.0,
+        "chg_deletions": 43.0,
+        "chg_n_top_modules": 3.0,
+        "has_change_data": 1.0,
+        "cof_max": 0.0,
+        "cof_sum": 0.0,
+        "cof_count_max": 0.0
+      },
+      "top_shap": [
+        {
+          "feature": "hs_days_since_last_fail",
+          "shap": -0.307068
+        },
+        {
+          "feature": "hs_fail_rate",
+          "shap": -0.247193
+        },
+        {
+          "feature": "dur_last_asof",
+          "shap": 0.230219
+        }
+      ]
+    },
+    {
+      "project": "tvm",
+      "run_idx": 37449,
+      "testclass": "cython.tests.python.meta_schedule.test_meta_schedule_space_cpu",
+      "position_frac": 0.901575,
+      "features": {
+        "hs_n_fail": 0.0,
+        "hs_days_since_last_fail": 9999.0,
+        "hs_fails_last_7d": 0.0,
+        "hs_fails_last_30d": 0.0,
+        "hs_last_outcome": 0.0,
+        "hs_n_transitions": 0.0,
+        "hs_n_runs_seen": 472.0,
+        "hs_fail_rate": 0.000102,
+        "is_new_test": 0.0,
+        "dur_last_asof": 6.533,
+        "dur_ema_asof": 6.572486,
+        "dur_source": 2.0,
+        "test_file_in_diff": 0.0,
+        "same_top_module": 0.0,
+        "path_prefix_overlap": 0.0,
+        "name_token_overlap": 0.0,
+        "bm25_test_vs_diff": 2.082633,
+        "chg_n_files": 16.0,
+        "chg_additions": 50.0,
+        "chg_deletions": 43.0,
+        "chg_n_top_modules": 3.0,
+        "has_change_data": 1.0,
+        "cof_max": 0.0,
+        "cof_sum": 0.0,
+        "cof_count_max": 0.0
+      },
+      "top_shap": [
+        {
+          "feature": "dur_ema_asof",
+          "shap": 0.572777
+        },
+        {
+          "feature": "dur_last_asof",
+          "shap": 0.410982
+        },
+        {
+          "feature": "hs_days_since_last_fail",
+          "shap": -0.285984
+        }
+      ]
+    },
+    {
+      "project": "kafka",
+      "run_idx": 47179,
+      "testclass": "org.apache.kafka.tools.ClientMetricsCommandTest",
+      "position_frac": 0.899807,
+      "features": {
+        "hs_n_fail": 0.0,
+        "hs_days_since_last_fail": 9999.0,
+        "hs_fails_last_7d": 0.0,
+        "hs_fails_last_30d": 0.0,
+        "hs_last_outcome": 0.0,
+        "hs_n_transitions": 0.0,
+        "hs_n_runs_seen": 287.0,
+        "hs_fail_rate": 0.000163,
+        "is_new_test": 0.0,
+        "dur_last_asof": 18.667,
+        "dur_ema_asof": 14.752798,
+        "dur_source": 2.0,
+        "test_file_in_diff": 0.0,
+        "same_top_module": 0.0,
+        "path_prefix_overlap": 0.0,
+        "name_token_overlap": 0.0,
+        "bm25_test_vs_diff": 3.442767,
+        "chg_n_files": 3.0,
+        "chg_additions": 100.0,
+        "chg_deletions": 0.0,
+        "chg_n_top_modules": 1.0,
+        "has_change_data": 1.0,
+        "cof_max": 0.0,
+        "cof_sum": 0.0,
+        "cof_count_max": 0.0
+      },
+      "top_shap": [
+        {
+          "feature": "dur_ema_asof",
+          "shap": 0.700898
+        },
+        {
+          "feature": "dur_last_asof",
+          "shap": 0.463559
+        },
+        {
+          "feature": "hs_days_since_last_fail",
+          "shap": -0.277483
+        }
+      ]
+    },
+    {
+      "project": "log4j",
+      "run_idx": 452,
+      "testclass": "org.apache.logging.log4j.flume.appender.FlumeEmbeddedAppenderTest",
+      "position_frac": 0.899096,
+      "features": {
+        "hs_n_fail": 0.0,
+        "hs_days_since_last_fail": 9999.0,
+        "hs_fails_last_7d": 0.0,
+        "hs_fails_last_30d": 0.0,
+        "hs_last_outcome": 0.0,
+        "hs_n_transitions": 0.0,
+        "hs_n_runs_seen": 230.0,
+        "hs_fail_rate": 0.0002,
+        "is_new_test": 0.0,
+        "dur_last_asof": 2.352,
+        "dur_ema_asof": 2.54056,
+        "dur_source": 2.0,
+        "test_file_in_diff": 0.0,
+        "same_top_module": 0.0,
+        "path_prefix_overlap": 0.0,
+        "name_token_overlap": 1.0,
+        "bm25_test_vs_diff": 4.564391,
+        "chg_n_files": 8.0,
+        "chg_additions": 150.0,
+        "chg_deletions": 10.0,
+        "chg_n_top_modules": 1.0,
+        "has_change_data": 1.0,
+        "cof_max": 0.0,
+        "cof_sum": 0.0,
+        "cof_count_max": 0.0
+      },
+      "top_shap": [
+        {
+          "feature": "hs_days_since_last_fail",
+          "shap": -0.314561
+        },
+        {
+          "feature": "dur_last_asof",
+          "shap": 0.308102
+        },
+        {
+          "feature": "dur_ema_asof",
+          "shap": 0.282285
+        }
+      ]
+    },
+    {
+      "project": "hive",
+      "run_idx": 2129,
+      "testclass": "org.apache.hadoop.hive.cli.split23.TestMiniLlapLocalCompactorCliDriver",
+      "position_frac": 0.88819,
+      "features": {
+        "hs_n_fail": 0.0,
+        "hs_days_since_last_fail": 9999.0,
+        "hs_fails_last_7d": 0.0,
+        "hs_fails_last_30d": 0.0,
+        "hs_last_outcome": 0.0,
+        "hs_n_transitions": 0.0,
+        "hs_n_runs_seen": 50.0,
+        "hs_fail_rate": 0.000714,
+        "is_new_test": 0.0,
+        "dur_last_asof": 105.740997,
+        "dur_ema_asof": 97.524948,
+        "dur_source": 2.0,
+        "test_file_in_diff": 0.0,
+        "same_top_module": 1.0,
+        "path_prefix_overlap": 0.5,
+        "name_token_overlap": 2.0,
+        "bm25_test_vs_diff": 11.599193,
+        "chg_n_files": 98.0,
+        "chg_additions": 131.0,
+        "chg_deletions": 131.0,
+        "chg_n_top_modules": 35.0,
+        "has_change_data": 1.0,
+        "cof_max": 0.0,
+        "cof_sum": 0.0,
+        "cof_count_max": 0.0
+      },
+      "top_shap": [
+        {
+          "feature": "dur_ema_asof",
+          "shap": 1.106923
+        },
+        {
+          "feature": "dur_last_asof",
+          "shap": 0.589041
+        },
+        {
+          "feature": "hs_n_runs_seen",
+          "shap": 0.586398
+        }
+      ]
+    },
+    {
+      "project": "tvm",
+      "run_idx": 37449,
+      "testclass": "ctypes.tests.python.meta_schedule.test_meta_schedule_space_cuda_winograd",
+      "position_frac": 0.883858,
+      "features": {
+        "hs_n_fail": 0.0,
+        "hs_days_since_last_fail": 9999.0,
+        "hs_fails_last_7d": 0.0,
+        "hs_fails_last_30d": 0.0,
+        "hs_last_outcome": 0.0,
+        "hs_n_transitions": 0.0,
+        "hs_n_runs_seen": 472.0,
+        "hs_fail_rate": 0.000102,
+        "is_new_test": 0.0,
+        "dur_last_asof": 2.821,
+        "dur_ema_asof": 2.813411,
+        "dur_source": 2.0,
+        "test_file_in_diff": 0.0,
+        "same_top_module": 0.0,
+        "path_prefix_overlap": 0.0,
+        "name_token_overlap": 0.0,
+        "bm25_test_vs_diff": 1.974136,
+        "chg_n_files": 16.0,
+        "chg_additions": 50.0,
+        "chg_deletions": 43.0,
+        "chg_n_top_modules": 3.0,
+        "has_change_data": 1.0,
+        "cof_max": 0.0,
+        "cof_sum": 0.0,
+        "cof_count_max": 0.0
+      },
+      "top_shap": [
+        {
+          "feature": "dur_ema_asof",
+          "shap": 0.369784
+        },
+        {
+          "feature": "dur_last_asof",
+          "shap": 0.323031
+        },
+        {
+          "feature": "hs_days_since_last_fail",
+          "shap": -0.299692
+        }
+      ]
+    }
+  ],
+  "_meta": {
+    "generated": "2026-10-21 11:52:34",
+    "git_sha": "48a9b04"
+  }
+}

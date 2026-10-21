@@ -10874,88 +10874,88 @@
     },
     "FirstFail-asof": {
       "with": {
-        "mean": 0.182531,
-        "lo": 0.132887,
-        "hi": 0.2233,
+        "mean": -0.047343,
+        "lo": -0.082977,
+        "hi": -0.015163,
         "n_runs": 335,
         "n_prs": 139,
         "n_projects": 10,
         "small_n": true,
         "per_project": {
-          "activemq": 0.109431,
-          "hadoop": 0.032829,
-          "hbase": 0.202567,
-          "hive": 0.43791,
-          "jackrabbit-oak": 0.327089,
-          "james": 0.150569,
-          "kafka": 0.178012,
-          "karaf": 0.094481,
-          "log4j": 0.037831,
-          "tvm": 0.254595
+          "activemq": -0.005514,
+          "hadoop": -0.057745,
+          "hbase": 0.008817,
+          "hive": -0.11088,
+          "jackrabbit-oak": -0.034999,
+          "james": 0.013091,
+          "kafka": -0.068188,
+          "karaf": -0.035986,
+          "log4j": -0.152314,
+          "tvm": -0.029714
         },
         "excludes_zero": true
       },
       "without_kafka_tvm": {
-        "mean": 0.174088,
-        "lo": 0.118754,
-        "hi": 0.21848,
+        "mean": -0.046941,
+        "lo": -0.092324,
+        "hi": -0.009655,
         "n_runs": 98,
         "n_prs": 73,
         "n_projects": 8,
         "small_n": true,
         "per_project": {
-          "activemq": 0.109431,
-          "hadoop": 0.032829,
-          "hbase": 0.202567,
-          "hive": 0.43791,
-          "jackrabbit-oak": 0.327089,
-          "james": 0.150569,
-          "karaf": 0.094481,
-          "log4j": 0.037831
+          "activemq": -0.005514,
+          "hadoop": -0.057745,
+          "hbase": 0.008817,
+          "hive": -0.11088,
+          "jackrabbit-oak": -0.034999,
+          "james": 0.013091,
+          "karaf": -0.035986,
+          "log4j": -0.152314
         },
         "excludes_zero": true
       }
     },
     "FirstFail-old": {
       "with": {
-        "mean": 0.261802,
-        "lo": 0.216957,
-        "hi": 0.301521,
+        "mean": -0.092321,
+        "lo": -0.132504,
+        "hi": -0.055982,
         "n_runs": 222,
         "n_prs": 97,
         "n_projects": 10,
         "small_n": true,
         "per_project": {
-          "activemq": 0.219029,
-          "hadoop": 0.059798,
-          "hbase": 0.244975,
-          "hive": 0.604717,
-          "jackrabbit-oak": 0.360645,
-          "james": 0.337719,
-          "kafka": 0.301269,
-          "karaf": 0.096469,
-          "log4j": 0.037831,
-          "tvm": 0.355568
+          "activemq": -0.044808,
+          "hadoop": -0.163777,
+          "hbase": -0.007366,
+          "hive": -0.16539,
+          "jackrabbit-oak": -0.029867,
+          "james": -0.158522,
+          "kafka": -0.12235,
+          "karaf": -0.036331,
+          "log4j": -0.152314,
+          "tvm": -0.042482
         },
         "excludes_zero": true
       },
       "without_kafka_tvm": {
-        "mean": 0.245148,
-        "lo": 0.187659,
-        "hi": 0.292225,
+        "mean": -0.094797,
+        "lo": -0.151598,
+        "hi": -0.053252,
         "n_runs": 70,
         "n_prs": 54,
         "n_projects": 8,
         "small_n": true,
         "per_project": {
-          "activemq": 0.219029,
-          "hadoop": 0.059798,
-          "hbase": 0.244975,
-          "hive": 0.604717,
-          "jackrabbit-oak": 0.360645,
-          "james": 0.337719,
-          "karaf": 0.096469,
-          "log4j": 0.037831
+          "activemq": -0.044808,
+          "hadoop": -0.163777,
+          "hbase": -0.007366,
+          "hive": -0.16539,
+          "jackrabbit-oak": -0.029867,
+          "james": -0.158522,
+          "karaf": -0.036331,
+          "log4j": -0.152314
         },
         "excludes_zero": true
       }
@@ -11081,7 +11081,7 @@
     "APFDc New/Edited (lgbm vs ChangedOrNewFirst)": "0.958 vs 0.981"
   },
   "_meta": {
-    "generated": "2026-10-21 11:41:44",
-    "git_sha": "e8f999e"
+    "generated": "2026-10-21 11:57:03",
+    "git_sha": "48a9b04"
   }
 }

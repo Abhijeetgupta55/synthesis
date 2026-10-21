@@ -1,0 +1,327 @@
+{
+  "version": "0.1.0",
+  "exported": "2026-10-21 11:53:19",
+  "git_sha": "48a9b04",
+  "main_variant": "var_tr_all_to_tvm",
+  "features": [
+    {
+      "name": "hs_n_fail",
+      "dtype": "int32",
+      "default": 0.0
+    },
+    {
+      "name": "hs_days_since_last_fail",
+      "dtype": "float32",
+      "default": 9999.0
+    },
+    {
+      "name": "hs_fails_last_7d",
+      "dtype": "int32",
+      "default": 0.0
+    },
+    {
+      "name": "hs_fails_last_30d",
+      "dtype": "int32",
+      "default": 0.0
+    },
+    {
+      "name": "hs_last_outcome",
+      "dtype": "bool",
+      "default": 0.0
+    },
+    {
+      "name": "hs_n_transitions",
+      "dtype": "int32",
+      "default": 0.0
+    },
+    {
+      "name": "hs_n_runs_seen",
+      "dtype": "int32",
+      "default": 0.0
+    },
+    {
+      "name": "hs_fail_rate",
+      "dtype": "float32",
+      "default": 0.0025
+    },
+    {
+      "name": "is_new_test",
+      "dtype": "bool",
+      "default": 1.0
+    },
+    {
+      "name": "dur_last_asof",
+      "dtype": "float32",
+      "default": 0.0
+    },
+    {
+      "name": "dur_ema_asof",
+      "dtype": "float32",
+      "default": 0.0
+    },
+    {
+      "name": "dur_source",
+      "dtype": "int8",
+      "default": 0.0
+    },
+    {
+      "name": "test_file_in_diff",
+      "dtype": "bool",
+      "default": 0.0
+    },
+    {
+      "name": "same_top_module",
+      "dtype": "bool",
+      "default": 0.0
+    },
+    {
+      "name": "path_prefix_overlap",
+      "dtype": "float32",
+      "default": 0.0
+    },
+    {
+      "name": "name_token_overlap",
+      "dtype": "int16",
+      "default": 0.0
+    },
+    {
+      "name": "bm25_test_vs_diff",
+      "dtype": "float32",
+      "default": 0.0
+    },
+    {
+      "name": "chg_n_files",
+      "dtype": "int32",
+      "default": 0.0
+    },
+    {
+      "name": "chg_additions",
+      "dtype": "int32",
+      "default": 0.0
+    },
+    {
+      "name": "chg_deletions",
+      "dtype": "int32",
+      "default": 0.0
+    },
+    {
+      "name": "chg_n_top_modules",
+      "dtype": "int16",
+      "default": 0.0
+    },
+    {
+      "name": "has_change_data",
+      "dtype": "bool",
+      "default": 1.0
+    },
+    {
+      "name": "cof_max",
+      "dtype": "float32",
+      "default": 0.0
+    },
+    {
+      "name": "cof_sum",
+      "dtype": "float32",
+      "default": 0.0
+    },
+    {
+      "name": "cof_count_max",
+      "dtype": "int32",
+      "default": 0.0
+    }
+  ],
+  "features_coldstart": [
+    {
+      "name": "dur_last_asof",
+      "dtype": "float32",
+      "default": 0.0
+    },
+    {
+      "name": "dur_ema_asof",
+      "dtype": "float32",
+      "default": 0.0
+    },
+    {
+      "name": "dur_source",
+      "dtype": "int8",
+      "default": 0.0
+    },
+    {
+      "name": "test_file_in_diff",
+      "dtype": "bool",
+      "default": 0.0
+    },
+    {
+      "name": "same_top_module",
+      "dtype": "bool",
+      "default": 0.0
+    },
+    {
+      "name": "path_prefix_overlap",
+      "dtype": "float32",
+      "default": 0.0
+    },
+    {
+      "name": "name_token_overlap",
+      "dtype": "int16",
+      "default": 0.0
+    },
+    {
+      "name": "bm25_test_vs_diff",
+      "dtype": "float32",
+      "default": 0.0
+    },
+    {
+      "name": "chg_n_files",
+      "dtype": "int32",
+      "default": 0.0
+    },
+    {
+      "name": "chg_additions",
+      "dtype": "int32",
+      "default": 0.0
+    },
+    {
+      "name": "chg_deletions",
+      "dtype": "int32",
+      "default": 0.0
+    },
+    {
+      "name": "chg_n_top_modules",
+      "dtype": "int16",
+      "default": 0.0
+    },
+    {
+      "name": "has_change_data",
+      "dtype": "bool",
+      "default": 1.0
+    }
+  ],
+  "ordering": "priority = calibrated P(fail) / (expected duration + 0.001 s), descending",
+  "training_data": {
+    "source": "LRTS (ISSTA 2024), 10 Apache projects; 9 Java/Scala + TVM (Python/pytest)",
+    "split": "build-level chronological 70/15/15; model trained on train builds only",
+    "date_ranges": {
+      "activemq|test": [
+        "2024-02-27",
+        "2024-04-12"
+      ],
+      "activemq|train": [
+        "2021-04-01",
+        "2023-11-06"
+      ],
+      "activemq|val": [
+        "2023-11-06",
+        "2024-02-27"
+      ],
+      "hadoop|test": [
+        "2024-01-16",
+        "2024-04-16"
+      ],
+      "hadoop|train": [
+        "2020-07-30",
+        "2023-09-19"
+      ],
+      "hadoop|val": [
+        "2023-09-22",
+        "2024-01-15"
+      ],
+      "hbase|test": [
+        "2024-02-07",
+        "2024-04-16"
+      ],
+      "hbase|train": [
+        "2022-03-11",
+        "2023-11-14"
+      ],
+      "hbase|val": [
+        "2023-11-15",
+        "2024-02-02"
+      ],
+      "hive|test": [
+        "2023-07-07",
+        "2024-03-12"
+      ],
+      "hive|train": [
+        "2021-11-18",
+        "2023-06-09"
+      ],
+      "hive|val": [
+        "2023-06-09",
+        "2023-07-07"
+      ],
+      "jackrabbit-oak|test": [
+        "2024-01-22",
+        "2024-04-16"
+      ],
+      "jackrabbit-oak|train": [
+        "2021-07-13",
+        "2023-11-01"
+      ],
+      "jackrabbit-oak|val": [
+        "2023-11-01",
+        "2024-01-22"
+      ],
+      "james|test": [
+        "2024-02-05",
+        "2024-04-16"
+      ],
+      "james|train": [
+        "2021-06-02",
+        "2023-11-10"
+      ],
+      "james|val": [
+        "2023-11-10",
+        "2024-02-05"
+      ],
+      "kafka|test": [
+        "2023-11-29",
+        "2024-04-16"
+      ],
+      "kafka|train": [
+        "2020-11-16",
+        "2023-06-29"
+      ],
+      "kafka|val": [
+        "2023-06-29",
+        "2023-11-29"
+      ],
+      "karaf|test": [
+        "2023-07-29",
+        "2024-04-08"
+      ],
+      "karaf|train": [
+        "2020-12-12",
+        "2022-10-14"
+      ],
+      "karaf|val": [
+        "2022-10-14",
+        "2023-07-28"
+      ],
+      "log4j|test": [
+        "2022-01-19",
+        "2022-01-28"
+      ],
+      "log4j|train": [
+        "2020-11-17",
+        "2022-01-10"
+      ],
+      "log4j|val": [
+        "2022-01-10",
+        "2022-01-19"
+      ],
+      "tvm|test": [
+        "2024-02-28",
+        "2024-04-17"
+      ],
+      "tvm|train": [
+        "2021-03-15",
+        "2023-12-01"
+      ],
+      "tvm|val": [
+        "2023-11-29",
+        "2024-03-27"
+      ]
+    }
+  }
+}

@@ -142,9 +142,11 @@
     }
   },
   "chosen": "tvm_only",
-  "rule": "highest TVM valB PR-AUC (testC shown for confirmation only)",
+  "confirmed_on_test": false,
+  "shipped": "all_to_tvm",
+  "rule": "Declared rule: choose the variant with the best TVM valB PR-AUC, then confirm on TVM testC. If the chosen\n    variant is worse on testC than the pooled all-projects variant, confirmation has failed and the pooled variant is\n    shipped instead. That fallback uses test information; it is disclosed, and the shipped model's unbiased evaluation\n    is on repositories no model has seen (Phase 5).",
   "_meta": {
-    "generated": "2026-10-21 11:13:30",
-    "git_sha": "1d7f717"
+    "generated": "2026-10-21 11:53:06",
+    "git_sha": "48a9b04"
   }
 }
