@@ -1,0 +1,51 @@
+{
+  "name": "coldstart",
+  "cols": [
+    "dur_last_asof",
+    "dur_ema_asof",
+    "dur_source",
+    "test_file_in_diff",
+    "same_top_module",
+    "path_prefix_overlap",
+    "name_token_overlap",
+    "bm25_test_vs_diff",
+    "chg_n_files",
+    "chg_additions",
+    "chg_deletions",
+    "chg_n_top_modules",
+    "has_change_data"
+  ],
+  "train_projects": [
+    "activemq",
+    "hadoop",
+    "hbase",
+    "hive",
+    "jackrabbit-oak",
+    "james",
+    "kafka",
+    "karaf",
+    "log4j",
+    "tvm"
+  ],
+  "eval_projects": [
+    "activemq",
+    "hadoop",
+    "hbase",
+    "hive",
+    "jackrabbit-oak",
+    "james",
+    "kafka",
+    "karaf",
+    "log4j",
+    "tvm"
+  ],
+  "train_rows": 3604079,
+  "best_iteration": 161,
+  "valB_pr_auc": 0.023624,
+  "testC_pr_auc": 0.014397,
+  "testC_pr_auc_ftf": 0.001077,
+  "_meta": {
+    "generated": "2026-10-21 11:13:30",
+    "git_sha": "1d7f717"
+  }
+}

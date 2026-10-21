@@ -1,0 +1,150 @@
+{
+  "variants": {
+    "jvm9_to_tvm": {
+      "name": "tr_jvm9_to_tvm",
+      "cols": [
+        "hs_n_fail",
+        "hs_days_since_last_fail",
+        "hs_fails_last_7d",
+        "hs_fails_last_30d",
+        "hs_last_outcome",
+        "hs_n_transitions",
+        "hs_n_runs_seen",
+        "hs_fail_rate",
+        "is_new_test",
+        "dur_last_asof",
+        "dur_ema_asof",
+        "dur_source",
+        "test_file_in_diff",
+        "same_top_module",
+        "path_prefix_overlap",
+        "name_token_overlap",
+        "bm25_test_vs_diff",
+        "chg_n_files",
+        "chg_additions",
+        "chg_deletions",
+        "chg_n_top_modules",
+        "has_change_data",
+        "cof_max",
+        "cof_sum",
+        "cof_count_max"
+      ],
+      "train_projects": [
+        "activemq",
+        "hadoop",
+        "hbase",
+        "hive",
+        "jackrabbit-oak",
+        "james",
+        "kafka",
+        "karaf",
+        "log4j"
+      ],
+      "eval_projects": [
+        "tvm"
+      ],
+      "train_rows": 2591679,
+      "best_iteration": 179,
+      "valB_pr_auc": 0.265979,
+      "testC_pr_auc": 0.050607,
+      "testC_pr_auc_ftf": 0.000589
+    },
+    "tvm_only": {
+      "name": "tr_tvm_only",
+      "cols": [
+        "hs_n_fail",
+        "hs_days_since_last_fail",
+        "hs_fails_last_7d",
+        "hs_fails_last_30d",
+        "hs_last_outcome",
+        "hs_n_transitions",
+        "hs_n_runs_seen",
+        "hs_fail_rate",
+        "is_new_test",
+        "dur_last_asof",
+        "dur_ema_asof",
+        "dur_source",
+        "test_file_in_diff",
+        "same_top_module",
+        "path_prefix_overlap",
+        "name_token_overlap",
+        "bm25_test_vs_diff",
+        "chg_n_files",
+        "chg_additions",
+        "chg_deletions",
+        "chg_n_top_modules",
+        "has_change_data",
+        "cof_max",
+        "cof_sum",
+        "cof_count_max"
+      ],
+      "train_projects": [
+        "tvm"
+      ],
+      "eval_projects": [
+        "tvm"
+      ],
+      "train_rows": 1012400,
+      "best_iteration": 59,
+      "valB_pr_auc": 0.679966,
+      "testC_pr_auc": 0.037452,
+      "testC_pr_auc_ftf": 0.000736
+    },
+    "all_to_tvm": {
+      "name": "tr_all_to_tvm",
+      "cols": [
+        "hs_n_fail",
+        "hs_days_since_last_fail",
+        "hs_fails_last_7d",
+        "hs_fails_last_30d",
+        "hs_last_outcome",
+        "hs_n_transitions",
+        "hs_n_runs_seen",
+        "hs_fail_rate",
+        "is_new_test",
+        "dur_last_asof",
+        "dur_ema_asof",
+        "dur_source",
+        "test_file_in_diff",
+        "same_top_module",
+        "path_prefix_overlap",
+        "name_token_overlap",
+        "bm25_test_vs_diff",
+        "chg_n_files",
+        "chg_additions",
+        "chg_deletions",
+        "chg_n_top_modules",
+        "has_change_data",
+        "cof_max",
+        "cof_sum",
+        "cof_count_max"
+      ],
+      "train_projects": [
+        "activemq",
+        "hadoop",
+        "hbase",
+        "hive",
+        "jackrabbit-oak",
+        "james",
+        "kafka",
+        "karaf",
+        "log4j",
+        "tvm"
+      ],
+      "eval_projects": [
+        "tvm"
+      ],
+      "train_rows": 3604079,
+      "best_iteration": 432,
+      "valB_pr_auc": 0.481918,
+      "testC_pr_auc": 0.061982,
+      "testC_pr_auc_ftf": 0.000943
+    }
+  },
+  "chosen": "tvm_only",
+  "rule": "highest TVM valB PR-AUC (testC shown for confirmation only)",
+  "_meta": {
+    "generated": "2026-10-21 11:13:30",
+    "git_sha": "1d7f717"
+  }
+}

@@ -231,3 +231,7 @@ made on validation in Phase 3.
   confirmed on TVM test"). Confirmation failed, so the pooled all-projects variant is shipped. This uses test
   information and is disclosed in `transfer.json`, MODELING.md and the model card. The shipped model's unbiased
   evaluation is Phase 5 (repositories no model has seen).
+- **Root cause of the paging.** An orphaned NetworkX `pytest` process (a mutant under test) held **4.7 GB**. Mutate was
+  stopped without its child process, and the mutated code apparently grew memory without bound. Killing it freed
+  5.4 GB. This probably explains why Kafka's model domain evaluation took 10.3 h. Changes: mutate resumed with a
+  120 s per-mutant timeout, and long jobs are now stopped with their whole process tree.
