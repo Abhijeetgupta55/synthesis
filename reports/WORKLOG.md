@@ -291,3 +291,8 @@ test files for file-level ordering. Strict-filter fix candidates since 2023 (sha
   so many old commits are expected to fail under one pinned environment.
 - **sympy**: 500 candidates, 633 test files, pure Python. **Chosen.** The full suite is very long, so a documented
   subset of subpackages is used; it will be chosen by measured suite time on a quiet machine.
+- **Windows timeout bug, fixed.** A venv's `python.exe` on Windows is a launcher that starts the real interpreter as
+  a child. `subprocess.run(timeout=...)` killed only the launcher, so a timed-out mutant's pytest kept running. That
+  caused the 4.7 GB orphan, and "120 s" timeouts took up to 271 s. `smartci.runner.run_pytest` now kills the whole
+  process tree (`taskkill /F /T`). Test: a 60 s test with a 5 s timeout returns after 5.5 s and leaves no process.
+  Mutate was restarted (resumable).

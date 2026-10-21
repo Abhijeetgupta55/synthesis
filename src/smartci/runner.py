@@ -67,13 +67,28 @@ def run_pytest(wt: Path, args: list[str], junit: Path | None = None, timeout: fl
         junit.parent.mkdir(parents=True, exist_ok=True)
         cmd += [f"--junitxml={junit}", "-o", "junit_family=xunit1"]
     t0 = time.perf_counter()
+    p = subprocess.Popen(cmd, cwd=wt, env=env_for(wt, env_extra), stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                         text=True, encoding="utf-8", errors="replace")
     try:
-        r = subprocess.run(cmd, cwd=wt, env=env_for(wt, env_extra), capture_output=True, text=True,
-                           encoding="utf-8", errors="replace", timeout=timeout)
-        return PytestRun(r.returncode, time.perf_counter() - t0, r.stdout + r.stderr, junit)
-    except subprocess.TimeoutExpired as e:
-        out = (e.stdout or "") if isinstance(e.stdout, str) else (e.stdout or b"").decode("utf-8", "replace")
-        return PytestRun(-9, time.perf_counter() - t0, out, junit, timed_out=True)
+        out, _ = p.communicate(timeout=timeout)
+        return PytestRun(p.returncode, time.perf_counter() - t0, out, junit)
+    except subprocess.TimeoutExpired:
+        kill_tree(p.pid)
+        out, _ = p.communicate()
+        return PytestRun(-9, time.perf_counter() - t0, out or "", junit, timed_out=True)
+
+
+def kill_tree(pid: int) -> None:
+    """Kill a process and all its children. On Windows a venv's python.exe is a launcher that starts the real
+    interpreter as a child; killing only the launcher would leave the test run alive (and holding memory)."""
+    if os.name == "nt":
+        subprocess.run(["taskkill", "/F", "/T", "/PID", str(pid)], capture_output=True)
+    else:
+        import signal
+        try:
+            os.killpg(os.getpgid(pid), signal.SIGKILL)
+        except (ProcessLookupError, PermissionError):
+            os.kill(pid, signal.SIGKILL)
 
 
 def collect_order(wt: Path, args: list[str] = (), python: str | None = None) -> tuple[list[str], list[str]]:
