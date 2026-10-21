@@ -208,3 +208,15 @@ made on validation in Phase 3.
   The adapter was not fitted yet: `learn` ran before the global model was exported. Re-run `fit_adapter` after
   export. With 68 bugs, 41 adapt / 27 evaluate.
 - `mutate --n 300 --seed 42` started.
+- **Classification, final (testC, isotonic with tie-break)**: PR-AUC LR 0.193, RF 0.195, LightGBM 0.218, soft vote
+  0.220, stacking 0.227. ROC-AUC 0.95–0.96. Brier 0.00253–0.00261. Recall@10 per failed run 0.54–0.57.
+- **Domain evaluation**: Kafka's 8,078 test runs took 37,139 s. The machine was paging at about 600 MB free, and RF
+  is predicted three times per run (alone, in the vote, in the stack). Mutate was paused to let it finish.
+- **Domain, test split, macro APFDc vs the best simple baseline chosen on val** (`models.json`):
+  - All: stack 0.880 vs ChangedOrNewFirst 0.863, Δ +0.018 (CI excludes 0); LightGBM 0.871 (+0.008, n.s.). LightGBM vs
+    cbt_LastFail: **+0.020 [+0.008, +0.032]**. The model beats cbt_LastFail on All.
+  - FirstFail-asof: LightGBM 0.775 vs QTF 0.823 (−0.047). FirstFail-old: 0.708 vs 0.800 (−0.092).
+    New/Edited: 0.958 vs 0.981 (−0.023). **The models lose to QTF on first-time failures.**
+  - p-only ordering (lgbm_p) collapses on FirstFail-old: 0.267. The p/d rule is what keeps the model competitive.
+  - Hypothesis: the model front-loads tests with recent failures, which wins on All. In first-time-failure runs those
+    tests mostly pass and use up time; QTF ignores history. The ablations and error analysis test this.
