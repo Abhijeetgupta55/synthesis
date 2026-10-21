@@ -369,3 +369,9 @@ test files for file-level ordering. Strict-filter fix candidates since 2023 (sha
   Decision: GATE 5 is judged only on mains power with a profile measured under the same conditions (HUMAN_TODO 0).
   `gate5.py` also reports a speed-normalised check (simulation × per-run speed factor measured from the files run
   before the failure) as a diagnostic.
+- **GATE 5 (NetworkX, seed 5, on battery): FAIL, 11/20 checks.** smartci lane 10/10 pass: real within about 1 s of
+  simulated (0.3 → 1.3 s, 126.7 → 129.2 s; that 1 s is pytest's failure reporting). Default lane 1/10: real is
+  consistently 1.5–2.8× simulated (median about 2.2×) for every bug and mutant, and the first failing test matches the
+  simulation in every run. Cause: CPU throttled on battery (42% of nominal) relative to when the profile was measured.
+  Kept as `gate5_networkx_battery.json`. **The authoritative GATE 5 is pending a re-run on mains power** with a
+  fresh profile (HUMAN_TODO 0). Not reported as a pass anywhere.
