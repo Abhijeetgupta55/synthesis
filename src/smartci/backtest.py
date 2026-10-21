@@ -131,7 +131,7 @@ def run(repo: Path, which: str = "both") -> dict:
         t = date if date is not None else _t.time()
         ords = orderings(repo, sim, change, patches, t, model, cmap, hist)
         r = {"kind": kind, "id": bid, "url": link, "title": title, "n_failing_tests": len(failing),
-             "failing_files": sorted(failing_files), "ttff_s": {}, "apfdc": {}}
+             "failing_files": sorted(failing_files), "failing_nodeids": sorted(failing), "ttff_s": {}, "apfdc": {}}
         r["prefix"] = {}
         for name, o in ords.items():
             r["ttff_s"][name] = sim.ttff(o, failing)
