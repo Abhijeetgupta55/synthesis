@@ -11,4 +11,4 @@ __pycache__/
 # tool + pipeline outputs
 data/processed/_duckdb_tmp/
 .smartci/
-demo_bundle/
+

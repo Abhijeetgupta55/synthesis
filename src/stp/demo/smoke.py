@@ -60,6 +60,8 @@ def check_replays(n: int = 20, seed: int = 3) -> list[str]:
 def check_backtests(n: int = 5, seed: int = 4) -> list[str]:
     errs = []
     for d in sorted((BUNDLE / "repos").glob("*")) if (BUNDLE / "repos").exists() else []:
+        if not (d / "backtest.json").exists():
+            continue                     # repo copied before its backtest exists
         bt = json.loads((d / "backtest.json").read_text(encoding="utf-8"))
         prof = json.loads((d / "profile.json").read_text(encoding="utf-8"))
         nodes: dict[str, list[str]] = {}

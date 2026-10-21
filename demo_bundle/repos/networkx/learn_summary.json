@@ -1,0 +1,11 @@
+{
+ "n_candidates": 87,
+ "n_kept": 68,
+ "n_excluded": 19,
+ "exclusions": {
+  "collection_error": 4,
+  "fails_on_fix": 3,
+  "no_failure": 12
+ },
+ "could_not_run_in_current_env": 7
+}
