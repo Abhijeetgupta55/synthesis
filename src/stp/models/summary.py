@@ -78,10 +78,11 @@ def leave_one_out(df: pd.DataFrame, model: str, ref: str, sub: str) -> dict:
     return out
 
 
-def regime(df: pd.DataFrame, model: str, ref: str) -> dict:
-    """Macro difference to the reference with and without the Kafka/TVM test windows (regime shift)."""
+def regime(df: pd.DataFrame, model: str, refs: dict[str, str]) -> dict:
+    """Macro difference to each subset's best simple baseline, with and without the Kafka/TVM test windows."""
     out = {}
     for sub in ("All", "FirstFail-asof", "FirstFail-old"):
+        ref = refs[sub]
         d = df[df.subset == sub]
         out[sub] = {"with": paired_diff_ci(d, model, ref, n_boot=500, seed=5),
                     "without_kafka_tvm": paired_diff_ci(d[~d.project.isin(["kafka", "tvm"])], model, ref,
@@ -104,7 +105,7 @@ def main(main_model: str = "lgbm") -> dict:
     if main_model in models:
         res["leave_one_project_out"] = {s: leave_one_out(df, main_model, best[s], s)
                                         for s in ("All", "FirstFail-asof", "FirstFail-old") if s in best}
-        res["regime_shift"] = regime(df, main_model, best.get("All", "cbt_LastFail"))
+        res["regime_shift"] = regime(df, main_model, best)
         res["vs_cbt_lastfail_All"] = paired_diff_ci(df[df.subset == "All"], main_model, "cbt_LastFail", seed=6)
         fo = res["vs_best_simple"].get("FirstFail-old", {}).get("macro10", {})
         res["ablation_question"] = {

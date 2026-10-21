@@ -235,3 +235,17 @@ made on validation in Phase 3.
   stopped without its child process, and the mutated code apparently grew memory without bound. Killing it freed
   5.4 GB. This probably explains why Kafka's model domain evaluation took 10.3 h. Changes: mutate resumed with a
   120 s per-mutant timeout, and long jobs are now stopped with their whole process tree.
+- **Ablation domain results (test, macro APFDc)**:
+  All: A 0.864, B 0.863, C 0.872, D 0.871.
+  FirstFail-asof: A 0.732, B 0.742, **C 0.801**, D 0.775.
+  FirstFail-old: A 0.688, B 0.699, **C 0.734**, D 0.708.
+  **Answer to the key question: no.** Neither C nor D beats QTF (0.800) on FirstFail-old; the closest is C at −0.067
+  [−0.101, −0.034]. Change relatedness closes about 40% of the gap. Co-failure memory raises PR-AUC but adds nothing
+  to APFDc on All and hurts first-time failures. On the domain metric, C is the best variant. The shipped model is
+  *not* switched on this basis, because that would be selection on test. It is reported as a finding.
+- Leave-one-project-out: the macro Δ vs the best baseline is stable (All +0.004 to +0.016; FirstFail-asof −0.036 to
+  −0.054). No single project drives the result.
+- Per group, LightGBM on All: Kafka 0.884 vs 0.849, TVM 0.913 vs 0.862, small-8 0.864 vs 0.864. On FirstFail, QTF wins
+  in every group (Kafka 0.953, TVM 0.991, small-8 0.786).
+- Bug: the regime-shift check compared every subset against the All baseline. Fixed to use each subset's own best
+  baseline; summary to be re-run.
