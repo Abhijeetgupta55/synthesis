@@ -48,7 +48,10 @@ def is_source_file(path: str) -> bool:
             and not name.startswith("."))
 
 
-def candidates(repo: Path, since: str | None = None, branch: str = "HEAD") -> list[dict]:
+def candidates(repo: Path, since: str | None = None, branch: str = "HEAD",
+               paths: list[str] | None = None) -> list[dict]:
+    """Fix commits that touch source and tests. `paths` restricts to commits touching tests under those directories
+    (for a suite subset, e.g. sympy/core); only those test files are run."""
     args = ["log", branch, "--no-merges", "--format=%x1e%H%x1f%P%x1f%ct%x1f%s", "--name-status", "-M"]
     if since:
         args.insert(2, f"--since={since}")
@@ -66,6 +69,8 @@ def candidates(repo: Path, since: str | None = None, branch: str = "HEAD") -> li
             st = parts[0][0]
             files.append((st, parts[-1], parts[1] if st == "R" else None))
         tests = [f for s, f, _ in files if is_test_file(f) and s != "D"]
+        if paths:
+            tests = [t for t in tests if any(t == p or t.startswith(p.rstrip("/") + "/") for p in paths)]
         src = [(s, f, old) for s, f, old in files if is_source_file(f) or (old and is_source_file(old))]
         if tests and src and FIX_RE.search(subject):
             out.append({"fix_sha": sha, "parent_sha": parents, "date": int(ts), "subject": subject,
@@ -138,10 +143,10 @@ def reproduce(repo: Path, cand: dict, wt: Path, timeout: float, python: str | No
 
 
 def learn(repo: Path, since: str | None = None, max_n: int | None = None, timeout: float = 600,
-          python: str | None = None, branch: str = "HEAD") -> dict:
+          python: str | None = None, branch: str = "HEAD", paths: list[str] | None = None) -> dict:
     repo = Path(repo).resolve()
     d = history.smartci_dir(repo)
-    cands = candidates(repo, since, branch)
+    cands = candidates(repo, since, branch, paths)
     done = {}
     for name in ("bugs.jsonl", "learn_log.jsonl"):
         f = d / name

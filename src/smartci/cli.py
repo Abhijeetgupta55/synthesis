@@ -35,7 +35,7 @@ def cmd_coverage(a):
 
 def cmd_learn(a):
     from smartci import learn
-    s = learn.learn(_repo(a), a.since, a.max, a.timeout, a.python)
+    s = learn.learn(_repo(a), a.since, a.max, a.timeout, a.python, paths=a.paths or None)
     print(json.dumps(s, indent=1))
     from smartci import profile as prof
     if (prof.history.state_dir(_repo(a)) / "profile.json").exists():
@@ -121,6 +121,7 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--since", default=None)
     p.add_argument("--max", type=int, default=None)
     p.add_argument("--timeout", type=float, default=600)
+    p.add_argument("--paths", nargs="*", default=None, help="only fixes whose tests are under these directories")
     p = add("mutate", cmd_mutate, help="generate killed mutants")
     p.add_argument("--n", type=int, default=300)
     p.add_argument("--seed", type=int, default=42)
