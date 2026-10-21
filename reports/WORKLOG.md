@@ -266,3 +266,16 @@ made on validation in Phase 3.
 every rubric item has a table and a figure. Plain statement: **the model beats cbt_LastFail on All** (+0.020
 [+0.008, +0.032]), **it does not beat the best simple baseline (QTF) on FirstFail-old or FirstFail-asof**, and no
 ablation variant does either.
+
+## 2026-10-21 · GATE 4 (fixture part)
+
+- A fresh venv (`uv venv` + `pip install -e .`, Python 3.11) loads the real packaged model (25 features).
+- On the fixture repo, with that venv's `smartci` CLI and the real model: `profile` (2 runs, 0.9 s summed test time,
+  ~2.7 s pytest start-up), `learn --max 5` (1 candidate, kept), `backtest --set mined` (smartci 0.01 s vs default
+  0.61 s simulated) and `compare` (both runs fail on `tests/test_ops.py::test_sub`; smartci ranked it first) all run
+  end to end. **Fixture part: PASS.** The NetworkX part follows after mutate and profile.
+- Honest overhead: the smartci session took 11.8 s vs 6.2 s for the default session. That is ~5.6 s of imports,
+  git diffs, model parsing and history per session, which outweighs any gain on a 6 s suite. It must be measured on
+  NetworkX with a quiet machine and reported.
+- Between the first test's start and the failure report there is ~0.7–1.2 s beyond the tests' own durations,
+  probably pytest building the failure report. This was measured under CPU load from mutate, so it is noisy.
