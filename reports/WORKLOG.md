@@ -320,3 +320,12 @@ test files for file-level ordering. Strict-filter fix candidates since 2023 (sha
   ids have durations and 68 / 68 bugs map onto profiled test files. Side effect of (2): those old-commit learn runs
   also used the main checkout's `filterwarnings = error`. That makes exclusions more conservative; kept bugs still
   pass at the fix and fail with the source reverted.
+- **NetworkX adapter**: fitted on 41 older bugs (10,783 rows): intercept 6.44, coef on the global logit 2.25,
+  coef on covers-changed-lines 3.98. Evaluated on the newer 27.
+- **NetworkX backtest** (263 test files, 211 s): mined held-out (27): smartci median 0.80 s to first failure vs
+  default 66.7 s, coverage-first 0.31 s, changed-files-first 0.72 s. W/T/L vs coverage-first 8/12/7, vs
+  changed-files-first 1/12/14 (mean APFDc 0.937 vs 0.986). **On mined bugs smartci does not beat the simple rules.**
+  Mutants (300): smartci 0.02 s, coverage-first 0.04 s, default 84.5 s; W/T/L vs coverage-first 30/252/18 (APFDc 0.990
+  vs 0.988), effectively a tie. Against default: 27/0/0 and 296/1/3.
+  Note: "best simple baseline" in the backtest is the best rule *on the same bugs* (no separate validation). That is
+  optimistic for the baseline and therefore conservative for smartci.
