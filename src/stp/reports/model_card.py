@@ -44,7 +44,8 @@ def main() -> None:
         lines.append("")
         lines.append("Python transfer (TVM pytest suites), test PR-AUC: " + ", ".join(
             f"{k} {v['testC_pr_auc']:.3f}" for k, v in tr.get("variants", {}).items()))
-        lines.append(f"Shipped variant chosen by TVM validation PR-AUC: `{tr.get('chosen')}`.")
+        lines.append(f"Chosen by TVM validation PR-AUC: `{tr.get('chosen')}`; confirmed on TVM test: "
+                     f"{tr.get('confirmed_on_test')}; shipped: `{tr.get('shipped')}`. {tr.get('rule', '')}")
     lines += ["", "## Limits",
               "- Trained on 10 Apache projects' CI (9 Java/Scala, 1 Python). Signals such as name/path overlap and "
               "recent-failure history transfer; project-specific base rates do not (no project id is used).",

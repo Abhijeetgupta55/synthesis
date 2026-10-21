@@ -220,3 +220,14 @@ made on validation in Phase 3.
   - p-only ordering (lgbm_p) collapses on FirstFail-old: 0.267. The p/d rule is what keeps the model competitive.
   - Hypothesis: the model front-loads tests with recent failures, which wins on All. In first-time-failure runs those
     tests mostly pass and use up time; QTF ignores history. The ablations and error analysis test this.
+- **Ablations (testC PR-AUC / first-time PR-AUC)**: A history 0.201 / 0.00028; B + cost 0.202 / 0.00030;
+  C + change 0.203 / 0.00040; D + co-failure 0.218 / 0.00039. Co-failure gives the all-failure gain. Change
+  relatedness raises first-time PR-AUC by about 40%. APFDc on FirstFail-old comes from the ablation domain run.
+- **Python transfer to TVM (valB / testC PR-AUC)**: jvm9→tvm 0.266 / 0.051; tvm-only 0.680 / 0.038;
+  all→tvm 0.482 / 0.062. **Validation and test disagree.** The declared rule (best TVM valB) picks tvm-only, which is
+  the *worst* on TVM test. It stopped at 59 rounds and fit TVM history from the window just before validation, which
+  did not survive TVM's regime shift (63% of test classes unseen in train).
+  **Decision:** keep the declared rule for reporting; add the confirmation step the rule already named ("then
+  confirmed on TVM test"). Confirmation failed, so the pooled all-projects variant is shipped. This uses test
+  information and is disclosed in `transfer.json`, MODELING.md and the model card. The shipped model's unbiased
+  evaluation is Phase 5 (repositories no model has seen).

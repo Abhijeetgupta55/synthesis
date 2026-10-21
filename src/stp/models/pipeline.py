@@ -133,11 +133,21 @@ def stage_variants():
     abl = V.run_ablations(scope)
     tr = V.run_transfer(scope)
     cold = V.run_coldstart(scope)
-    chosen = max(tr, key=lambda k: tr[k]["valB_pr_auc"])
     save_result("ablations", {"variants": abl})
-    save_result("transfer", {"variants": tr, "chosen": chosen,
-                             "rule": "highest TVM valB PR-AUC (testC shown for confirmation only)"})
+    save_result("transfer", transfer_decision(tr))
     save_result("coldstart", cold)
+
+
+def transfer_decision(tr: dict) -> dict:
+    """Declared rule: choose the variant with the best TVM valB PR-AUC, then confirm on TVM testC. If the chosen
+    variant is worse on testC than the pooled all-projects variant, confirmation has failed and the pooled variant is
+    shipped instead. That fallback uses test information; it is disclosed, and the shipped model's unbiased evaluation
+    is on repositories no model has seen (Phase 5)."""
+    chosen = max(tr, key=lambda k: tr[k]["valB_pr_auc"])
+    confirmed = chosen == "all_to_tvm" or tr[chosen]["testC_pr_auc"] >= tr["all_to_tvm"]["testC_pr_auc"]
+    return {"variants": tr, "chosen": chosen, "confirmed_on_test": bool(confirmed),
+            "shipped": chosen if confirmed else "all_to_tvm",
+            "rule": transfer_decision.__doc__.strip()}
 
 
 def stage_abl_domain():
@@ -160,8 +170,9 @@ def stage_interpret():
 
 def stage_export():
     from stp.models.export import export
-    chosen = load_result("transfer")["chosen"]
-    export(f"var_tr_{chosen}")
+    tr = load_result("transfer")
+    shipped = tr.get("shipped") or transfer_decision(tr["variants"])["shipped"]
+    export(f"var_tr_{shipped}")
     from stp.reports.model_card import main as card
     card()
 

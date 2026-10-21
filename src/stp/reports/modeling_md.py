@@ -171,7 +171,9 @@ def sec_transfer(T):
                       table(["Variant", "Train projects", "TVM valB PR-AUC", "TVM testC PR-AUC", "testC PR-AUC first-time"],
                             [[k, len(v["train_projects"]), f3(v["valB_pr_auc"]), f3(v["testC_pr_auc"]),
                               f3(v.get("testC_pr_auc_ftf"))] for k, v in T["variants"].items()]), "",
-                      f"Shipped: **{T['chosen']}** (highest TVM valB PR-AUC; test shown for confirmation only).", ""])
+                      f"Chosen by the declared rule (highest TVM valB PR-AUC): **{T['chosen']}**. Confirmed on TVM "
+                      f"test: **{T.get('confirmed_on_test')}**. Shipped: **{T.get('shipped', T['chosen'])}**.", "",
+                      T.get("rule", ""), ""])
 
 
 def sec_interp(I):
