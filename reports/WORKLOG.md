@@ -379,3 +379,8 @@ test files for file-level ordering. Strict-filter fix candidates since 2023 (sha
   combinatorics, polys and simplify (144 test files). sympy's own config skips slow tests. Chosen as the core
   algebra stack with enough test files for file-level ordering. 215 strict fix candidates since 2023 touch tests in
   the subset. `learn --paths` mines only those, so every mined bug lands inside the profiled suite.
+- **sympy learn, first pass: an environment error of mine.** 35 of the first 75 candidates were excluded as
+  collection_error because the sympy venv lacked `hypothesis`, which sympy's conftest requires. Fixed by installing
+  sympy's `requirements-dev.txt` (hypothesis 6.170.5, pytest-xdist, pytest-timeout, …). The collection_error rows
+  were cleared and learn resumed. Kept so far: 20; fails_on_fix 10; no_failure 9; timeout 1 (the timeout overlapped
+  a machine sleep).
