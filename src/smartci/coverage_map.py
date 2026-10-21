@@ -31,7 +31,7 @@ def build(repo: Path, base: str | None = None, pytest_args: list[str] = (), time
         import sys
         t0 = time.time()
         cmd = [python or sys.executable, "-m", "coverage", "run", f"--rcfile={rc}", "-m", "pytest", "-q",
-               "-p", "no:cacheprovider", *pytest_args]
+               "-p", "no:cacheprovider", f"--rootdir={wt}", *pytest_args]
         r = subprocess.run(cmd, cwd=wt, env=runner.env_for(wt), capture_output=True, text=True, encoding="utf-8",
                            errors="replace", timeout=timeout)
         elapsed = time.time() - t0

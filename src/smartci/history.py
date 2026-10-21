@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import time
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -60,6 +61,28 @@ def resolve_file(repo: Path, classname: str, file_attr: str | None, cache: dict)
     return found
 
 
+def _module_of(classname: str, file_attr: str) -> tuple[str, str]:
+    """(test file, class path inside it) for a JUnit testcase.
+
+    The classname is authoritative: its longest dotted prefix whose last part looks like a pytest module
+    (test_*/ *_test) is the module. The `file` attribute is only a fallback: for an *inherited* test method it names
+    the file where the method is defined (e.g. TestDiGraph.test_contains inherited from test_graph.py), not the file
+    that holds the test class, so trusting it gives a wrong node id."""
+    # a run whose rootdir resolved to the main checkout (old commits without a pytest config) names classes
+    # ".smartci.worktrees.<name>.pkg.tests.test_x"; drop that prefix so ids are relative to the worktree
+    m = re.match(r"^\.?smartci\.worktrees\.[^.]+\.", classname or "")
+    if m:
+        classname = classname[m.end():]
+    parts = classname.split(".") if classname else []
+    for k in range(len(parts), 0, -1):
+        last = parts[k - 1]
+        if last.startswith("test_") or last.endswith("_test"):
+            return "/".join(parts[:k]) + ".py", ".".join(parts[k:])
+    mod = file_attr[:-3].replace("/", ".") if file_attr.endswith(".py") else ""
+    rest = classname[len(mod) + 1:] if mod and classname.startswith(mod + ".") else ""
+    return file_attr, rest
+
+
 def junit_cases(junit: Path) -> list[dict]:
     """Every <testcase> of a pytest JUnit file (junit_family=xunit1, which carries `file`) as a pytest node id:
     file::Class::name for methods, file::name for functions. Collection errors have kind='collection'."""
@@ -71,8 +94,7 @@ def junit_cases(junit: Path) -> list[dict]:
         bad = [ch for ch in tc if ch.tag in ("failure", "error")]
         kind = "collection" if any(ch.tag == "error" and "collection" in (ch.get("message") or "").lower()
                                    for ch in bad) else "test"
-        mod = f[:-3].replace("/", ".") if f.endswith(".py") else ""
-        rest = cls[len(mod) + 1:] if mod and cls.startswith(mod + ".") else ""
+        f, rest = _module_of(cls, f)
         nid = "::".join([x for x in [f, *rest.split("."), name] if x]) if f else f"{cls}::{name}"
         out.append({"nodeid": nid, "file": f, "duration_s": float(tc.get("time", 0) or 0), "failed": bool(bad),
                     "skipped": any(ch.tag == "skipped" for ch in tc), "kind": kind})

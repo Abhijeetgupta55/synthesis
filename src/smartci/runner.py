@@ -62,7 +62,9 @@ def env_for(wt: Path, extra: dict | None = None) -> dict:
 
 def run_pytest(wt: Path, args: list[str], junit: Path | None = None, timeout: float | None = None,
                python: str | None = None, env_extra: dict | None = None) -> PytestRun:
-    cmd = [python or sys.executable, "-m", "pytest", "-p", "no:cacheprovider", *args]
+    # --rootdir pins node ids to the worktree: old commits without a pytest config would otherwise make pytest walk
+    # up to the main checkout and prefix every id with ".smartci/worktrees/<name>/"
+    cmd = [python or sys.executable, "-m", "pytest", "-p", "no:cacheprovider", f"--rootdir={wt}", *args]
     if junit is not None:
         junit.parent.mkdir(parents=True, exist_ok=True)
         cmd += [f"--junitxml={junit}", "-o", "junit_family=xunit1"]

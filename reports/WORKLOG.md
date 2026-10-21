@@ -306,3 +306,17 @@ test files for file-level ordering. Strict-filter fix candidates since 2023 (sha
   and the single-line filter discarded it before the `If` branch. Fixed, with a unit test
   (`test_mutation_operators`). The NetworkX set (seed 42) is **not** regenerated, because that would change a set
   drawn with a logged seed; REAL_WORLD.md states that it contains no negated-condition mutants.
+- **NetworkX profile** (quiet machine): 267 test files, 210.9 s summed test time, full runs 260 s / 304 s, pytest
+  start-up and collection overhead ~65 s, 0 flaky files, 0 failing on base, 10,120 node ids.
+- **Two node-id bugs found and fixed** (`smartci/history.py::_module_of`, `smartci/repair.py`):
+  1. *Inherited test methods.* JUnit's `file` attribute names the file that *defines* a method
+     (TestDiGraph.test_contains is defined in test_graph.py), so 717 ids were wrong. The module now comes from the
+     classname.
+  2. *Old commits without a pytest config.* Inside a worktree at an old fix commit, pytest walked up to the main
+     checkout for its rootdir, and every id got a `.smartci/worktrees/learn/` prefix (all 68 mined bugs pointed at
+     non-existent files). Now `--rootdir` is pinned to the worktree in every smartci pytest run (learn, mutate,
+     profile, coverage, compare), and the prefix is stripped when parsing.
+  The stored profile, bugs and mutants were re-derived from their saved JUnit XML. Afterwards 10,120 / 10,120 profile
+  ids have durations and 68 / 68 bugs map onto profiled test files. Side effect of (2): those old-commit learn runs
+  also used the main checkout's `filterwarnings = error`. That makes exclusions more conservative; kept bugs still
+  pass at the fix and fail with the source reverted.

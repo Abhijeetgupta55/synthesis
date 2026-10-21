@@ -21,6 +21,8 @@ CAVEATS = [
     "touch both source and tests are candidates, and only reproducible ones are kept.",
     "**Mutants are synthetic** single-point changes; sites are drawn from covered lines, which favours the "
     "coverage-first baseline.",
+    "The NetworkX mutant set (seed 42) contains **no negated-condition mutants**: that operator had a bug, found and "
+    "fixed after the set was generated; the set was not regenerated so the logged seed still reproduces it.",
     "**The global model was trained on Apache CI data** (9 Java/Scala projects + TVM's Python suites), never on these "
     "repositories.",
     "**Short suites mean small absolute savings**; smartci's own start-up cost (imports, git diff, scoring) is paid on "

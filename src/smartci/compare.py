@@ -56,7 +56,7 @@ def _apply(wt: Path, diff: str) -> None:
 
 
 def _cmd(python: str, smart: bool, extra: list[str], timing: Path) -> list[str]:
-    c = [python, "-m", "pytest", "-x", "-p", "no:cacheprovider", "-q"]
+    c = [python, "-m", "pytest", "-x", "-p", "no:cacheprovider", "-q", "--rootdir=."]
     # the default run only records when its first failure appears; it pays no scoring cost
     c += ["--smartci", "--smartci-base", "HEAD"] if smart else [f"--smartci-timing={timing}"]
     return c + extra
