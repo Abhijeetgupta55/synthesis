@@ -1,0 +1,36 @@
+{
+ "bug": "d8081795e1344c576590b214c2e4f264b5e87244",
+ "kind": "mined",
+ "id": "d8081795e1344c576590b214c2e4f264b5e87244",
+ "expected": [
+  "networkx/algorithms/connectivity/tests/test_kcomponents.py::test_generate_partition_does_not_drop_cutset_nodes",
+  "networkx/algorithms/connectivity/tests/test_kcomponents.py::test_generate_partition_keeps_cut_adjacent_low_degree_nodes",
+  "networkx/algorithms/connectivity/tests/test_kcomponents.py::test_reconstruct_k_components_promotes_spanning_component"
+ ],
+ "title": "BUG: Fix k_components losing or truncating k-components (#8734)",
+ "state": "profiled base + bug",
+ "mode": "sequential",
+ "runs": {
+  "default": {
+   "returncode": 1,
+   "elapsed_s": 123.2947664000094,
+   "failed_line": "FAILED networkx/algorithms/connectivity/tests/test_kcomponents.py::test_generate_partition_does_not_drop_cutset_nodes",
+   "first_failure_after_s": 79.74497365951538,
+   "first_failure_nodeid": "networkx/algorithms/connectivity/tests/test_kcomponents.py::test_generate_partition_does_not_drop_cutset_nodes",
+   "receipt": null,
+   "stdout_tail": "        # one of the two 5-components.\n        A = nx.icosahedral_graph()\n        B = nx.relabel_nodes(nx.icosahedral_graph(), {i: i + 12 for i in range(12)})\n        G = nx.union(A, B)\n        G.add_edges_from([(24, 0), (24, 1), (24, 2), (24, 12), (24, 13)])\n        G.add_edges_from([(25, 3), (25, 4), (25, 5), (25, 14), (25, 15)])\n        G.add_edges_from([(26, 6), (26, 7), (26, 8), (26, 16), (26, 17)])\n        G.add_edges_from([(27, 9), (27, 10), (27, 20), (27, 21)])\n        assert nx.node_connectivity(G) == 4\n        result = nx.k_components(G)\n>       assert sorted(sorted(c) for c in result[5]) == [\n            sorted(range(12)),\n            sorted(range(12, 24)),\n        ]\nE       assert [[12, 13, 14,... 16, 17, ...]] == [[0, 1, 2, 3,... 16, 17, ...]]\nE         \nE         At index 0 diff: [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23] != [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]\nE         Right contains one more item: [12, 13, 14, 15, 16, 17, ...]\nE         Use -v to get more diff\n\nnetworkx\\algorithms\\connectivity\\tests\\test_kcomponents.py:149: AssertionError\n=========================== short test summary info ===========================\nFAILED networkx/algorithms/connectivity/tests/test_kcomponents.py::test_generate_partition_does_not_drop_cutset_nodes\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 1386 passed, 6 skipped in 121.05s (0:02:01)",
+   "n_failed_lines": 1
+  },
+  "smartci": {
+   "returncode": 1,
+   "elapsed_s": 53.68597370001953,
+   "failed_line": "FAILED networkx/algorithms/connectivity/tests/test_kcomponents.py::test_generate_partition_does_not_drop_cutset_nodes",
+   "first_failure_after_s": 1.2593717575073242,
+   "first_failure_nodeid": "networkx/algorithms/connectivity/tests/test_kcomponents.py::test_generate_partition_does_not_drop_cutset_nodes",
+   "receipt": "A:\\ML\\smart-ci-tcp\\external\\networkx\\.smartci\\receipts\\2026-10-21T184302_abf2feda.json",
+   "stdout_tail": "        # one of the two 5-components.\n        A = nx.icosahedral_graph()\n        B = nx.relabel_nodes(nx.icosahedral_graph(), {i: i + 12 for i in range(12)})\n        G = nx.union(A, B)\n        G.add_edges_from([(24, 0), (24, 1), (24, 2), (24, 12), (24, 13)])\n        G.add_edges_from([(25, 3), (25, 4), (25, 5), (25, 14), (25, 15)])\n        G.add_edges_from([(26, 6), (26, 7), (26, 8), (26, 16), (26, 17)])\n        G.add_edges_from([(27, 9), (27, 10), (27, 20), (27, 21)])\n        assert nx.node_connectivity(G) == 4\n        result = nx.k_components(G)\n>       assert sorted(sorted(c) for c in result[5]) == [\n            sorted(range(12)),\n            sorted(range(12, 24)),\n        ]\nE       assert [[12, 13, 14,... 16, 17, ...]] == [[0, 1, 2, 3,... 16, 17, ...]]\nE         \nE         At index 0 diff: [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23] != [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]\nE         Right contains one more item: [12, 13, 14, 15, 16, 17, ...]\nE         Use -v to get more diff\n\nnetworkx\\algorithms\\connectivity\\tests\\test_kcomponents.py:149: AssertionError\n=========================== short test summary info ===========================\nFAILED networkx/algorithms/connectivity/tests/test_kcomponents.py::test_generate_partition_does_not_drop_cutset_nodes\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 7 passed, 5 skipped in 51.86s",
+   "n_failed_lines": 1
+  }
+ },
+ "speedup_elapsed": 2.296591789299419
+}

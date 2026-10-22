@@ -179,5 +179,6 @@
  "gate5_pass": false,
  "n_pass": 11,
  "n_checks": 20,
- "generated": "2026-10-21 20:12:30"
+ "generated": "2026-10-21 20:12:30",
+ "conditions": "laptop on battery: Windows throttled the CPU to ~42% of nominal; the default lane ran ~2.2x slower than when the profile was measured, while the first failing test matched the simulation in every run. Not authoritative: to be re-run on mains power with a fresh profile (HUMAN_TODO 0)."
 }

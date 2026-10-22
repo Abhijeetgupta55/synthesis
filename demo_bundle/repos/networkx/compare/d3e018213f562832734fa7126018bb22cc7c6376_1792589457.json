@@ -1,0 +1,35 @@
+{
+ "bug": "d3e018213f562832734fa7126018bb22cc7c6376",
+ "kind": "mined",
+ "id": "d3e018213f562832734fa7126018bb22cc7c6376",
+ "expected": [
+  "networkx/algorithms/tests/test_distance_measures.py::TestDistance::test_diameter_radius_empty_graph",
+  "networkx/algorithms/tests/test_distance_measures.py::TestDistance::test_eccentricity"
+ ],
+ "title": "Fixed diameter/radius error for null graphs (#8454)",
+ "state": "profiled base + bug",
+ "mode": "sequential",
+ "runs": {
+  "default": {
+   "returncode": 1,
+   "elapsed_s": 437.7463721999957,
+   "failed_line": "FAILED networkx/algorithms/tests/test_distance_measures.py::TestDistance::test_eccentricity",
+   "first_failure_after_s": 373.7979145050049,
+   "first_failure_nodeid": "networkx/algorithms/tests/test_distance_measures.py::TestDistance::test_eccentricity",
+   "receipt": null,
+   "stdout_tail": "    \n        # This behavior changed in version 1.8 (ticket #739)\n        e = nx.eccentricity(self.G, v=[1, 1])\n        assert e[1] == 6\n        e = nx.eccentricity(self.G, v=[1, 2])\n        assert e[1] == 6\n    \n        # test against graph with one node\n        G = nx.path_graph(1)\n        e = nx.eccentricity(G)\n        assert e[0] == 0\n        e = nx.eccentricity(G, v=0)\n        assert e == 0\n        pytest.raises(nx.NetworkXError, nx.eccentricity, G, 1)\n    \n        # test against null graph\n        G = nx.Graph()\n>       pytest.raises(nx.NetworkXPointlessConcept, nx.eccentricity, G)\nE       Failed: DID NOT RAISE NetworkXPointlessConcept\n\nnetworkx\\algorithms\\tests\\test_distance_measures.py:79: Failed\n=========================== short test summary info ===========================\nFAILED networkx/algorithms/tests/test_distance_measures.py::TestDistance::test_eccentricity\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 4893 passed, 10 skipped, 740 xfailed in 433.83s (0:07:13)",
+   "n_failed_lines": 1
+  },
+  "smartci": {
+   "returncode": 1,
+   "elapsed_s": 204.4747103000118,
+   "failed_line": "FAILED networkx/algorithms/tests/test_distance_measures.py::TestDistance::test_eccentricity",
+   "first_failure_after_s": 129.21420121192932,
+   "first_failure_nodeid": "networkx/algorithms/tests/test_distance_measures.py::TestDistance::test_eccentricity",
+   "receipt": "A:\\ML\\smart-ci-tcp\\external\\networkx\\.smartci\\receipts\\2026-10-21T185844_abf2feda.json",
+   "stdout_tail": "    \n        # This behavior changed in version 1.8 (ticket #739)\n        e = nx.eccentricity(self.G, v=[1, 1])\n        assert e[1] == 6\n        e = nx.eccentricity(self.G, v=[1, 2])\n        assert e[1] == 6\n    \n        # test against graph with one node\n        G = nx.path_graph(1)\n        e = nx.eccentricity(G)\n        assert e[0] == 0\n        e = nx.eccentricity(G, v=0)\n        assert e == 0\n        pytest.raises(nx.NetworkXError, nx.eccentricity, G, 1)\n    \n        # test against null graph\n        G = nx.Graph()\n>       pytest.raises(nx.NetworkXPointlessConcept, nx.eccentricity, G)\nE       Failed: DID NOT RAISE NetworkXPointlessConcept\n\nnetworkx\\algorithms\\tests\\test_distance_measures.py:79: Failed\n=========================== short test summary info ===========================\nFAILED networkx/algorithms/tests/test_distance_measures.py::TestDistance::test_eccentricity\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 5685 passed, 54 skipped, 1 xfailed in 200.74s (0:03:20)",
+   "n_failed_lines": 1
+  }
+ },
+ "speedup_elapsed": 2.1408338055973783
+}

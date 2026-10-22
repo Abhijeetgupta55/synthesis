@@ -73,8 +73,9 @@ def check_backtests(n: int = 5, seed: int = 4) -> list[str]:
                 *before, last = pre
                 t = sum(x[1] for x in before)
                 if failing:
+                    ovh = float(prof.get("per_test_overhead_s", 0.0))   # same per-test cost the simulator adds
                     for nid in nodes.get(last[0], []):
-                        t += prof["nodeid_durations"].get(nid, 0.0)
+                        t += prof["nodeid_durations"].get(nid, 0.0) + ovh
                         if nid in failing:
                             break
                 if abs(t - b["ttff_s"][m]) > 1e-3 * max(1.0, t) + 1e-3:

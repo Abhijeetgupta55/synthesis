@@ -100,6 +100,7 @@ def repo_section(name: str, repo: Path) -> tuple[str, dict]:
         s += [f"### Simulation vs real pytest (GATE 5, seed {g5['seed']})", "",
               table(["Kind", "Bug", "default sim s", "default real s", "smartci sim s", "smartci real s", "pass",
                      "end-to-end s (default / smartci)"], rows), "",
+              *([f"**Conditions:** {g5['conditions']}", ""] if g5.get("conditions") else []),
               f"Rule: {g5['rule']}; measured overhead {g5['measured_overhead_s']:.2f} s. "
               f"**GATE 5: {'PASS' if g5['gate5_pass'] else 'FAIL'}** ({g5['n_pass']}/{g5['n_checks']} checks). "
               "End-to-end seconds include pytest start-up and smartci's scoring cost.", ""]

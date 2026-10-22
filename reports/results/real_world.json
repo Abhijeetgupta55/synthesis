@@ -1,0 +1,812 @@
+{
+  "networkx": {
+    "pinned_sha": "abf2feda2252ee4e0d5a66964addf179225dfe76",
+    "learn": {
+      "n_candidates": 87,
+      "n_kept": 68,
+      "n_excluded": 19,
+      "exclusions": {
+        "collection_error": 4,
+        "fails_on_fix": 3,
+        "no_failure": 12
+      },
+      "could_not_run_in_current_env": 7
+    },
+    "n_mutants": 300,
+    "adapter": {
+      "fitted": true,
+      "intercept": 4.243732,
+      "coef_logit": 1.844573,
+      "coef_cov": 3.472668,
+      "uses_coverage": true,
+      "n_adapt_bugs": 28,
+      "n_eval_bugs": 18,
+      "adapt_until": 1767752500,
+      "n_rows": 7364
+    },
+    "backtest_summary": {
+      "mined": {
+        "n": 18,
+        "median_ttff_s": {
+          "changed_files_first": {
+            "median": 1.203526,
+            "lo": 0.157347,
+            "hi": 2.198742
+          },
+          "coverage_first": {
+            "median": 0.520394,
+            "lo": 0.123681,
+            "hi": 19.112421
+          },
+          "default": {
+            "median": 114.925792,
+            "lo": 69.514346,
+            "hi": 194.811525
+          },
+          "fastest_first": {
+            "median": 68.656496,
+            "lo": 43.778658,
+            "hi": 78.704822
+          },
+          "random": {
+            "median": 150.095435,
+            "lo": 132.790631,
+            "hi": 158.054262
+          },
+          "smartci": {
+            "median": 0.716405,
+            "lo": 0.206573,
+            "hi": 3.417259
+          }
+        },
+        "mean_apfdc": {
+          "changed_files_first": 0.983291,
+          "coverage_first": 0.90956,
+          "default": 0.552358,
+          "fastest_first": 0.757015,
+          "random": 0.511531,
+          "smartci": 0.93586
+        },
+        "vs_smartci": {
+          "changed_files_first": {
+            "win": 1,
+            "tie": 10,
+            "loss": 7,
+            "median_time_ratio_smartci_over_baseline": 1.0,
+            "ratio_ci": [
+              1.0,
+              1.189945
+            ],
+            "losses": [
+              "d3e018213f562832734fa7126018bb22cc7c6376",
+              "f4c159f2b7e71993fee5c98ed54dbe5c1ae6ad30",
+              "e9eac8a7e04df0b9cdcff8ed1682b3971678f4ed",
+              "2aecdbdd18210c38dc2b9fe32da3825bf30a3c33",
+              "56c7b0d0b6141ec0ffa6a9ebb5494417120b7f50",
+              "c94928ed94899033126c9d47f797a1f698584b20",
+              "083e47255d7087340e97ec13d256e9241ec25e77"
+            ]
+          },
+          "coverage_first": {
+            "win": 4,
+            "tie": 9,
+            "loss": 5,
+            "median_time_ratio_smartci_over_baseline": 1.0,
+            "ratio_ci": [
+              1.0,
+              1.028741
+            ],
+            "losses": [
+              "f4c159f2b7e71993fee5c98ed54dbe5c1ae6ad30",
+              "e9eac8a7e04df0b9cdcff8ed1682b3971678f4ed",
+              "2aecdbdd18210c38dc2b9fe32da3825bf30a3c33",
+              "56c7b0d0b6141ec0ffa6a9ebb5494417120b7f50",
+              "083e47255d7087340e97ec13d256e9241ec25e77"
+            ]
+          },
+          "default": {
+            "win": 18,
+            "tie": 0,
+            "loss": 0,
+            "median_time_ratio_smartci_over_baseline": 0.007395,
+            "ratio_ci": [
+              0.003218,
+              0.016464
+            ],
+            "losses": []
+          },
+          "fastest_first": {
+            "win": 17,
+            "tie": 0,
+            "loss": 1,
+            "median_time_ratio_smartci_over_baseline": 0.013954,
+            "ratio_ci": [
+              0.006607,
+              0.026122
+            ],
+            "losses": [
+              "c94928ed94899033126c9d47f797a1f698584b20"
+            ]
+          },
+          "random": {
+            "win": 17,
+            "tie": 0,
+            "loss": 1,
+            "median_time_ratio_smartci_over_baseline": 0.004953,
+            "ratio_ci": [
+              0.001398,
+              0.019711
+            ],
+            "losses": [
+              "083e47255d7087340e97ec13d256e9241ec25e77"
+            ]
+          }
+        },
+        "best_simple_baseline": "coverage_first",
+        "smartci_beats_best_simple": false,
+        "recommendation": "smartci does not clearly beat 'coverage_first' here; use coverage_first (or keep smartci only if its median is lower and you accept the uncertainty)"
+      },
+      "mutant": {
+        "n": 300,
+        "median_ttff_s": {
+          "changed_files_first": {
+            "median": 0.082768,
+            "lo": 0.059958,
+            "hi": 0.108266
+          },
+          "coverage_first": {
+            "median": 0.082976,
+            "lo": 0.065705,
+            "hi": 0.118079
+          },
+          "default": {
+            "median": 125.522028,
+            "lo": 69.473014,
+            "hi": 138.14301
+          },
+          "fastest_first": {
+            "median": 23.837661,
+            "lo": 21.779232,
+            "hi": 29.174748
+          },
+          "random": {
+            "median": 142.279991,
+            "lo": 136.190376,
+            "hi": 146.901052
+          },
+          "smartci": {
+            "median": 0.082832,
+            "lo": 0.065705,
+            "hi": 0.107493
+          }
+        },
+        "mean_apfdc": {
+          "changed_files_first": 0.910423,
+          "coverage_first": 0.988051,
+          "default": 0.518717,
+          "fastest_first": 0.886811,
+          "random": 0.504678,
+          "smartci": 0.990837
+        },
+        "vs_smartci": {
+          "changed_files_first": {
+            "win": 41,
+            "tie": 214,
+            "loss": 45,
+            "median_time_ratio_smartci_over_baseline": 1.0,
+            "ratio_ci": [
+              1.0,
+              1.0
+            ],
+            "losses": [
+              "m42-networkx.generators.community.py-435-35-arith",
+              "m42-networkx.algorithms.cycles.py-391-24-constant",
+              "m42-networkx.drawing.layout.py-1169-14-constant",
+              "m42-networkx.algorithms.flow.gomory_hu.py-173-34-compare",
+              "m42-networkx.drawing.nx_pylab.py-1992-32-constant",
+              "m42-networkx.algorithms.isomorphism.tree_isomorphism.py-56-23-arith",
+              "m42-networkx.algorithms.isomorphism.vf2pp.py-854-57-compare",
+              "m42-networkx.algorithms.isomorphism.isomorphvf2.py-762-11-compare",
+              "m42-networkx.algorithms.regular.py-38-19-compare",
+              "m42-networkx.algorithms.shortest_paths.weighted.py-867-38-compare",
+              "m42-networkx.generators.random_graphs.py-109-8-constant",
+              "m42-networkx.readwrite.text.py-263-13-constant",
+              "m42-networkx.algorithms.centrality.betweenness.py-468-11-compare",
+              "m42-networkx.drawing.layout.py-1699-17-constant",
+              "m42-networkx.algorithms.connectivity.connectivity.py-349-56-arith",
+              "m42-networkx.utils.rcm.py-139-71-constant",
+              "m42-networkx.algorithms.similarity.py-1171-15-compare",
+              "m42-networkx.drawing.nx_pylab.py-667-53-constant",
+              "m42-networkx.readwrite.text.py-824-18-compare",
+              "m42-networkx.drawing.nx_pylab.py-203-35-constant",
+              "m42-networkx.algorithms.tree.branchings.py-174-15-compare",
+              "m42-networkx.algorithms.distance_measures.py-717-25-compare",
+              "m42-networkx.algorithms.isomorphism.tree_isomorphism.py-179-32-compare",
+              "m42-networkx.algorithms.cycles.py-948-30-compare",
+              "m42-networkx.algorithms.tree.branchings.py-592-25-constant",
+              "m42-networkx.algorithms.similarity.py-1927-18-arith",
+              "m42-networkx.algorithms.similarity.py-914-20-constant",
+              "m42-networkx.generators.geometric.py-996-19-constant",
+              "m42-networkx.algorithms.flow.gomory_hu.py-177-56-constant",
+              "m42-networkx.generators.directed.py-74-7-compare",
+              "m42-networkx.algorithms.similarity.py-1390-7-arith",
+              "m42-networkx.algorithms.isomorphism.vf2pp.py-857-61-compare",
+              "m42-networkx.algorithms.cycles.py-387-22-constant",
+              "m42-networkx.generators.small.py-778-22-constant",
+              "m42-networkx.algorithms.tree.branchings.py-156-34-constant",
+              "m42-networkx.drawing.nx_pylab.py-2056-43-constant",
+              "m42-networkx.drawing.layout.py-2027-7-compare",
+              "m42-networkx.algorithms.similarity.py-1013-44-compare",
+              "m42-networkx.algorithms.dag.py-765-17-constant",
+              "m42-networkx.generators.geometric.py-493-15-compare",
+              "m42-networkx.algorithms.distance_measures.py-915-7-compare",
+              "m42-networkx.algorithms.similarity.py-1164-7-compare",
+              "m42-networkx.algorithms.similarity.py-2055-32-constant",
+              "m42-networkx.algorithms.cycles.py-752-19-compare",
+              "m42-networkx.algorithms.similarity.py-1179-12-return"
+            ]
+          },
+          "coverage_first": {
+            "win": 43,
+            "tie": 196,
+            "loss": 61,
+            "median_time_ratio_smartci_over_baseline": 1.0,
+            "ratio_ci": [
+              1.0,
+              1.0
+            ],
+            "losses": [
+              "m42-networkx.algorithms.flow.capacityscaling.py-121-28-boolop",
+              "m42-networkx.algorithms.cycles.py-391-24-constant",
+              "m42-networkx.drawing.layout.py-1169-14-constant",
+              "m42-networkx.generators.trees.py-375-77-constant",
+              "m42-networkx.algorithms.flow.gomory_hu.py-173-34-compare",
+              "m42-networkx.drawing.nx_pylab.py-1992-32-constant",
+              "m42-networkx.algorithms.matching.py-905-18-compare",
+              "m42-networkx.algorithms.flow.utils.py-188-76-constant",
+              "m42-networkx.generators.social.py-464-47-constant",
+              "m42-networkx.algorithms.isomorphism.tree_isomorphism.py-56-23-arith",
+              "m42-networkx.algorithms.isomorphism.vf2pp.py-854-57-compare",
+              "m42-networkx.utils.mapped_queue.py-229-18-arith",
+              "m42-networkx.algorithms.matching.py-434-11-compare",
+              "m42-networkx.algorithms.regular.py-38-19-compare",
+              "m42-networkx.algorithms.shortest_paths.unweighted.py-609-11-boolop",
+              "m42-networkx.algorithms.flow.networksimplex.py-608-8-compare",
+              "m42-networkx.generators.social.py-532-49-constant",
+              "m42-networkx.readwrite.text.py-263-13-constant",
+              "m42-networkx.algorithms.centrality.betweenness.py-468-11-compare",
+              "m42-networkx.drawing.layout.py-1699-17-constant",
+              "m42-networkx.classes.reportviews.py-719-12-boolop",
+              "m42-networkx.algorithms.connectivity.connectivity.py-349-56-arith",
+              "m42-networkx.classes.reportviews.py-640-27-constant",
+              "m42-networkx.utils.rcm.py-139-71-constant",
+              "m42-networkx.algorithms.tree.branchings.py-684-18-arith",
+              "m42-networkx.algorithms.similarity.py-1171-15-compare",
+              "m42-networkx.drawing.nx_pylab.py-667-53-constant",
+              "m42-networkx.readwrite.text.py-824-18-compare",
+              "m42-networkx.generators.social.py-502-46-constant",
+              "m42-networkx.drawing.nx_pylab.py-203-35-constant",
+              "m42-networkx.algorithms.flow.capacityscaling.py-149-4-return",
+              "m42-networkx.algorithms.tree.branchings.py-174-15-compare",
+              "m42-networkx.algorithms.distance_measures.py-717-25-compare",
+              "m42-networkx.algorithms.connectivity.kcutsets.py-138-23-arith",
+              "m42-networkx.algorithms.isomorphism.tree_isomorphism.py-179-32-compare",
+              "m42-networkx.algorithms.similarity.py-1927-18-arith",
+              "m42-networkx.algorithms.similarity.py-914-20-constant",
+              "m42-networkx.classes.graphviews.py-219-12-return",
+              "m42-networkx.generators.geometric.py-996-19-constant",
+              "m42-networkx.algorithms.flow.gomory_hu.py-177-56-constant",
+              "m42-networkx.algorithms.similarity.py-1390-7-arith",
+              "m42-networkx.algorithms.isomorphism.vf2pp.py-857-61-compare",
+              "m42-networkx.algorithms.cycles.py-387-22-constant",
+              "m42-networkx.algorithms.flow.capacityscaling.py-306-19-constant",
+              "m42-networkx.generators.social.py-49-48-constant",
+              "m42-networkx.generators.small.py-778-22-constant",
+              "m42-networkx.algorithms.tree.branchings.py-156-34-constant",
+              "m42-networkx.drawing.nx_pylab.py-2056-43-constant",
+              "m42-networkx.algorithms.matching.py-554-23-compare",
+              "m42-networkx.generators.social.py-424-56-constant",
+              "m42-networkx.drawing.layout.py-2027-7-compare",
+              "m42-networkx.algorithms.connectivity.cuts.py-144-7-compare",
+              "m42-networkx.algorithms.similarity.py-1013-44-compare",
+              "m42-networkx.algorithms.dag.py-765-17-constant",
+              "m42-networkx.generators.geometric.py-493-15-compare",
+              "m42-networkx.algorithms.distance_measures.py-915-7-compare",
+              "m42-networkx.algorithms.similarity.py-1164-7-compare",
+              "m42-networkx.algorithms.similarity.py-2055-32-constant",
+              "m42-networkx.algorithms.cycles.py-752-19-compare",
+              "m42-networkx.generators.social.py-49-40-constant",
+              "m42-networkx.algorithms.similarity.py-1179-12-return"
+            ]
+          },
+          "default": {
+            "win": 296,
+            "tie": 1,
+            "loss": 3,
+            "median_time_ratio_smartci_over_baseline": 0.001221,
+            "ratio_ci": [
+              0.000984,
+              0.001565
+            ],
+            "losses": [
+              "m42-networkx.algorithms.tree.branchings.py-684-18-arith",
+              "m42-networkx.generators.social.py-49-48-constant",
+              "m42-networkx.generators.social.py-49-40-constant"
+            ]
+          },
+          "fastest_first": {
+            "win": 298,
+            "tie": 0,
+            "loss": 2,
+            "median_time_ratio_smartci_over_baseline": 0.005929,
+            "ratio_ci": [
+              0.005167,
+              0.007001
+            ],
+            "losses": [
+              "m42-networkx.generators.social.py-49-48-constant",
+              "m42-networkx.generators.social.py-49-40-constant"
+            ]
+          },
+          "random": {
+            "win": 300,
+            "tie": 0,
+            "loss": 0,
+            "median_time_ratio_smartci_over_baseline": 0.000866,
+            "ratio_ci": [
+              0.000646,
+              0.001177
+            ],
+            "losses": []
+          }
+        },
+        "best_simple_baseline": "changed_files_first",
+        "smartci_beats_best_simple": false,
+        "recommendation": "smartci does not clearly beat 'changed_files_first' here; use changed_files_first (or keep smartci only if its median is lower and you accept the uncertainty)"
+      },
+      "all": {
+        "n": 318,
+        "median_ttff_s": {
+          "changed_files_first": {
+            "median": 0.084121,
+            "lo": 0.065705,
+            "hi": 0.123914
+          },
+          "coverage_first": {
+            "median": 0.088768,
+            "lo": 0.071163,
+            "hi": 0.144826
+          },
+          "default": {
+            "median": 124.738232,
+            "lo": 69.843643,
+            "hi": 137.98268
+          },
+          "fastest_first": {
+            "median": 25.826342,
+            "lo": 21.779232,
+            "hi": 29.777595
+          },
+          "random": {
+            "median": 142.320302,
+            "lo": 136.87723,
+            "hi": 147.319125
+          },
+          "smartci": {
+            "median": 0.085642,
+            "lo": 0.071413,
+            "hi": 0.146326
+          }
+        },
+        "mean_apfdc": {
+          "changed_files_first": 0.914548,
+          "coverage_first": 0.983608,
+          "default": 0.520622,
+          "fastest_first": 0.879464,
+          "random": 0.505066,
+          "smartci": 0.987725
+        },
+        "vs_smartci": {
+          "changed_files_first": {
+            "win": 42,
+            "tie": 224,
+            "loss": 52,
+            "median_time_ratio_smartci_over_baseline": 1.0,
+            "ratio_ci": [
+              1.0,
+              1.0
+            ],
+            "losses": [
+              "d3e018213f562832734fa7126018bb22cc7c6376",
+              "f4c159f2b7e71993fee5c98ed54dbe5c1ae6ad30",
+              "e9eac8a7e04df0b9cdcff8ed1682b3971678f4ed",
+              "2aecdbdd18210c38dc2b9fe32da3825bf30a3c33",
+              "56c7b0d0b6141ec0ffa6a9ebb5494417120b7f50",
+              "c94928ed94899033126c9d47f797a1f698584b20",
+              "083e47255d7087340e97ec13d256e9241ec25e77",
+              "m42-networkx.generators.community.py-435-35-arith",
+              "m42-networkx.algorithms.cycles.py-391-24-constant",
+              "m42-networkx.drawing.layout.py-1169-14-constant",
+              "m42-networkx.algorithms.flow.gomory_hu.py-173-34-compare",
+              "m42-networkx.drawing.nx_pylab.py-1992-32-constant",
+              "m42-networkx.algorithms.isomorphism.tree_isomorphism.py-56-23-arith",
+              "m42-networkx.algorithms.isomorphism.vf2pp.py-854-57-compare",
+              "m42-networkx.algorithms.isomorphism.isomorphvf2.py-762-11-compare",
+              "m42-networkx.algorithms.regular.py-38-19-compare",
+              "m42-networkx.algorithms.shortest_paths.weighted.py-867-38-compare",
+              "m42-networkx.generators.random_graphs.py-109-8-constant",
+              "m42-networkx.readwrite.text.py-263-13-constant",
+              "m42-networkx.algorithms.centrality.betweenness.py-468-11-compare",
+              "m42-networkx.drawing.layout.py-1699-17-constant",
+              "m42-networkx.algorithms.connectivity.connectivity.py-349-56-arith",
+              "m42-networkx.utils.rcm.py-139-71-constant",
+              "m42-networkx.algorithms.similarity.py-1171-15-compare",
+              "m42-networkx.drawing.nx_pylab.py-667-53-constant",
+              "m42-networkx.readwrite.text.py-824-18-compare",
+              "m42-networkx.drawing.nx_pylab.py-203-35-constant",
+              "m42-networkx.algorithms.tree.branchings.py-174-15-compare",
+              "m42-networkx.algorithms.distance_measures.py-717-25-compare",
+              "m42-networkx.algorithms.isomorphism.tree_isomorphism.py-179-32-compare",
+              "m42-networkx.algorithms.cycles.py-948-30-compare",
+              "m42-networkx.algorithms.tree.branchings.py-592-25-constant",
+              "m42-networkx.algorithms.similarity.py-1927-18-arith",
+              "m42-networkx.algorithms.similarity.py-914-20-constant",
+              "m42-networkx.generators.geometric.py-996-19-constant",
+              "m42-networkx.algorithms.flow.gomory_hu.py-177-56-constant",
+              "m42-networkx.generators.directed.py-74-7-compare",
+              "m42-networkx.algorithms.similarity.py-1390-7-arith",
+              "m42-networkx.algorithms.isomorphism.vf2pp.py-857-61-compare",
+              "m42-networkx.algorithms.cycles.py-387-22-constant",
+              "m42-networkx.generators.small.py-778-22-constant",
+              "m42-networkx.algorithms.tree.branchings.py-156-34-constant",
+              "m42-networkx.drawing.nx_pylab.py-2056-43-constant",
+              "m42-networkx.drawing.layout.py-2027-7-compare",
+              "m42-networkx.algorithms.similarity.py-1013-44-compare",
+              "m42-networkx.algorithms.dag.py-765-17-constant",
+              "m42-networkx.generators.geometric.py-493-15-compare",
+              "m42-networkx.algorithms.distance_measures.py-915-7-compare",
+              "m42-networkx.algorithms.similarity.py-1164-7-compare",
+              "m42-networkx.algorithms.similarity.py-2055-32-constant",
+              "m42-networkx.algorithms.cycles.py-752-19-compare",
+              "m42-networkx.algorithms.similarity.py-1179-12-return"
+            ]
+          },
+          "coverage_first": {
+            "win": 47,
+            "tie": 205,
+            "loss": 66,
+            "median_time_ratio_smartci_over_baseline": 1.0,
+            "ratio_ci": [
+              1.0,
+              1.0
+            ],
+            "losses": [
+              "f4c159f2b7e71993fee5c98ed54dbe5c1ae6ad30",
+              "e9eac8a7e04df0b9cdcff8ed1682b3971678f4ed",
+              "2aecdbdd18210c38dc2b9fe32da3825bf30a3c33",
+              "56c7b0d0b6141ec0ffa6a9ebb5494417120b7f50",
+              "083e47255d7087340e97ec13d256e9241ec25e77",
+              "m42-networkx.algorithms.flow.capacityscaling.py-121-28-boolop",
+              "m42-networkx.algorithms.cycles.py-391-24-constant",
+              "m42-networkx.drawing.layout.py-1169-14-constant",
+              "m42-networkx.generators.trees.py-375-77-constant",
+              "m42-networkx.algorithms.flow.gomory_hu.py-173-34-compare",
+              "m42-networkx.drawing.nx_pylab.py-1992-32-constant",
+              "m42-networkx.algorithms.matching.py-905-18-compare",
+              "m42-networkx.algorithms.flow.utils.py-188-76-constant",
+              "m42-networkx.generators.social.py-464-47-constant",
+              "m42-networkx.algorithms.isomorphism.tree_isomorphism.py-56-23-arith",
+              "m42-networkx.algorithms.isomorphism.vf2pp.py-854-57-compare",
+              "m42-networkx.utils.mapped_queue.py-229-18-arith",
+              "m42-networkx.algorithms.matching.py-434-11-compare",
+              "m42-networkx.algorithms.regular.py-38-19-compare",
+              "m42-networkx.algorithms.shortest_paths.unweighted.py-609-11-boolop",
+              "m42-networkx.algorithms.flow.networksimplex.py-608-8-compare",
+              "m42-networkx.generators.social.py-532-49-constant",
+              "m42-networkx.readwrite.text.py-263-13-constant",
+              "m42-networkx.algorithms.centrality.betweenness.py-468-11-compare",
+              "m42-networkx.drawing.layout.py-1699-17-constant",
+              "m42-networkx.classes.reportviews.py-719-12-boolop",
+              "m42-networkx.algorithms.connectivity.connectivity.py-349-56-arith",
+              "m42-networkx.classes.reportviews.py-640-27-constant",
+              "m42-networkx.utils.rcm.py-139-71-constant",
+              "m42-networkx.algorithms.tree.branchings.py-684-18-arith",
+              "m42-networkx.algorithms.similarity.py-1171-15-compare",
+              "m42-networkx.drawing.nx_pylab.py-667-53-constant",
+              "m42-networkx.readwrite.text.py-824-18-compare",
+              "m42-networkx.generators.social.py-502-46-constant",
+              "m42-networkx.drawing.nx_pylab.py-203-35-constant",
+              "m42-networkx.algorithms.flow.capacityscaling.py-149-4-return",
+              "m42-networkx.algorithms.tree.branchings.py-174-15-compare",
+              "m42-networkx.algorithms.distance_measures.py-717-25-compare",
+              "m42-networkx.algorithms.connectivity.kcutsets.py-138-23-arith",
+              "m42-networkx.algorithms.isomorphism.tree_isomorphism.py-179-32-compare",
+              "m42-networkx.algorithms.similarity.py-1927-18-arith",
+              "m42-networkx.algorithms.similarity.py-914-20-constant",
+              "m42-networkx.classes.graphviews.py-219-12-return",
+              "m42-networkx.generators.geometric.py-996-19-constant",
+              "m42-networkx.algorithms.flow.gomory_hu.py-177-56-constant",
+              "m42-networkx.algorithms.similarity.py-1390-7-arith",
+              "m42-networkx.algorithms.isomorphism.vf2pp.py-857-61-compare",
+              "m42-networkx.algorithms.cycles.py-387-22-constant",
+              "m42-networkx.algorithms.flow.capacityscaling.py-306-19-constant",
+              "m42-networkx.generators.social.py-49-48-constant",
+              "m42-networkx.generators.small.py-778-22-constant",
+              "m42-networkx.algorithms.tree.branchings.py-156-34-constant",
+              "m42-networkx.drawing.nx_pylab.py-2056-43-constant",
+              "m42-networkx.algorithms.matching.py-554-23-compare",
+              "m42-networkx.generators.social.py-424-56-constant",
+              "m42-networkx.drawing.layout.py-2027-7-compare",
+              "m42-networkx.algorithms.connectivity.cuts.py-144-7-compare",
+              "m42-networkx.algorithms.similarity.py-1013-44-compare",
+              "m42-networkx.algorithms.dag.py-765-17-constant",
+              "m42-networkx.generators.geometric.py-493-15-compare",
+              "m42-networkx.algorithms.distance_measures.py-915-7-compare",
+              "m42-networkx.algorithms.similarity.py-1164-7-compare",
+              "m42-networkx.algorithms.similarity.py-2055-32-constant",
+              "m42-networkx.algorithms.cycles.py-752-19-compare",
+              "m42-networkx.generators.social.py-49-40-constant",
+              "m42-networkx.algorithms.similarity.py-1179-12-return"
+            ]
+          },
+          "default": {
+            "win": 314,
+            "tie": 1,
+            "loss": 3,
+            "median_time_ratio_smartci_over_baseline": 0.001345,
+            "ratio_ci": [
+              0.001102,
+              0.001845
+            ],
+            "losses": [
+              "m42-networkx.algorithms.tree.branchings.py-684-18-arith",
+              "m42-networkx.generators.social.py-49-48-constant",
+              "m42-networkx.generators.social.py-49-40-constant"
+            ]
+          },
+          "fastest_first": {
+            "win": 315,
+            "tie": 0,
+            "loss": 3,
+            "median_time_ratio_smartci_over_baseline": 0.006096,
+            "ratio_ci": [
+              0.005233,
+              0.007034
+            ],
+            "losses": [
+              "c94928ed94899033126c9d47f797a1f698584b20",
+              "m42-networkx.generators.social.py-49-48-constant",
+              "m42-networkx.generators.social.py-49-40-constant"
+            ]
+          },
+          "random": {
+            "win": 317,
+            "tie": 0,
+            "loss": 1,
+            "median_time_ratio_smartci_over_baseline": 0.001025,
+            "ratio_ci": [
+              0.000692,
+              0.001212
+            ],
+            "losses": [
+              "083e47255d7087340e97ec13d256e9241ec25e77"
+            ]
+          }
+        },
+        "best_simple_baseline": "changed_files_first",
+        "smartci_beats_best_simple": false,
+        "recommendation": "smartci does not clearly beat 'changed_files_first' here; use changed_files_first (or keep smartci only if its median is lower and you accept the uncertainty)"
+      }
+    },
+    "gate5": {
+      "repo": "networkx",
+      "seed": 5,
+      "measured_overhead_s": 27.822978,
+      "profile_startup_overhead_s": 74.180207,
+      "rule": "|real - simulated| <= 0.1*simulated + overhead",
+      "runs": [
+        {
+          "kind": "mined",
+          "id": "d8081795e1344c576590b214c2e4f264b5e87244",
+          "url": "https://github.com/networkx/networkx/commit/d8081795e1344c576590b214c2e4f264b5e87244",
+          "returncode": 0,
+          "seconds": 181.434159,
+          "default_real_s": 79.744974,
+          "default_sim_s": 51.921995,
+          "default_elapsed_s": 123.294766,
+          "default_failed_line": "FAILED networkx/algorithms/connectivity/tests/test_kcomponents.py::test_generate_partition_does_not_drop_cutset_nodes",
+          "smartci_real_s": 1.259372,
+          "smartci_sim_s": 0.301121,
+          "smartci_elapsed_s": 53.685974,
+          "smartci_failed_line": "FAILED networkx/algorithms/connectivity/tests/test_kcomponents.py::test_generate_partition_does_not_drop_cutset_nodes",
+          "default_pass": true,
+          "smartci_pass": true
+        },
+        {
+          "kind": "mined",
+          "id": "675034adb14a790336121e4e0f9d8097b880ec41",
+          "url": "https://github.com/networkx/networkx/commit/675034adb14a790336121e4e0f9d8097b880ec41",
+          "returncode": 0,
+          "seconds": 426.658357,
+          "default_real_s": 293.69979,
+          "default_sim_s": 105.591457,
+          "default_elapsed_s": 340.122301,
+          "default_failed_line": "FAILED networkx/algorithms/isomorphism/tests/test_ismags.py::TestDiGraphISO::test_incoming_edge_subgraph_constraints[DiGraph-True]",
+          "smartci_real_s": 4.065439,
+          "smartci_sim_s": 1.72863,
+          "smartci_elapsed_s": 81.832222,
+          "smartci_failed_line": "FAILED networkx/algorithms/isomorphism/tests/test_ismags.py::TestDiGraphISO::test_incoming_edge_subgraph_constraints[DiGraph-True]",
+          "default_pass": false,
+          "smartci_pass": true
+        },
+        {
+          "kind": "mined",
+          "id": "d3e018213f562832734fa7126018bb22cc7c6376",
+          "url": "https://github.com/networkx/networkx/commit/d3e018213f562832734fa7126018bb22cc7c6376",
+          "returncode": 0,
+          "seconds": 645.689101,
+          "default_real_s": 373.797915,
+          "default_sim_s": 163.906943,
+          "default_elapsed_s": 437.746372,
+          "default_failed_line": "FAILED networkx/algorithms/tests/test_distance_measures.py::TestDistance::test_eccentricity",
+          "smartci_real_s": 129.214201,
+          "smartci_sim_s": 126.71238,
+          "smartci_elapsed_s": 204.47471,
+          "smartci_failed_line": "FAILED networkx/algorithms/tests/test_distance_measures.py::TestDistance::test_eccentricity",
+          "default_pass": false,
+          "smartci_pass": true
+        },
+        {
+          "kind": "mined",
+          "id": "56c7b0d0b6141ec0ffa6a9ebb5494417120b7f50",
+          "url": "https://github.com/networkx/networkx/commit/56c7b0d0b6141ec0ffa6a9ebb5494417120b7f50",
+          "returncode": 0,
+          "seconds": 292.864175,
+          "default_real_s": 142.415007,
+          "default_sim_s": 69.555677,
+          "default_elapsed_s": 202.375,
+          "default_failed_line": "FAILED networkx/algorithms/isomorphism/tests/test_common.py::test_full_graph_or_subgraph_isomorphisms_iter[vf2-Graph]",
+          "smartci_real_s": 12.789058,
+          "smartci_sim_s": 5.871803,
+          "smartci_elapsed_s": 87.014659,
+          "smartci_failed_line": "FAILED networkx/algorithms/isomorphism/tests/test_isomorphvf2.py::test_isomorphism_iter3[True]",
+          "default_pass": false,
+          "smartci_pass": true
+        },
+        {
+          "kind": "mined",
+          "id": "e9eac8a7e04df0b9cdcff8ed1682b3971678f4ed",
+          "url": "https://github.com/networkx/networkx/commit/e9eac8a7e04df0b9cdcff8ed1682b3971678f4ed",
+          "returncode": 1,
+          "seconds": 714.805509,
+          "default_real_s": 560.550667,
+          "default_sim_s": 280.550326,
+          "default_elapsed_s": 625.30212,
+          "default_failed_line": "FAILED networkx/generators/tests/test_geometric.py::test_S1_kappas_mean_degree_from_values",
+          "smartci_real_s": 5.742045,
+          "smartci_sim_s": 2.550751,
+          "smartci_elapsed_s": 85.177381,
+          "smartci_failed_line": "FAILED networkx/generators/tests/test_geometric.py::test_S1_kappas_mean_degree_from_values",
+          "default_pass": false,
+          "smartci_pass": true
+        },
+        {
+          "kind": "mutant",
+          "id": "m42-networkx.generators.joint_degree_seq.py-328-7-compare",
+          "url": null,
+          "returncode": 0,
+          "seconds": 692.497966,
+          "default_real_s": 549.584855,
+          "default_sim_s": 280.990315,
+          "default_elapsed_s": 614.015321,
+          "default_failed_line": "FAILED networkx/generators/tests/test_joint_degree_seq.py::test_is_valid_directed_joint_degree",
+          "smartci_real_s": 1.181473,
+          "smartci_sim_s": 0.061874,
+          "smartci_elapsed_s": 74.450682,
+          "smartci_failed_line": "FAILED networkx/generators/tests/test_joint_degree_seq.py::test_is_valid_directed_joint_degree",
+          "default_pass": false,
+          "smartci_pass": true
+        },
+        {
+          "kind": "mutant",
+          "id": "m42-networkx.generators.trees.py-375-77-constant",
+          "url": null,
+          "returncode": 0,
+          "seconds": 778.308739,
+          "default_real_s": 356.79067,
+          "default_sim_s": 141.472503,
+          "default_elapsed_s": 419.123645,
+          "default_failed_line": "FAILED networkx/algorithms/tests/test_distance_measures.py::TestDistance::test_use_bounds_on_off_consistency[0.0-10-0]",
+          "smartci_real_s": 1.464108,
+          "smartci_sim_s": 0.072205,
+          "smartci_elapsed_s": 354.722062,
+          "smartci_failed_line": "FAILED networkx/generators/tests/test_trees.py::test_random_labeled_rooted_tree",
+          "default_pass": false,
+          "smartci_pass": true
+        },
+        {
+          "kind": "mutant",
+          "id": "m42-networkx.classes.filters.py-29-24-compare",
+          "url": null,
+          "returncode": 0,
+          "seconds": 246.719872,
+          "default_real_s": 106.01446,
+          "default_sim_s": 51.921995,
+          "default_elapsed_s": 167.262212,
+          "default_failed_line": "FAILED networkx/algorithms/connectivity/tests/test_kcomponents.py::test_generate_partition_does_not_drop_cutset_nodes",
+          "smartci_real_s": 1.221579,
+          "smartci_sim_s": 0.015916,
+          "smartci_elapsed_s": 75.436342,
+          "smartci_failed_line": "FAILED networkx/classes/tests/test_filters.py::TestFilterFactory::test_hide_nodes",
+          "default_pass": false,
+          "smartci_pass": true
+        },
+        {
+          "kind": "mutant",
+          "id": "m42-networkx.algorithms.assortativity.neighbor_degree.py-151-11-compare",
+          "url": null,
+          "returncode": 0,
+          "seconds": 998.322417,
+          "default_real_s": 59.689538,
+          "default_sim_s": 26.840018,
+          "default_elapsed_s": 914.148219,
+          "default_failed_line": "FAILED networkx/algorithms/assortativity/tests/test_neighbor_degree.py::TestAverageNeighbor::test_degree_p4_weighted",
+          "smartci_real_s": 1.20153,
+          "smartci_sim_s": 0.018916,
+          "smartci_elapsed_s": 76.934049,
+          "smartci_failed_line": "FAILED networkx/algorithms/assortativity/tests/test_neighbor_degree.py::TestAverageNeighbor::test_degree_p4_weighted",
+          "default_pass": false,
+          "smartci_pass": true
+        },
+        {
+          "kind": "mutant",
+          "id": "m42-networkx.algorithms.threshold.py-217-8-constant",
+          "url": null,
+          "returncode": 0,
+          "seconds": 569.640403,
+          "default_real_s": 426.726198,
+          "default_sim_s": 195.541824,
+          "default_elapsed_s": 490.441004,
+          "default_failed_line": "FAILED networkx/algorithms/tests/test_threshold.py::TestGeneratorThreshold::test_creation_sequence_to_weights",
+          "smartci_real_s": 1.361749,
+          "smartci_sim_s": 0.056247,
+          "smartci_elapsed_s": 75.393515,
+          "smartci_failed_line": "FAILED networkx/algorithms/tests/test_threshold.py::TestGeneratorThreshold::test_creation_sequence_to_weights",
+          "default_pass": false,
+          "smartci_pass": true
+        }
+      ],
+      "gate5_pass": false,
+      "n_pass": 11,
+      "n_checks": 20,
+      "generated": "2026-10-21 20:12:30",
+      "conditions": "laptop on battery: Windows throttled the CPU to ~42% of nominal; the default lane ran ~2.2x slower than when the profile was measured, while the first failing test matched the simulation in every run. Not authoritative: to be re-run on mains power with a fresh profile (HUMAN_TODO 0)."
+    },
+    "profile": {
+      "suite_test_time_s": 239.561,
+      "run_elapsed_s": [
+        271.161207,
+        393.899635
+      ],
+      "overhead_s": [
+        74.180207,
+        111.758635
+      ],
+      "flaky": [],
+      "failing_on_base": []
+    }
+  },
+  "sympy": {
+    "pinned_sha": "b386392cd62ed543aadd696d9953ab35cb38d666",
+    "learn": null,
+    "n_mutants": 0,
+    "adapter": null,
+    "backtest_summary": null,
+    "gate5": null,
+    "profile": null
+  },
+  "_meta": {
+    "generated": "2026-10-22 09:51:04",
+    "git_sha": "b73ce51"
+  }
+}

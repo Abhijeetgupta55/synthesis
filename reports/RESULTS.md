@@ -49,7 +49,9 @@ split; the shipped model is `all_to_tvm` (disclosed selection; MODELING.md §7).
 
 ## 5. Real repositories (smartci)
 
-
+- **networkx**: 68 reproducible mined bugs, 300 mutants; best simple baseline (all bugs): changed_files_first; smartci does not clearly beat 'changed_files_first' here; use changed_files_first (or keep smartci only if its median is lower and you accept the uncertainty)
+- **sympy**: None reproducible mined bugs, 0 mutants; best simple baseline (all bugs): None; None
+- **_meta**: None reproducible mined bugs, None mutants; best simple baseline (all bugs): None; None
 
 See REAL_WORLD.md for the tables, win/tie/loss, every loss, the simulation-vs-real check (GATE 5) and caveats.
 

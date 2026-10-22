@@ -1,0 +1,56 @@
+{
+ "bug": "m42-networkx.algorithms.assortativity.neighbor_degree.py-151-11-compare",
+ "kind": "mutant",
+ "id": "m42-networkx.algorithms.assortativity.neighbor_degree.py-151-11-compare",
+ "expected": [
+  "networkx/algorithms/assortativity/tests/test_neighbor_degree.py::TestAverageNeighbor::test_degree_barrat",
+  "networkx/algorithms/assortativity/tests/test_neighbor_degree.py::TestAverageNeighbor::test_degree_p4_weighted"
+ ],
+ "mode": "sequential",
+ "runs": {
+  "default": {
+   "returncode": 1,
+   "elapsed_s": 914.1482191999967,
+   "failed_line": "FAILED networkx/algorithms/assortativity/tests/test_neighbor_degree.py::TestAverageNeighbor::test_degree_p4_weighted",
+   "first_failure_after_s": 59.68953800201416,
+   "first_failure_nodeid": "networkx/algorithms/assortativity/tests/test_neighbor_degree.py::TestAverageNeighbor::test_degree_p4_weighted",
+   "file_durations_s": {
+    "networkx/algorithms/approximation/tests/test_approx_clust_coeff.py": 0.04023110002162866,
+    "networkx/algorithms/approximation/tests/test_clique.py": 0.46979129998362623,
+    "networkx/algorithms/approximation/tests/test_connectivity.py": 0.20510149997426197,
+    "networkx/algorithms/approximation/tests/test_density.py": 5.817680199892493,
+    "networkx/algorithms/approximation/tests/test_distance_measures.py": 0.0384102999814786,
+    "networkx/algorithms/approximation/tests/test_dominating_set.py": 0.0202242000377737,
+    "networkx/algorithms/approximation/tests/test_kcomponents.py": 21.922150200029137,
+    "networkx/algorithms/approximation/tests/test_matching.py": 0.004412799986312166,
+    "networkx/algorithms/approximation/tests/test_maxcut.py": 0.030394599976716563,
+    "networkx/algorithms/approximation/tests/test_ramsey.py": 0.03324849999626167,
+    "networkx/algorithms/approximation/tests/test_steinertree.py": 0.11209660005988553,
+    "networkx/algorithms/approximation/tests/test_traveling_salesman.py": 26.308218899852363,
+    "networkx/algorithms/approximation/tests/test_treewidth.py": 0.0457374001853168,
+    "networkx/algorithms/approximation/tests/test_vertex_cover.py": 0.013250299962237477,
+    "networkx/algorithms/assortativity/tests/test_connectivity.py": 0.046296700049424544,
+    "networkx/algorithms/assortativity/tests/test_correlation.py": 2.6325136001978535,
+    "networkx/algorithms/assortativity/tests/test_mixing.py": 0.07476960006169975,
+    "networkx/algorithms/assortativity/tests/test_neighbor_degree.py": 0.013536399987060577
+   },
+   "receipt": null,
+   "stdout_tail": "....................F\n================================== FAILURES ===================================\n_________________ TestAverageNeighbor.test_degree_p4_weighted _________________\n\nself = <networkx.algorithms.assortativity.tests.test_neighbor_degree.TestAverageNeighbor object at 0x000001AF13B8A7E0>\n\n    def test_degree_p4_weighted(self):\n        G = nx.path_graph(4)\n        G[1][2][\"weight\"] = 4\n        answer = {0: 2, 1: 1.8, 2: 1.8, 3: 2}\n        nd = nx.average_neighbor_degree(G, weight=\"weight\")\n>       assert nd == answer\nE       assert {0: 2.0, 1: 0...: 0.6, 3: 2.0} == {0: 2, 1: 1.8, 2: 1.8, 3: 2}\nE         \nE         Omitting 2 identical items, use -vv to show\nE         Differing items:\nE         {1: 0.6} != {1: 1.8}\nE         {2: 0.6} != {2: 1.8}\nE         Use -v to get more diff\n\nnetworkx\\algorithms\\assortativity\\tests\\test_neighbor_degree.py:32: AssertionError\n=========================== short test summary info ===========================\nFAILED networkx/algorithms/assortativity/tests/test_neighbor_degree.py::TestAverageNeighbor::test_degree_p4_weighted\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 235 passed, 5 skipped in 910.31s (0:15:10)",
+   "n_failed_lines": 1
+  },
+  "smartci": {
+   "returncode": 1,
+   "elapsed_s": 76.93404880000162,
+   "failed_line": "FAILED networkx/algorithms/assortativity/tests/test_neighbor_degree.py::TestAverageNeighbor::test_degree_p4_weighted",
+   "first_failure_after_s": 1.2015304565429688,
+   "first_failure_nodeid": "networkx/algorithms/assortativity/tests/test_neighbor_degree.py::TestAverageNeighbor::test_degree_p4_weighted",
+   "file_durations_s": {
+    "networkx/algorithms/assortativity/tests/test_neighbor_degree.py": 0.01900159998331219
+   },
+   "receipt": "A:\\ML\\smart-ci-tcp\\external\\networkx\\.smartci\\receipts\\2026-10-21T200257_abf2feda.json",
+   "stdout_tail": ".F\n================================== FAILURES ===================================\n_________________ TestAverageNeighbor.test_degree_p4_weighted _________________\n\nself = <networkx.algorithms.assortativity.tests.test_neighbor_degree.TestAverageNeighbor object at 0x0000022EA2819040>\n\n    def test_degree_p4_weighted(self):\n        G = nx.path_graph(4)\n        G[1][2][\"weight\"] = 4\n        answer = {0: 2, 1: 1.8, 2: 1.8, 3: 2}\n        nd = nx.average_neighbor_degree(G, weight=\"weight\")\n>       assert nd == answer\nE       assert {0: 2.0, 1: 0...: 0.6, 3: 2.0} == {0: 2, 1: 1.8, 2: 1.8, 3: 2}\nE         \nE         Omitting 2 identical items, use -vv to show\nE         Differing items:\nE         {1: 0.6} != {1: 1.8}\nE         {2: 0.6} != {2: 1.8}\nE         Use -v to get more diff\n\nnetworkx\\algorithms\\assortativity\\tests\\test_neighbor_degree.py:32: AssertionError\n=========================== short test summary info ===========================\nFAILED networkx/algorithms/assortativity/tests/test_neighbor_degree.py::TestAverageNeighbor::test_degree_p4_weighted\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 1 passed, 4 skipped in 74.47s (0:01:14)",
+   "n_failed_lines": 1
+  }
+ },
+ "speedup_elapsed": 11.882232034562795
+}
