@@ -724,14 +724,14 @@ def page_real_prs():
         return
     M, W = R("models"), R("real_prs_wins")
     d = get(M, "vs_best_simple", "All", "macro10", "stack", "per_project", default={})
-    cols = st.columns(4)
-    for c, p in zip(cols[:2], ("kafka", "tvm")):
+    cols = st.columns(2)
+    for c, p in zip(cols, ("kafka", "tvm")):
         w = get(W, "projects", p, default={})
+        n = {o: w.get(o, {}).get("n_builds", 0) for o in ("win", "tie", "loss")}
         c.metric(f"{p}: model − best rule (APFDc, all held-out builds)", f"{d.get(p, 0):+.3f}",
                  help="From reports/results/models.json (vs_best_simple → All → stack).")
-        cols[2 + (p == "tvm")].metric(f"{p}: builds won / tied / lost",
-                                      " / ".join(f"{w.get(o, {}).get('n_builds', 0):,}" for o in ("win", "tie", "loss")),
-                                      help="Every held-out failed build; tie = |ΔAPFDc| < 0.001.")
+        c.markdown(f"**{p}: {n['win']:,} builds won · {n['tie']:,} tied · {n['loss']:,} lost**  \n"
+                   "(every held-out failed build; tie = |ΔAPFDc| < 0.001)")
     st.markdown(_wins_text(W))
     st.divider()
 

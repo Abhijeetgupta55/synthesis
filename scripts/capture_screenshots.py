@@ -4,15 +4,15 @@ Requires: pip install playwright   (then either `python -m playwright install ch
           drive the Microsoft Edge that ships with Windows)
 Usage:    start the demo (scripts/run_demo.ps1), then:
           python scripts/capture_screenshots.py [--url http://localhost:8501] [--channel msedge]
-Output:   reports/demo_screenshots/<nn>_<page>.png (plus one per ML-pipeline tab and per race source)
+Output:   reports/demo_screenshots/<nn>_<page>.png (plus one per ML-pipeline tab, a run ML Lab experiment and Break the code with the model on)
 """
 from __future__ import annotations
 
 import argparse
 from pathlib import Path
 
-PAGES = ["Start here", "Break the code (guided demo)", "The ML pipeline", "Predict live", "Race replay", "Results",
-         "Limits and honesty"]
+PAGES = ["Start here", "ML Lab", "Real PRs", "Break the code (guided demo)", "The ML pipeline", "Predict live",
+         "Results", "Limits and honesty"]
 TABS = ["1 EDA", "2 Features", "3 Classification", "4 Regularization", "5 Tuning", "6 Ensembles", "7 Performance"]
 
 
@@ -58,10 +58,14 @@ def main() -> None:
                     page.get_by_role("tab", name=tab).click()
                     page.wait_for_timeout(1500)
                     shot(page, f"{i:02d}_{j}_{slug(tab)}")
-            if name == "Race replay":
-                page.get_by_text("LRTS held-out builds", exact=True).click()
-                page.wait_for_timeout(a.wait)
-                shot(page, f"{i:02d}_b_lrts")
+            if name == "ML Lab":                     # the first experiment, run live
+                page.get_by_role("button", name="Run this experiment").first.click()
+                page.wait_for_timeout(a.wait * 2)
+                shot(page, f"{i:02d}_b_experiment_run")
+            if name == "Break the code (guided demo)":
+                page.get_by_test_id("stCheckbox").get_by_text("Run the model now").click()
+                page.wait_for_timeout(a.wait * 2)
+                shot(page, f"{i:02d}_b_model_run")
         b.close()
 
 
