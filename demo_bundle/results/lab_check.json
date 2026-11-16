@@ -1,0 +1,179 @@
+{
+  "n_sample": 300000,
+  "seed": 0,
+  "features": [
+    "hs_n_fail",
+    "hs_days_since_last_fail",
+    "hs_fails_last_7d",
+    "hs_fails_last_30d",
+    "hs_last_outcome",
+    "hs_n_transitions",
+    "hs_n_runs_seen",
+    "hs_fail_rate",
+    "is_new_test",
+    "dur_last_asof",
+    "dur_ema_asof",
+    "dur_source",
+    "test_file_in_diff",
+    "same_top_module",
+    "path_prefix_overlap",
+    "name_token_overlap",
+    "bm25_test_vs_diff",
+    "chg_n_files",
+    "chg_additions",
+    "chg_deletions",
+    "chg_n_top_modules",
+    "has_change_data",
+    "cof_max",
+    "cof_sum",
+    "cof_count_max"
+  ],
+  "splits": {
+    "random_80_20": {
+      "lr_unregularized": {
+        "train": 0.434506,
+        "test": 0.405044,
+        "valA": 0.147183,
+        "seconds": 5.1,
+        "best_iteration": null,
+        "base_rate": {
+          "train": 0.022563,
+          "test": 0.021984,
+          "valA": 0.002915
+        },
+        "lift": {
+          "train": 19.257809,
+          "test": 18.424287,
+          "valA": 50.483797
+        }
+      },
+      "lr_regularized": {
+        "train": 0.431541,
+        "test": 0.399386,
+        "valA": 0.160993,
+        "seconds": 6.2,
+        "best_iteration": null,
+        "base_rate": {
+          "train": 0.022563,
+          "test": 0.021984,
+          "valA": 0.002915
+        },
+        "lift": {
+          "train": 19.12637,
+          "test": 18.166905,
+          "valA": 55.220604
+        }
+      },
+      "lgbm_unregularized": {
+        "train": 1.0,
+        "test": 0.676998,
+        "valA": 0.139944,
+        "seconds": 286.9,
+        "best_iteration": 400,
+        "base_rate": {
+          "train": 0.022563,
+          "test": 0.021984,
+          "valA": 0.002915
+        },
+        "lift": {
+          "train": 44.321138,
+          "test": 30.794683,
+          "valA": 48.000915
+        }
+      },
+      "lgbm_regularized": {
+        "train": 0.774283,
+        "test": 0.564613,
+        "valA": 0.177248,
+        "seconds": 20.8,
+        "best_iteration": 87,
+        "base_rate": {
+          "train": 0.022563,
+          "test": 0.021984,
+          "valA": 0.002915
+        },
+        "lift": {
+          "train": 34.317093,
+          "test": 25.682622,
+          "valA": 60.796151
+        }
+      }
+    },
+    "time_80_20": {
+      "lr_unregularized": {
+        "train": 0.439372,
+        "test": 0.372254,
+        "valA": 0.147979,
+        "seconds": 2.6,
+        "best_iteration": null,
+        "base_rate": {
+          "train": 0.02186,
+          "test": 0.025043,
+          "valA": 0.002915
+        },
+        "lift": {
+          "train": 20.099554,
+          "test": 14.864358,
+          "valA": 50.756932
+        }
+      },
+      "lr_regularized": {
+        "train": 0.439281,
+        "test": 0.372894,
+        "valA": 0.16355,
+        "seconds": 5.6,
+        "best_iteration": null,
+        "base_rate": {
+          "train": 0.02186,
+          "test": 0.025043,
+          "valA": 0.002915
+        },
+        "lift": {
+          "train": 20.095418,
+          "test": 14.889929,
+          "valA": 56.097717
+        }
+      },
+      "lgbm_unregularized": {
+        "train": 1.0,
+        "test": 0.348694,
+        "valA": 0.140555,
+        "seconds": 280.8,
+        "best_iteration": 400,
+        "base_rate": {
+          "train": 0.02186,
+          "test": 0.025043,
+          "valA": 0.002915
+        },
+        "lift": {
+          "train": 45.746111,
+          "test": 13.923572,
+          "valA": 48.210258
+        }
+      },
+      "lgbm_regularized": {
+        "train": 0.805737,
+        "test": 0.400525,
+        "valA": 0.189376,
+        "seconds": 29.1,
+        "best_iteration": 112,
+        "base_rate": {
+          "train": 0.02186,
+          "test": 0.025043,
+          "valA": 0.002915
+        },
+        "lift": {
+          "train": 36.859349,
+          "test": 15.993249,
+          "valA": 64.955833
+        }
+      }
+    }
+  },
+  "doc": "Measure before building the ML Lab: do the Lab's lessons show up on a small sample?\n\nOn ~300k rows sampled from data/processed/train/train.parquet (negative-sampled training rows) we train logistic\nregression and LightGBM, each without and with regularization, and report PR-AUC on:\n  (a) random 80/20 split of the sample (rows of one CI run can land on both sides),\n  (b) valA: time-later validation runs, unsampled (the real failure rate),\n  (c) time 80/20 split of the sample: train on the earliest 80% of runs, test on the latest 20%.\n(c) has the same sampling as (a), so (a) vs (c) isolates the effect of a random split; (b) also differs in\nbase rate, because train.parquet keeps every failure but at most 200 passing tests per run. PR-AUC grows with the\nbase rate, so each result is also given as lift = PR-AUC / base rate.\n\nUsage: python -m stp.models.lab_check   -> reports/results/lab_check.json",
+  "seconds_total": 658.7,
+  "_meta": {
+    "generated": "2026-11-16 20:03:24",
+    "git_sha": "4a2bb7e"
+  }
+}

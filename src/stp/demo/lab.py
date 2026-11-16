@@ -82,7 +82,10 @@ def train(model: str = "lgbm", groups: tuple[str, ...] = ("history", "cost", "ch
         from sklearn.preprocessing import StandardScaler
         est = make_pipeline(StandardScaler(), LogisticRegression(
             C=C, penalty=penalty, solver="liblinear" if penalty == "l1" else "lbfgs", max_iter=1000))
-        est.fit(Xa, ya)
+        import warnings
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", FutureWarning)     # sklearn 1.8 renames `penalty`; behaviour unchanged
+            est.fit(Xa, ya)
         pred = lambda X: est.predict_proba(X)[:, 1]  # noqa: E731
         coef = est[-1].coef_[0]
         info["weights"] = sorted(zip(cols, coef.tolist()), key=lambda cv: -abs(cv[1]))

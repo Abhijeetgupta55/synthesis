@@ -1,9 +1,12 @@
 """Demo smoke test: python -m stp.demo.smoke
 
-  1. renders all six pages of app/demo.py headlessly (streamlit.testing AppTest) and fails on any exception
+  1. renders all eight pages of app/demo.py headlessly (streamlit.testing AppTest) and fails on any exception;
+     on 'ML Lab' it presses Train and every guided experiment (live fits; each must finish in <= 30 s) and on
+     'Real PRs' it presses 'Show me a loss' (the build shown must be a loss)
   2. demo_bundle/results/*.json equal reports/results/*.json; every figure the app names exists
   3. 'Predict live' parity: the app's scores equal `smartci rank --files` for the same input
-  4. 20 random LRTS replays recomputed from the raw test_class.csv.zip (stp.demo.verify) -> all MATCH
+  4. 20 random LRTS replays and 10 random Real PRs replays recomputed from the raw test_class.csv.zip
+     (stp.demo.verify) -> all MATCH (skipped with a note when the raw LRTS download is absent)
   5. 5 random backtest rows per bundled repo recomputed from the stored order prefixes and profile durations
 Exit code 0 only if everything passes.
 """
@@ -20,8 +23,9 @@ BUNDLE = paths.ROOT / "demo_bundle"
 APP = paths.ROOT / "app" / "demo.py"
 
 
-PAGES = ["Start here", "Break the code (guided demo)", "The ML pipeline", "Predict live", "Race replay", "Results",
-         "Limits and honesty"]
+PAGES = ["Start here", "ML Lab", "Real PRs", "Break the code (guided demo)", "The ML pipeline", "Predict live",
+         "Results", "Limits and honesty"]
+LAB_LIMIT_S = 30.0
 
 
 def check_pages() -> list[str]:
@@ -36,14 +40,36 @@ def check_pages() -> list[str]:
         if at.exception:
             errs.append(f"page '{page}': {at.exception[0].message}")
             continue
-        if page == "Race replay":
-            at.radio[0].set_value("LRTS held-out builds").run()
+        if page == "ML Lab":
+            errs += _check_lab(at)
+        if page == "Real PRs":
+            loss = next(b for b in at.button if b.label == "Show me a loss")
+            loss.click().run()
             if at.exception:
-                errs.append(f"page '{page}' (LRTS): {at.exception[0].message}")
+                errs.append(f"page '{page}' (loss): {at.exception[0].message}")
+            elif not any("outcome **loss**" in m.value for m in at.markdown):
+                errs.append("page 'Real PRs': 'Show me a loss' did not show a loss")
         if page == "The ML pipeline" and len(at.tabs) != 7:
             errs.append(f"page '{page}': {len(at.tabs)} tabs, expected 7")
         if page == "Predict live" and not at.dataframe:
             errs.append("page 'Predict live': no ranked table rendered")
+    return errs
+
+
+def _check_lab(at) -> list[str]:
+    import time
+    errs = []
+    for b in [b for b in at.button if b.label in ("Run this experiment", "Train")]:
+        t0 = time.time()
+        b.click().run()
+        dt = time.time() - t0
+        if at.exception:
+            return [f"page 'ML Lab' ({b.label}): {at.exception[0].message}"]
+        print(f"    ML Lab {b.label}: {dt:.1f} s")
+        if dt > LAB_LIMIT_S:
+            errs.append(f"page 'ML Lab': '{b.label}' took {dt:.1f} s (> {LAB_LIMIT_S:.0f} s)")
+    if sum("Takeaway" in s.value for s in at.success) != 4:
+        errs.append("page 'ML Lab': expected 4 computed takeaways")
     return errs
 
 
@@ -88,13 +114,17 @@ def check_live_parity() -> list[str]:
 
 
 def check_replays(n: int = 20, seed: int = 3) -> list[str]:
-    idx = json.loads((BUNDLE / "lrts" / "index.json").read_text(encoding="utf-8"))
+    if not verify.RAW.exists():
+        print("    (raw LRTS download absent: replays not recomputed)")
+        return []
     errs = []
-    for item in random.Random(seed).sample(idx, min(n, len(idx))):
-        code = verify.main(["--project", item["project"], "--pr", item["pr_name"], "--build", str(item["build_id"]),
-                            "--stage", item["stage_id"]])
-        if code:
-            errs.append(f"replay mismatch {item['file']}")
+    for bundle, k in (("lrts", n), ("real_prs", 10)):
+        idx = json.loads((BUNDLE / bundle / "index.json").read_text(encoding="utf-8"))
+        for item in random.Random(seed).sample(idx, min(k, len(idx))):
+            code = verify.main(["--bundle", bundle, "--project", item["project"], "--pr", item["pr_name"],
+                                "--build", str(item["build_id"]), "--stage", item["stage_id"]])
+            if code:
+                errs.append(f"replay mismatch {item['file']}")
     return errs
 
 

@@ -1,9 +1,9 @@
 """Independent check of one LRTS replay shown in the demo.
 
-    python -m stp.demo.verify --project kafka --pr PR-12345 --build 3 --stage <stage>
+    python -m stp.demo.verify [--bundle lrts|real_prs] --project kafka --pr PR-12345 --build 3 --stage <stage>
 
 Reads the build's *raw* LRTS file (processed_test_result/<project>/<pr>_build<N>/stage_<stage>/test_class.csv.zip),
-takes each method's test order from demo_bundle/lrts/<project>/<pr>_<build>_<stage>.json, and recomputes APFDc and
+takes each method's test order from demo_bundle/<bundle>/<project>/<pr>_<build>_<stage>.json, and recomputes APFDc and
 time to first failure from the raw durations and outcomes with a 10-line implementation written here (not the
 pipeline's). Prints MATCH / MISMATCH per method and exits 1 on any mismatch.
 """
@@ -20,6 +20,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 RAW = ROOT / "data" / "raw" / "long_running_test_suites" / "long_running_test_suites" / "processed_test_result"
 BUNDLE = ROOT / "demo_bundle" / "lrts"
+BUNDLES = ("lrts", "real_prs")
 
 
 def read_raw(project: str, pr: str, build: int, stage: str) -> dict[str, tuple[float, int]]:
@@ -58,9 +59,10 @@ def main(argv=None) -> int:
     ap.add_argument("--pr", required=True)
     ap.add_argument("--build", type=int, required=True)
     ap.add_argument("--stage", required=True)
+    ap.add_argument("--bundle", choices=BUNDLES, default="lrts")
     a = ap.parse_args(argv)
     raw = read_raw(a.project, a.pr, a.build, a.stage)
-    rec = json.loads((BUNDLE / a.project / f"{a.pr}_{a.build}_{a.stage}.json").read_text(encoding="utf-8"))
+    rec = json.loads((BUNDLE.parent / a.bundle / a.project / f"{a.pr}_{a.build}_{a.stage}.json").read_text(encoding="utf-8"))
     bad = 0
     print(f"raw file: {len(raw)} test classes, {sum(o for _, o in raw.values())} failing")
     for m, r in rec["methods"].items():

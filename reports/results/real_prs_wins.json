@@ -11,6 +11,9 @@
       "loss": {
         "n_builds": 1693,
         "n_failing_tests": 11675,
+        "share_builds_with_a_recurring_failure": 1.0,
+        "share_builds_only_first_time_failures": 0.0,
+        "share_builds_only_known_flaky_failures": 0.029533,
         "share_recurring": 0.997602,
         "share_first_time": 0.002398,
         "share_known_flaky": 0.327623,
@@ -20,6 +23,9 @@
       "tie": {
         "n_builds": 121,
         "n_failing_tests": 607,
+        "share_builds_with_a_recurring_failure": 0.991736,
+        "share_builds_only_first_time_failures": 0.008264,
+        "share_builds_only_known_flaky_failures": 0.082645,
         "share_recurring": 0.968699,
         "share_first_time": 0.031301,
         "share_known_flaky": 0.372323,
@@ -29,6 +35,9 @@
       "win": {
         "n_builds": 6264,
         "n_failing_tests": 38778,
+        "share_builds_with_a_recurring_failure": 0.99984,
+        "share_builds_only_first_time_failures": 0.00016,
+        "share_builds_only_known_flaky_failures": 0.071839,
         "share_recurring": 0.993347,
         "share_first_time": 0.006653,
         "share_known_flaky": 0.36923,
@@ -40,6 +49,9 @@
       "loss": {
         "n_builds": 51,
         "n_failing_tests": 506,
+        "share_builds_with_a_recurring_failure": 1.0,
+        "share_builds_only_first_time_failures": 0.0,
+        "share_builds_only_known_flaky_failures": 0.078431,
         "share_recurring": 1.0,
         "share_first_time": 0.0,
         "share_known_flaky": 0.043478,
@@ -49,6 +61,9 @@
       "tie": {
         "n_builds": 82,
         "n_failing_tests": 164,
+        "share_builds_with_a_recurring_failure": 0.743902,
+        "share_builds_only_first_time_failures": 0.256098,
+        "share_builds_only_known_flaky_failures": 0.0,
         "share_recurring": 0.72561,
         "share_first_time": 0.27439,
         "share_known_flaky": 0.02439,
@@ -58,6 +73,9 @@
       "win": {
         "n_builds": 144,
         "n_failing_tests": 2393,
+        "share_builds_with_a_recurring_failure": 0.916667,
+        "share_builds_only_first_time_failures": 0.083333,
+        "share_builds_only_known_flaky_failures": 0.013889,
         "share_recurring": 0.570832,
         "share_first_time": 0.429168,
         "share_known_flaky": 0.019641,
@@ -67,7 +85,7 @@
     }
   },
   "_meta": {
-    "generated": "2026-11-16 21:44:28",
-    "git_sha": "4a2bb7e"
+    "generated": "2026-11-16 22:55:52",
+    "git_sha": "d54ca98"
   }
 }

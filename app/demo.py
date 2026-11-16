@@ -1,4 +1,4 @@
-"""smartci demo (Streamlit): six pages, offline, reading only demo_bundle/.
+"""smartci demo (Streamlit): eight pages, offline, reading only demo_bundle/ (ML Lab and Break the code also compute live).
 
 Run:  streamlit run app/demo.py
 Every number comes from files in demo_bundle/ (built by `python -m stp.demo.build_bundle` from reports/results,
@@ -19,11 +19,10 @@ import matplotlib
 if str(Path(__file__).resolve().parents[1] / "src") not in sys.path:   # works without `pip install -e .` (hosting)
     sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt  # noqa: E402
 import pandas as pd  # noqa: E402
 import streamlit as st  # noqa: E402
 
-from stp.reports.colors import color, label  # noqa: E402
+from stp.reports.colors import label  # noqa: E402
 from stp.reports.error_md import firstfail_md, floor_md, meaning, tvm_md, verdict  # noqa: E402
 from stp.reports.fmt import HEADLINE, NAME, QUESTION  # noqa: E402
 
@@ -77,28 +76,6 @@ def jsonl(path: Path) -> list[dict]:
     return [json.loads(x) for x in path.read_text(encoding="utf-8").splitlines() if x.strip()] if path.exists() else []
 
 
-def race(lanes: dict[str, list[tuple[str, float, bool]]], title: str, unit: str = "s"):
-    """Horizontal lanes: each test (or file) is a segment; a lane stops at its first failure (red)."""
-    fig_, ax = plt.subplots(figsize=(9, 0.7 + 0.55 * len(lanes)))
-    scale = 60.0 if unit == "min" else 1.0
-    for y, (name, segs) in enumerate(lanes.items()):
-        t = 0.0
-        for _, d, f in segs:
-            ax.barh(y, d / scale, left=t / scale, color="#d62728" if f else color(name), edgecolor="white",
-                    linewidth=0.3, height=0.6)
-            t += d
-            if f:
-                ax.text(t / scale, y, f"  {t / scale:.2f} {unit}", va="center", fontsize=8)
-                break
-    ax.set_yticks(range(len(lanes)), [label(n) for n in lanes])
-    ax.invert_yaxis()
-    ax.set_xlabel(f"time until the first failure is reported ({unit}; tests run one after another; red = failing)")
-    ax.set_title(title, fontsize=10)
-    ax.spines[["top", "right"]].set_visible(False)
-    st.pyplot(fig_)
-    plt.close(fig_)
-
-
 def decode(rec: dict) -> dict:
     names = rec["names"]
     rec["tests"] = {n: {"duration_s": d, "fail": bool(f)} for n, d, f in zip(names, rec["duration_s"], rec["fail"])}
@@ -118,16 +95,6 @@ def page_overview():
                 "breaks something, the failing test is often near the end, so the developer waits for most of the "
                 "suite before seeing red. If we can predict which tests are likely to fail for *this* change, we can "
                 "run them first: the same tests, nothing skipped, only the order changes.")
-    bt = nx_backtest()
-    if bt:
-        bugs = [b for b in bt["bugs"] if b["kind"] == "mined" and b.get("prefix")]
-        med = sorted(b["ttff_s"]["default"] for b in bugs)[len(bugs) // 2]
-        b = min(bugs, key=lambda x: abs(x["ttff_s"]["default"] - med))
-        fails = set(b["failing_files"])
-        lanes = {m: [(f, d, f in fails) for f, d in b["prefix"][m]] for m in ("default", "smartci") if m in b["prefix"]}
-        race(lanes, f"A real NetworkX bug (\"{b['title'][:70]}\"): pytest's order vs smartci's order")
-        st.caption("Real measured test-file durations of NetworkX; the failing file is the real one. The lanes are replayed "
-                   "from those durations (see 'Race replay' for every bug and how to re-run it for real).")
     st.subheader("What we built")
     st.graphviz_chart("""
 digraph { rankdir=LR; node [shape=box, style="rounded,filled", fillcolor="#f4f4f4", fontsize=10];
@@ -154,19 +121,12 @@ digraph { rankdir=LR; node [shape=box, style="rounded,filled", fillcolor="#f4f4f
               (f"{d['mean']:+.3f}" + (" (tie)" if verdict(d) == "level" else "")) if d else "–",
               help=f"95% CI {ci(d, sign=True)}: {'a tie (CI includes 0)' if verdict(d) == 'level' else verdict(d)}. "
                    f"Best simple rule: {get(M, 'best_simple_by_val', 'All')}.")
-    md, ms = get(nx, "median_ttff_s", "default", "median"), get(nx, "median_ttff_s", "smartci", "median")
-    c4.metric("NetworkX: median s to first failure", f"{md:.1f} s → {ms:.2f} s" if md else "–",
-              help=f"pytest's default order vs smartci, {nx.get('n')} bugs (real mined bugs + synthetic mutants); "
-                   "changed-files-first does about as well (see Results).")
+    q = nx_queue_medians()
+    c4.metric("NetworkX: failing file's queue position (median)",
+              f"{q['default']:.0f} → {q['smartci']:.0f}" if q else "–",
+              help=f"Out of {q.get('n_files')} test files, pytest's default order vs smartci, {q.get('n')} real mined "
+                   "bugs. Test time and end-to-end time for each bug are on 'Break the code'.")
     st.markdown(f"**The question we tested.** {QUESTION}  \n**The answer.** {HEADLINE}")
-    st.markdown("""
-**Pages**
-- **The ML pipeline**: the seven course rubric items, one tab each, with figures and numbers.
-- **Predict live**: pick NetworkX files you would change; the real model ranks the tests now.
-- **Race replay**: three orders racing to the first failure, on real NetworkX bugs and real Apache builds.
-- **Results**: where ML wins, where it loses, and why.
-- **Limits and honesty**: what is simulated, what is real, and the caveats.
-""")
 
 
 # ------------------------------------------------------------------------------------------------- 2 ML pipeline
@@ -428,97 +388,6 @@ def page_predict():
     st.code(live.command(files, int(add), int(dele)), language="bash")
 
 
-# ------------------------------------------------------------------------------------------------- 4 race replay
-def _race_networkx():
-    bt = nx_backtest()
-    if not bt:
-        st.warning("demo_bundle/repos/networkx/backtest.json is missing.")
-        return
-    best = bt["summary"]["all"]["best_simple_baseline"]
-    bugs = [b for b in bt["bugs"] if b.get("prefix")]
-    if "nx_seed" not in st.session_state:
-        st.session_state.nx_seed = 5
-    c1, c2 = st.columns([1, 3])
-    if c1.button("Random bug"):
-        st.session_state.nx_seed = random.SystemRandom().randrange(10 ** 6)
-    c2.write(f"seed **{st.session_state.nx_seed}** (the same seed always picks the same bug)")
-    labels = [f"[{b['kind']}] {b['title'][:80]}" for b in bugs]
-    i0 = random.Random(st.session_state.nx_seed).randrange(len(bugs))
-    i = st.selectbox("Bug", range(len(bugs)), index=i0, format_func=lambda k: labels[k])
-    b = bugs[i]
-    fails = set(b["failing_files"])
-    lanes = {m: [(f, d, f in fails) for f, d in b["prefix"][m]] for m in ("default", best, "smartci")
-             if m in b["prefix"]}
-    race(lanes, f"{b['kind']} {b['id'][:12]}: test files run until the first failure")
-    st.caption(f"**Replayed** from NetworkX test-file durations measured by `smartci profile` "
-               f"({bt['n_test_files']} files, {bt['suite_test_time_s']:.0f} s summed). The failing tests are real. "
-               "Per-test pytest overhead is included; pytest start-up and collection are not.")
-    t = b["ttff_s"]
-    st.dataframe(pd.DataFrame([{"order": label(m), "seconds to first failure": t.get(m)}
-                               for m in ("default", best, "smartci", "fastest_first", "coverage_first", "random")
-                               if t.get(m) is not None]), hide_index=True)
-    if b.get("url"):
-        st.markdown(f"[Open the fix commit on GitHub]({b['url']})")
-    st.markdown("**Run this race for real** (both lanes really run pytest; needs the NetworkX clone, see README):")
-    st.code(f"cd external\\networkx\n.venv\\Scripts\\smartci compare --bug {b['id']}", language="powershell")
-
-
-def _race_lrts():
-    idx = load_json(str(BUNDLE / "lrts" / "index.json")) or []
-    if not idx:
-        st.warning("demo_bundle/lrts is missing.")
-        return
-    if "seed" not in st.session_state:
-        st.session_state.seed = 7
-    c1, c2 = st.columns([1, 3])
-    if c1.button("Random build"):
-        st.session_state.seed = random.SystemRandom().randrange(10 ** 6)
-    c2.write(f"seed **{st.session_state.seed}** (the same seed always shows the same build)")
-    projects = sorted({x["project"] for x in idx})
-    proj = st.selectbox("Project", ["(any)"] + projects)
-    pool = [x for x in idx if proj == "(any)" or x["project"] == proj]
-    item = pool[random.Random(st.session_state.seed).randrange(len(pool))]
-    rec = decode(load_json(str(BUNDLE / item["file"])))
-    st.subheader(f"{rec['project']} · {rec['pr_name']} · build {rec['build_id']} · stage {rec['stage_id']}")
-    st.write(f"{rec['n_tests']} test classes, {rec['n_fail']} failing, summed test time "
-             f"{rec['suite_s'] / 60:.0f} min, started {rec['start']} (held-out test period).")
-    if rec.get("pr_url"):
-        st.markdown(f"[Open the real Apache pull request]({rec['pr_url']})")
-    lanes = {m: [(t, rec["tests"][t]["duration_s"], rec["tests"][t]["fail"]) for t in r["order"]]
-             for m, r in rec["methods"].items() if m != "Oracle"}
-    race(lanes, "The same tests in different orders", unit="min")
-    st.caption("**Replayed** from the real durations and outcomes in LRTS (no live run). 'Random' stands in for a "
-               "fixed order, because LRTS does not record the execution order.")
-    st.dataframe(pd.DataFrame([{"order": label(m), "APFDc": r["apfdc"], "minutes to first failure": r["ttff_s"] / 60}
-                               for m, r in rec["methods"].items()]), hide_index=True)
-    with st.expander("Why did smartci rank its top tests first?"):
-        for r in rec.get("smartci_reasons", []):
-            st.markdown(f"**{r['test']}** · P(fail) = {r['p_fail']:.4f} "
-                        f"{'(failed)' if rec['tests'][r['test']]['fail'] else ''}")
-            for x in r["top"]:
-                st.write(f"- `{x['feature']}` = {x['value']:.3g} {'raises' if x['shap'] > 0 else 'lowers'} the risk "
-                         f"({x['shap']:+.2f} log-odds)")
-    m = st.selectbox("Full ordered list for", list(rec["methods"]))
-    order = rec["methods"][m]["order"]
-    df = pd.DataFrame({"rank": range(1, len(order) + 1), "test class": order,
-                       "duration s": [rec["tests"][t]["duration_s"] for t in order],
-                       "failed": [rec["tests"][t]["fail"] for t in order]})
-    df["running total min"] = df["duration s"].cumsum() / 60
-    st.dataframe(df, hide_index=True, height=260)
-    buf = io.StringIO()
-    df.to_csv(buf, index=False)
-    st.download_button("Download CSV", buf.getvalue(), file_name=f"{rec['project']}_{rec['pr_name']}_{m}.csv")
-    st.markdown("**Verify every number above from the raw LRTS file** (needs the LRTS download):")
-    st.code(f"python -m stp.demo.verify --project {rec['project']} --pr {rec['pr_name']} --build {rec['build_id']} "
-            f"--stage {rec['stage_id']}", language="bash")
-
-
-def page_race():
-    st.header("Race replay")
-    src = st.radio("Source", ["NetworkX bugs", "LRTS held-out builds"], horizontal=True)
-    _race_networkx() if src == "NetworkX bugs" else _race_lrts()
-
-
 # ------------------------------------------------------------------------------------------------- 5 results
 def page_results():
     st.header("Results: where ML wins and where it loses")
@@ -544,11 +413,16 @@ def page_results():
     bt = get(R("real_world"), "networkx", "backtest_summary", default={})
     if bt:
         st.subheader("NetworkX (real repository, smartci tool)")
+        su = nx_startup_s()
         for kind, s in bt.items():
+            q = nx_queue_medians(None if kind == "all" else kind)
             st.markdown(f"**{kind}** (n = {s['n']}): best simple rule **{s['best_simple_baseline']}**. "
                         f"{s['recommendation']}")
-            st.dataframe(pd.DataFrame([{"order": label(m), "median s to first failure [95% CI]":
+            st.dataframe(pd.DataFrame([{"order": label(m),
+                                        "failing file's queue position (median)": q.get(m),
+                                        "test s until it fails, median [95% CI]":
                                         f"{v['median']:.2f} [{v['lo']:.2f}, {v['hi']:.2f}]",
+                                        "end-to-end s (+ measured start-up)": round(v["median"] + su, 1),
                                         "mean APFDc": s["mean_apfdc"].get(m),
                                         "smartci wins / ties / losses": "–" if m not in s["vs_smartci"] else
                                         "{win} / {tie} / {loss}".format(**s["vs_smartci"][m])}
@@ -623,101 +497,395 @@ def page_limits():
 """)
 
 
+
+
+# ------------------------------------------------------------------------------------------------- NetworkX helpers
+def nx_profile() -> dict:
+    return load_json(str(BUNDLE / "repos" / "networkx" / "profile.json")) or {}
+
+
+def nx_profile_order() -> list[str]:
+    return nx_profile().get("default_order", [])
+
+
+def nx_startup_s() -> float:
+    """Median measured pytest start-up + collection on this laptop (profile runs: wall time minus test time)."""
+    o = sorted(x for x in nx_profile().get("overhead_s") or [] if x is not None)
+    return float(o[len(o) // 2]) if o else 0.0
+
+
+def nx_queue_medians(kind: str | None = "mined") -> dict:
+    """Median queue position of the first failing test file per order (= length of the stored order prefix)."""
+    bt = nx_backtest()
+    bugs = [b for b in bt.get("bugs", []) if b.get("prefix") and (kind is None or b["kind"] == kind)]
+    if not bugs:
+        return {}
+    out = {"n": len(bugs), "n_files": bt.get("n_test_files")}
+    for m in bugs[0]["prefix"]:
+        v = sorted(len(b["prefix"][m]) for b in bugs if m in b["prefix"])
+        out[m] = v[len(v) // 2]
+    return out
+
+
 # ------------------------------------------------------------------------------------------------- 0 start here
-def _animate_race(b: dict, lanes_order: list[str], seconds: float = 8.0):
-    """Play a real bug's race: lanes advance through their measured test-file durations (time compressed)."""
-    import time as _t
-    fails = set(b["failing_files"])
-    lanes = {m: b["prefix"][m] for m in lanes_order if m in b.get("prefix", {})}
-    total = max(sum(d for _, d in segs) for segs in lanes.values())
-    holders = {m: (st.empty(), st.empty()) for m in lanes}
-    frames = 48
-    for k in range(frames + 1):
-        now = total * k / frames
-        for m, segs in lanes.items():
-            t, cur = 0.0, segs[0][0]
-            for f, d in segs:
-                if now < t + d:
-                    cur = f
-                    break
-                t += d
-            end = sum(d for _, d in segs)
-            done = now >= end
-            label_ = "pytest's normal order" if m == "default" else label(m)
-            txt = (f"**{label_}**: ❌ found the broken test after **{end:.2f} s** (`{segs[-1][0].split('/')[-1]}`)"
-                   if done else f"**{label_}**: running `{cur.split('/')[-1]}` … {now:.1f} s")
-            holders[m][0].markdown(txt)
-            holders[m][1].progress(min(1.0, min(now, end) / total))
-        _t.sleep(seconds / frames)
-    _ = fails
-
-
 def page_start():
-    S, M = R("savings"), R("models")
+    M = R("models")
     st.title("smartci")
-    st.markdown("### Catch a broken code change in seconds, not hours, by running the tests most likely to fail first.")
+    st.markdown("### Run the tests most likely to fail first, so a broken change turns red sooner.")
     st.markdown("""
 **The idea in everyday words.** You have lost your keys. You don't search the house room by room in a fixed order:
-you look first where you last had them and where you just were. smartci does the same for software tests. When a
-developer changes code, it checks first the tests that are related to that change or that broke recently.
-**Every test still runs; only the order changes.** So if something is broken, the developer sees red almost at once
-instead of waiting for the whole test run.
+you look first where you last had them. smartci does the same for software tests: when code changes, it runs first
+the tests related to that change or that broke recently. **Every test still runs; only the order changes.**
 """)
-    c1, c2, c3 = st.columns(3)
-    c1.markdown("#### 1 · You change code\nA developer edits a few files and pushes. Normally hundreds of tests run "
-                "in a fixed order, often for hours.")
-    c2.markdown("#### 2 · smartci predicts\nA machine-learning model, trained on 108,366 real test runs from 10 "
-                "Apache projects, estimates for every test: *how likely is this to fail now?*")
-    c3.markdown("#### 3 · Likely failures run first\nTests are reordered by chance of failing ÷ time to run. A broken "
-                "change turns red in the first seconds.")
-    st.divider()
-    st.subheader("See it: a real bug in NetworkX, a popular Python library")
-    bt = nx_backtest()
-    bugs = [b for b in bt.get("bugs", []) if b["kind"] == "mined" and b.get("prefix")]
-    if bugs:
-        med = sorted(b["ttff_s"]["default"] for b in bugs)[len(bugs) // 2]
-        b = min(bugs, key=lambda x: abs(x["ttff_s"]["default"] - med))
-        st.caption(f"Bug: “{b['title']}”. Both lanes use NetworkX's real measured test times; 8 seconds of "
-                   "animation stand for the whole run.")
-        if st.button("▶ Run the race", type="primary"):
-            _animate_race(b, ["default", "smartci"])
-        else:
-            st.info("Press **Run the race** to watch pytest's normal order and smartci's order look for the same bug.")
-    st.divider()
-    st.subheader("What would it save your team?")
-    meth = S.get("methods") or {}
-    if meth:
-        c1, c2 = st.columns(2)
-        suite = c1.number_input("How long is one full test run? (minutes)", 1, 2000, 60)
-        broken = c2.number_input("How many test runs fail per week?", 1, 5000, 20)
-        f_fixed, f_ml = meth["Random"]["frac_waited_macro"], meth["lgbm"]["frac_waited_macro"]
-        best = get(M, "best_simple_by_val", "All")
-        f_rule = meth.get(best, {}).get("frac_waited_macro", f_ml)
-        k1, k2, k3 = st.columns(3)
-        k1.metric("Wait for the first failure, fixed order", f"{f_fixed * suite:.0f} min")
-        k2.metric("With smartci", f"{f_ml * suite:.1f} min",
-                  delta=f"{(f_fixed - f_ml) * suite:.0f} min sooner per broken run", delta_color="normal")
-        k3.metric("Developer waiting saved per week", f"{(f_fixed - f_ml) * suite * broken / 60:.1f} h")
-        st.caption(f"Estimate from {S.get('n_runs', 0):,} held-out failed CI runs of 10 Apache projects: before the "
-                   f"first failure appears, a fixed order goes through {f_fixed:.0%} of the test run, smartci's model "
-                   f"{f_ml:.1%}, and the best simple rule ({best}) {f_rule:.1%}. 'Fixed order' is approximated by a "
-                   "random order, because the dataset does not record the original order.")
-    st.divider()
-    st.subheader("What we found, honestly")
-    d = get(M, "vs_best_simple", "All", "macro10", "lgbm")
+    st.markdown("""
+**How to walk through this demo**
+1. **ML Lab**: train logistic regression, a random forest or LightGBM *now*, on real CI rows, and see the four
+   lessons that shaped the project (accuracy trap, overfitting, random-split leakage, which features matter).
+2. **Real PRs**: replays of real recorded Apache Kafka and TVM builds the model never saw: where the first failing
+   test sat in each order, how many test minutes came before it, and the model's top 10 with reasons. Losses included.
+3. **Break the code**: a real NetworkX bug put back into today's code; two real pytest processes, a real stopwatch.
+4. **Results** and **Limits and honesty**: the full scoreboard and every caveat.
+""")
+    d = get(M, "vs_best_simple", "All", "macro10", "stack")
     f = get(M, "vs_best_simple", "FirstFail-old", "macro10", "lgbm")
+    kp = get(d or {}, "per_project", default={})
+    st.subheader("The honest verdict")
     st.markdown(f"""
-1. **Reordering helps enormously.** Any sensible order finds the first failure far sooner than a fixed one.
-2. **Machine learning helps a little, sometimes.** On failures that have happened before, the model is level with
-   the best simple rule (APFDc {ci(d, sign=True)}) and beats the strongest rule from the research paper.
-3. **For tests failing for the very first time, 'fastest first' beats the model** ({ci(f, sign=True)}). We
-   measured why, and smartci tells each team which order works best on *their* code (`smartci evaluate`).
+1. **The model helps on large projects with long history.** On held-out Kafka and TVM builds the stacked model beats
+   the best simple rule (ΔAPFDc {kp.get('kafka', 0):+.3f} on Kafka, {kp.get('tvm', 0):+.3f} on TVM; macro over all
+   ten projects {ci(d, sign=True)}).
+2. **On a small Python repository, a simple rule is enough.** On NetworkX, 'changed files first' finds the failing
+   test about as early as the model (see *Break the code* and *Results*).
+3. **It loses on first-time failures.** For tests that have never failed before, 'fastest first' beats the model
+   ({ci(f, sign=True)} APFDc). `smartci evaluate` tells each team which order wins on *their* code.
 """)
     with st.expander("For the technical audience: the pipeline and four headline numbers"):
         page_overview()
 
 
-# ------------------------------------------------------------------------------------------------- guided demo
+# ------------------------------------------------------------------------------------------------- ML Lab
+@st.cache_resource(show_spinner="Loading the bundled real sample…")
+def _lab():
+    from stp.demo import lab
+    return lab, lab.load()
+
+
+MODEL_NAMES = {"lr": "Logistic regression", "rf": "Random forest", "lgbm": "LightGBM"}
+SPLIT_NAMES = {"time": "by time (earliest 80% of CI runs → train, latest 20% → validation)",
+               "random": "random (80% / 20% of rows, ignoring time)"}
+METRIC_NAMES = {"pr_auc": "PR-AUC", "accuracy": "accuracy"}
+
+
+def _lab_scores(res: dict) -> pd.DataFrame:
+    rows = []
+    for k, name in (("train", "train (rows it learned from)"), ("validation", "validation (held out, chosen split)"),
+                    ("later", "later builds (after all training data)")):
+        s, b = res["score"][k], res["baseline"][k]
+        rows.append({"data": name, "rows": res["rows"][k], METRIC_NAMES[res["metric"]]: s,
+                     ("always 'pass' scores" if res["metric"] == "accuracy" else "random ranking scores"): b,
+                     **({"× better than random": s / b if b else None} if res["metric"] == "pr_auc" else {})})
+    return pd.DataFrame(rows)
+
+
+def _lab_show(res: dict):
+    st.dataframe(_lab_scores(res), hide_index=True)
+    gap = res["score"]["train"] - res["score"]["validation"]
+    st.caption(f"Fitted in **{res['fit_seconds']:.1f} s** ({res['seconds']:.1f} s with scoring) on this machine · "
+               f"{res['n_features']} features · train − validation gap {gap:+.3f}"
+               + (f" · {res['rounds_used']} boosting rounds used" if "rounds_used" in res else "")
+               + (f" · {res['n_zero']} coefficients exactly zero" if res.get("n_zero") else "")
+               + ". Later builds keep the real failure rate (unsampled), so compare them with their own random line.")
+    w = pd.DataFrame(res["weights"][:12], columns=["feature", "value"])
+    if res["model"] == "lr":
+        w["direction"] = ["raises risk" if v > 0 else "lowers risk" if v < 0 else "dropped (0)" for v in w.value]
+        w["size"] = w.value.abs()
+    else:
+        w["size"] = w.value
+    st.markdown(f"**Top features** ({res['weights_kind']})")
+    st.dataframe(w, hide_index=True, column_config={
+        "size": st.column_config.ProgressColumn("size", min_value=0.0, max_value=float(w["size"].max() or 1.0),
+                                                format="%.3g"),
+        "value": st.column_config.NumberColumn(format="%.4g")})
+
+
+def page_lab():
+    st.header("ML Lab: train a model now")
+    lab, data = _lab()
+    m = lab.meta()
+    ts, lb = m["train_sample"], m["later_builds"]
+    st.markdown(f"Everything on this page is fitted **when you press the button**; nothing is precomputed. The data is "
+                f"a real sample bundled with the app: **{ts['rows']:,} training rows** ({ts['failure_rate']:.2%} "
+                f"fail; passing tests were sampled down, as in our training set) and **{lb['rows']:,} rows of "
+                f"{lb['runs']} later CI builds** ({lb['failure_rate']:.2%} fail, the real rate). One row = one test "
+                "class in one CI run of a real Apache project; the label is whether it failed.")
+    tab_exp, tab_free = st.tabs(["Four guided experiments", "Train your own"])
+    with tab_exp:
+        for name, e in lab.EXPERIMENTS.items():
+            st.subheader(name)
+            st.markdown(f"*{e['question']}*  ·  runs: " + " vs ".join(f"**{k}**" for k in e["runs"]))
+            key = f"exp_{name}"
+            if st.button("Run this experiment", key=f"btn_{name}"):
+                with st.spinner("Training…"):
+                    st.session_state[key] = {k: lab.train(data=data, **v) for k, v in e["runs"].items()}
+            res = st.session_state.get(key)
+            if res:
+                for k, r in res.items():
+                    st.markdown(f"**{k}**")
+                    st.dataframe(_lab_scores(r), hide_index=True)
+                st.success("**Takeaway (computed from the fit you just ran).** " + lab.takeaway(name, res))
+                st.caption("Total time: " + ", ".join(f"{k} {r['seconds']:.1f} s" for k, r in res.items()))
+            st.divider()
+    with tab_free:
+        c1, c2, c3 = st.columns(3)
+        model = c1.radio("Model", list(MODEL_NAMES), format_func=MODEL_NAMES.get)
+        split = c2.radio("Validation split", list(SPLIT_NAMES), format_func=SPLIT_NAMES.get)
+        metric = c3.radio("Metric", list(METRIC_NAMES), format_func=METRIC_NAMES.get)
+        st.markdown("**Feature groups**")
+        gc = st.columns(4)
+        groups = tuple(g for g, col in zip(m["groups"], gc) if col.checkbox(f"{g} ({len(m['groups'][g])})", True,
+                                                                           key=f"grp_{g}"))
+        st.markdown("**Regularization**")
+        kw: dict = {}
+        r1, r2, r3, r4 = st.columns(4)
+        if model == "lr":
+            kw["penalty"] = r1.radio("Penalty", ["l2", "l1"], format_func=str.upper)
+            kw["C"] = r2.select_slider("C (smaller = stronger penalty)",
+                                       [0.0001, 0.001, 0.01, 0.1, 1.0, 10.0, 100.0], value=1.0)
+        elif model == "rf":
+            kw["n_trees"] = r1.slider("Trees", 10, 150, 60, 10)
+            kw["max_depth"] = r2.slider("Max depth (0 = unlimited)", 0, 30, 12)
+            kw["min_leaf"] = r3.slider("Min rows per leaf", 1, 200, 20)
+        else:
+            kw["num_leaves"] = r1.slider("Leaves per tree", 4, 255, 31)
+            kw["max_depth"] = r2.slider("Max depth (0 = unlimited)", 0, 16, 8)
+            kw["min_leaf"] = r3.slider("Min rows per leaf", 1, 200, 20)
+            kw["rounds"] = r4.slider("Boosting rounds (max)", 50, 600, 300, 50)
+            kw["early_stopping"] = r4.checkbox("Early stopping on validation (+ L2 1.0, 80% features)", True)
+        if not groups:
+            st.warning("Choose at least one feature group.")
+        elif st.button("Train", type="primary"):
+            with st.spinner(f"Training {MODEL_NAMES[model]}…"):
+                res = lab.train(model=model, groups=groups, split_kind=split, metric=metric, data=data, **kw)
+            st.session_state.lab_last = res
+            st.session_state.setdefault("lab_log", []).append(
+                {"model": MODEL_NAMES[model], "split": split, "metric": metric, "groups": "+".join(groups),
+                 "settings": ", ".join(f"{k}={v}" for k, v in kw.items()), "train": res["score"]["train"],
+                 "validation": res["score"]["validation"], "later builds": res["score"]["later"],
+                 "seconds": res["seconds"]})
+        if st.session_state.get("lab_last"):
+            _lab_show(st.session_state.lab_last)
+        if st.session_state.get("lab_log"):
+            st.markdown("**Your fits this session**")
+            st.dataframe(pd.DataFrame(st.session_state.lab_log), hide_index=True)
+    st.caption("Retype the same four experiments yourself: `notebooks/lab_by_hand.ipynb` (pandas, scikit-learn, "
+               "LightGBM). The bigger measurement behind this page: `reports/results/lab_check.json`.")
+
+
+# ------------------------------------------------------------------------------------------------- Real PRs
+ORDER_LABEL = {"random": "Random order (stands in for a fixed order)", "fastest_first": "Fastest first (QTF)",
+               "best_rule": "Best simple rule: changed or new tests first", "model": "Model (stacking)"}
+
+
+def _wins_text(W: dict) -> str:
+    k, t = get(W, "projects", "kafka", default={}), get(W, "projects", "tvm", default={})
+    if not k or not t:
+        return ""
+    s = lambda d, o, f: d.get(o, {}).get(f, 0)  # noqa: E731
+    return (
+        "**Do the model's wins come from recurring or flaky failures?** Checked on every held-out failed build of "
+        f"both projects ({sum(v['n_builds'] for v in k.values()):,} Kafka, {sum(v['n_builds'] for v in t.values())} "
+        "TVM). **Recurring, not flaky.** "
+        f"{s(k, 'win', 'share_builds_with_a_recurring_failure'):.0%} of Kafka wins and "
+        f"{s(t, 'win', 'share_builds_with_a_recurring_failure'):.0%} of TVM wins contain a test that had failed "
+        "before; builds where every failing test is on the known-flaky list are only "
+        f"{s(k, 'win', 'share_builds_only_known_flaky_failures'):.0%} (Kafka) and "
+        f"{s(t, 'win', 'share_builds_only_known_flaky_failures'):.0%} (TVM) of wins. Known-flaky tests make up "
+        f"{s(k, 'win', 'share_known_flaky'):.0%} of failing tests in Kafka wins and "
+        f"{s(k, 'loss', 'share_known_flaky'):.0%} in Kafka losses, so flakiness does not separate wins from losses. "
+        "But losses are recurring too "
+        f"({s(k, 'loss', 'share_recurring'):.0%} Kafka, {s(t, 'loss', 'share_recurring'):.0%} TVM): history is "
+        "what lets the model win at all, not a guarantee that it wins. On TVM, "
+        f"{s(t, 'win', 'share_first_time'):.0%} of failing tests in winning builds were first-time failures; the "
+        "model won those builds by finding a recurring failure in the same build early.")
+
+
+def page_real_prs():
+    st.header("Real PRs: held-out Apache Kafka and TVM builds")
+    st.info("**Replay of a real recorded build.** Every number comes from the build's recorded test durations and "
+            "outcomes in the LRTS dataset; nothing is animated or re-run. The model never saw these builds (they are "
+            "from the held-out test period). Kafka and TVM are the two projects where the model beats the best "
+            "simple rule.")
+    idx = load_json(str(BUNDLE / "real_prs" / "index.json")) or []
+    if not idx:
+        st.warning("demo_bundle/real_prs is missing (python -m stp.demo.build_real_prs).")
+        return
+    M, W = R("models"), R("real_prs_wins")
+    d = get(M, "vs_best_simple", "All", "macro10", "stack", "per_project", default={})
+    cols = st.columns(4)
+    for c, p in zip(cols[:2], ("kafka", "tvm")):
+        w = get(W, "projects", p, default={})
+        c.metric(f"{p}: model − best rule (APFDc, all held-out builds)", f"{d.get(p, 0):+.3f}",
+                 help="From reports/results/models.json (vs_best_simple → All → stack).")
+        cols[2 + (p == "tvm")].metric(f"{p}: builds won / tied / lost",
+                                      " / ".join(f"{w.get(o, {}).get('n_builds', 0):,}" for o in ("win", "tie", "loss")),
+                                      help="Every held-out failed build; tie = |ΔAPFDc| < 0.001.")
+    st.markdown(_wins_text(W))
+    st.divider()
+
+    def pick(outcome: str):
+        st.session_state.rp_seed = random.SystemRandom().randrange(10 ** 6)
+        st.session_state.rp_outcome = outcome
+
+    st.session_state.setdefault("rp_seed", 7)
+    st.session_state.setdefault("rp_outcome", "any")
+    c1, c2, c3, c4 = st.columns([1, 1, 1.2, 2])
+    c1.button("Random build", on_click=pick, args=("any",))
+    c2.button("Show me a loss", on_click=pick, args=("loss",))
+    proj = c3.selectbox("Project", ["any", "kafka", "tvm"], key="rp_project")
+    c4.selectbox("Outcome vs best simple rule", ["any", "win", "tie", "loss"], key="rp_outcome")
+    pool = [x for x in idx if proj in ("any", x["project"]) and st.session_state.rp_outcome in ("any", x["outcome"])]
+    if not pool:
+        st.warning("No bundled build matches.")
+        return
+    i0 = random.Random(st.session_state.rp_seed).randrange(len(pool))
+    i = st.selectbox(f"Build ({len(pool)} match; random pick with seed {st.session_state.rp_seed})", range(len(pool)),
+                     index=i0, format_func=lambda k: f"[{pool[k]['outcome']}] {pool[k]['project']} {pool[k]['pr_name']} "
+                                                     f"build {pool[k]['build_id']} · {pool[k]['stage_id']}")
+    rec = load_json(str(BUNDLE / pool[i]["file"]))
+    names, dur, fail = rec["names"], rec["duration_s"], rec["fail"]
+    st.subheader(f"{rec['project']} · {rec['pr_name']} · build {rec['build_id']} · {rec['stage_id']}")
+    st.markdown(f"[Open the real Apache pull request]({rec['pr_url']}) · started {rec['start']} · "
+                f"outcome **{rec['outcome']}** (model − best rule ΔAPFDc {rec['delta_vs_best_rule']:+.3f})")
+    k1, k2, k3, k4 = st.columns(4)
+    k1.metric("Test classes", f"{rec['n_tests']:,}")
+    k2.metric("Failing", rec["n_fail"])
+    k3.metric("Total test time", f"{rec['suite_min']:.0f} min")
+    k4.metric("Changed files", rec["n_changed_files"])
+    with st.expander(f"Changed files in this PR ({rec['n_changed_files']})"):
+        st.code("\n".join(rec["changed_files"]) or "(no diff recorded)", language="text")
+    rows = []
+    for k, lab_ in ORDER_LABEL.items():
+        o = rec["orders"][k]
+        rows.append({"order": lab_, "first failing test at position": f"{o['first_fail_position']} of {rec['n_tests']}",
+                     "test min before it": o["test_min_before"], "test min until it fails": o["test_min_until"],
+                     "≈ wall-clock min until it fails": o["wall_min_approx"], "APFDc (all failures)": o["apfdc"]})
+    st.dataframe(pd.DataFrame(rows), hide_index=True, column_config={
+        c: st.column_config.NumberColumn(format="%.1f") for c in ("test min before it", "test min until it fails",
+                                                                  "≈ wall-clock min until it fails")}
+        | {"APFDc (all failures)": st.column_config.NumberColumn(format="%.3f")})
+    st.caption(f"Test minutes add up the recorded durations in each order, one test after another. Wall-clock ≈ test "
+               f"minutes × {rec['wallclock_factor']:.2f}, {rec['project']}'s median ratio of recorded build time to "
+               "summed test time (its CI runs tests in parallel). APFDc scores how early *all* failures come, not "
+               "just the first; win/tie/loss is decided on APFDc. LRTS does not record the real execution order, so "
+               "a random order stands in for it.")
+    st.markdown("**The model's top 10 tests, with reasons**")
+    st.dataframe(pd.DataFrame([{"rank": r + 1, "test class": t["test"], "really failed?": "❌ yes" if t["failed"] else "",
+                                "why the model put it here": " · ".join(t["reasons"])}
+                               for r, t in enumerate(rec["model_top10"])]), hide_index=True)
+    st.caption("Reasons are the three largest SHAP contributions of the stack's LightGBM member, written as sentences.")
+    with st.expander("Full order for one method"):
+        k = st.selectbox("Order", list(ORDER_LABEL), format_func=ORDER_LABEL.get)
+        order = rec["orders"][k]["order"]
+        df = pd.DataFrame({"position": range(1, len(order) + 1), "test class": [names[j] for j in order],
+                           "duration s": [dur[j] for j in order], "failed": [bool(fail[j]) for j in order]})
+        df["running total min"] = df["duration s"].cumsum() / 60
+        st.dataframe(df, hide_index=True, height=260)
+        buf = io.StringIO()
+        df.to_csv(buf, index=False)
+        st.download_button("Download CSV", buf.getvalue(), file_name=f"{rec['project']}_{rec['pr_name']}_{k}.csv")
+    st.markdown("**Recompute every number above from the raw LRTS file** (needs the LRTS download):")
+    st.code(f"python -m stp.demo.verify --bundle real_prs --project {rec['project']} --pr {rec['pr_name']} "
+            f"--build {rec['build_id']} --stage {rec['stage_id']}", language="bash")
+
+
+# ------------------------------------------------------------------------------------------------- Break the code
+def _lane_table(res: dict) -> pd.DataFrame:
+    rows = []
+    for name, ln in res["lanes"].items():
+        rows.append({"process": "pytest's own order" if name == "default" else
+                     f"smartci ({res.get('rule') or 'model'})",
+                     "failing test file's queue position": (f"{ln['queue_position']} of {ln['n_test_files']}"
+                                                            if ln.get("queue_position") else "–"),
+                     "test s until it fails": ln.get("test_time_to_first_failure_s"),
+                     "end-to-end s (launch → exit, incl. start-up)": ln.get("end_to_end_s"),
+                     "exit code": ln.get("returncode"), "first failure": ln.get("first_failure") or "none"})
+    return pd.DataFrame(rows)
+
+
+def _show_run(res: dict, live_run):
+    st.markdown(f"**{res.get('mode')}** run on {res.get('date')} · NetworkX `{(res.get('networkx_head') or '')[:10]}`"
+                + (f" · saved as `{res['saved_as']}`" if res.get("saved_as") else ""))
+    st.dataframe(_lane_table(res), hide_index=True, column_config={
+        c: st.column_config.NumberColumn(format="%.2f") for c in ("test s until it fails",
+                                                                  "end-to-end s (launch → exit, incl. start-up)")})
+    cols = st.columns(2)
+    for c, (name, ln) in zip(cols, res["lanes"].items()):
+        with c:
+            st.markdown(f"**{name}** · `{ln['command']}`")
+            st.code(live_run.traceback_of(ln["lines"])[-6000:], language="text")
+            with st.expander("Full log with timestamps (s since launch)"):
+                st.code("\n".join(f"{t:8.2f}  {x}" for t, x in ln["lines"]), language="text")
+    if res.get("smartci_top10"):
+        ff = (res["lanes"].get("default", {}).get("first_failure") or "").split("::")[0]
+        st.markdown("**smartci's top 10 for this change**")
+        st.dataframe(pd.DataFrame([{"rank": r["rank"], "test file": r["test_file"], "P(fail)": r["p_fail"],
+                                    "fails?": "❌ yes" if r["test_file"] == ff else "",
+                                    "reasons": " · ".join(r["reasons"])} for r in res["smartci_top10"]]),
+                     hide_index=True)
+
+
+def _live_section(pick: str, b: dict):
+    from stp.demo import live_run
+    st.markdown("#### Step 4 · Run it for real: two pytest processes, a real stopwatch")
+    recs = sorted((BUNDLE / "recordings").glob("*.json"), reverse=True) if (BUNDLE / "recordings").exists() else []
+    if live_run.available():
+        c1, c2, c3 = st.columns(3)
+        mode = c1.radio("Mode", ["side-by-side", "sequential"],
+                        help="side-by-side: both at once (they share the CPU, so both are slower); sequential: "
+                             "pytest's order first, then smartci (cleaner timings).")
+        rule = c2.selectbox("smartci lane orders by", ["model", "changed_files_first"])
+        top = "/".join(b["failing_files"][0].split("/")[:2])
+        subset = c3.selectbox("Tests", ["full suite", top], help="A subset makes collection shorter.")
+        st.caption(f"Measured start-up (Python, imports, collecting ~10,000 tests) on this laptop: about "
+                   f"{nx_startup_s():.0f} s per process. It is inside the stopwatch, for both lanes.")
+        if st.button("▶ Start both pytest runs", type="primary"):
+            started = __import__("time").time()
+            meta, lanes, ctx = live_run.setup(pick, None if rule == "model" else rule,
+                                              None if subset == "full suite" else subset)
+            holders = {k: st.columns(1)[0].empty() for k in lanes}
+            groups = [["default", "smartci"]] if mode == "side-by-side" else [["default"], ["smartci"]]
+            try:
+                for g in groups:
+                    for k in g:
+                        lanes[k].start()
+                    while True:
+                        done = all(lanes[k].drain() for k in g)
+                        for k, ln in lanes.items():
+                            tail = "\n".join(x for _, x in ln.lines[-12:])
+                            state = ("waiting" if ln.t0 is None else
+                                     f"exited ({ln.rc})" if ln.rc is not None else "running")
+                            holders[k].code(f"[{k}] {state} · stopwatch {ln.elapsed():7.1f} s\n{tail}", language="text")
+                        if done:
+                            break
+                        __import__("time").sleep(0.25)
+            finally:
+                for ln in lanes.values():
+                    if ln.proc and ln.proc.poll() is None:
+                        from smartci.runner import kill_tree
+                        kill_tree(ln.proc.pid)
+            st.session_state[f"live_{pick}"] = live_run.finish(meta, lanes, ctx, started, mode)
+        if st.session_state.get(f"live_{pick}"):
+            _show_run(st.session_state[f"live_{pick}"], live_run)
+        return
+    st.warning("The NetworkX clone is not on this machine, so the live run is not possible here. Below are "
+               "**recordings of real runs** made with the same code on the authors' laptop (full logs included)."
+               if recs else "The NetworkX clone is not on this machine and no recording is bundled yet. Record one "
+               "with `python -m stp.demo.live_run --bug <id>` on a machine with the clone (see README).")
+    if recs:
+        f = st.selectbox("Recording", recs, format_func=lambda p: p.name)
+        _show_run(load_json(str(f)), live_run)
+
+
 def page_break():
     st.header("Break the code: a guided demo")
     st.markdown("A real bug from NetworkX's history is put back into today's code. The model has **never seen this "
@@ -729,15 +897,16 @@ def page_break():
     if not ids:
         st.warning("No mined NetworkX bugs in the bundle.")
         return
+    su = nx_startup_s()
+
     def outcome(i):
-        t = bugs[i]["ttff_s"]
-        s, r = t.get("smartci", 0), t.get("changed_files_first", 0)
-        w = "smartci faster" if s < r - 0.05 else "simple rule faster" if r < s - 0.05 else "tie"
-        return f"[{w}: smartci {s:.1f} s, rule {r:.1f} s, normal order {t['default']:.0f} s] {bugs[i]['title'][:70]}"
+        p = bugs[i]["prefix"]
+        s, r = len(p.get("smartci", [])), len(p.get("changed_files_first", []))
+        w = "smartci earlier" if s < r else "simple rule earlier" if r < s else "tie"
+        return f"[{w}: queue position smartci {s}, rule {r}, pytest {len(p['default'])}] {bugs[i]['title'][:70]}"
 
     ids = sorted(ids, key=lambda i: bugs[i]["ttff_s"]["smartci"])
-    st.caption("Every held-out real bug is listed with its outcome, including the ones smartci loses. The list opens "
-               "on a typical case (the median smartci time).")
+    st.caption("Every held-out real bug is listed with its outcome, including the ones smartci loses.")
     pick = st.selectbox("Choose a bug", ids, index=len(ids) // 2, format_func=outcome)
     b, m = bugs[pick], meta[pick]
     st.markdown(f"#### Step 1 · The change\nSomeone edits **{', '.join(m['source_files'])}** and, without noticing, "
@@ -747,44 +916,34 @@ def page_break():
     st.markdown("#### Step 2 · Ask the model which tests to run first")
     adds = sum(1 for x in diff.splitlines() if x.startswith("+") and not x.startswith("+++"))
     dels = sum(1 for x in diff.splitlines() if x.startswith("-") and not x.startswith("---"))
-    if not st.toggle("Run the model now", value=False, key=f"run_{pick}"):
+    if st.toggle("Run the model now", value=False, key=f"run_{pick}"):
+        rows, base = _rank(tuple(m["source_files"]), adds, dels)
+        fails = set(b["failing_files"])
+        st.dataframe(pd.DataFrame([{"rank": r["rank"], "test file": r["test_file"].replace("networkx/", ""),
+                                    "really fails?": "❌ yes" if r["test_file"] in fails else "",
+                                    "chance of failing": r["p_fail"], "why": " · ".join(r["reasons"])}
+                                   for r in rows[:10]]), hide_index=True,
+                     column_config={"chance of failing": st.column_config.NumberColumn(format="%.3f")})
+        st.caption("This page sees only the changed file names (no patch text).")
+    else:
         st.info("Turn on **Run the model now**: the real model scores all NetworkX test files for this change.")
-        return
-    rows, base = _rank(tuple(m["source_files"]), adds, dels)
-    fails = set(b["failing_files"])
-    top = pd.DataFrame([{"rank": r["rank"], "test file": r["test_file"].replace("networkx/", ""),
-                         "really fails?": "❌ yes" if r["test_file"] in fails else "",
-                         "chance of failing": r["p_fail"], "why": " · ".join(r["reasons"])} for r in rows[:10]])
-    st.dataframe(top, hide_index=True, column_config={"chance of failing": st.column_config.NumberColumn(format="%.3f")})
-    st.markdown("#### Step 3 · The reveal: where did the truly failing test land?")
-    live_rank = min((r["rank"] for r in rows if r["test_file"] in fails), default=None)
-    pos = lambda order: min((order.index(f) + 1 for f in fails if f in order), default=None)  # noqa: E731
+    st.markdown("#### Step 3 · Where did the truly failing test land? (backtest on measured test times)")
     tt = b["ttff_s"]
-    res = pd.DataFrame([
-        {"order": "pytest's normal order", "position of the failing test file": pos(nx_profile_order()),
-         "seconds of testing until it fails": tt.get("default")},
-        {"order": "changed files first (simple rule)", "position of the failing test file":
-            pos(base["changed_files_first"]), "seconds of testing until it fails": tt.get("changed_files_first")},
-        {"order": "smartci, file names only (this page)", "position of the failing test file": live_rank,
-         "seconds of testing until it fails": None},
-        {"order": "smartci, full code change (backtest)", "position of the failing test file":
-            b.get("smartci_rank_of_first_failing_file"), "seconds of testing until it fails": tt.get("smartci")}])
-    st.dataframe(res, hide_index=True)
-    st.caption(f"Out of {bt.get('n_test_files')} test files. Seconds come from the backtest, which replays NetworkX's "
-               "real measured test times with the full code change; this page sees only the file names.")
-    st.markdown("#### Step 4 · Run it for real")
-    st.code(f"scripts\\run_live_compare.ps1   # prints a numbered list\ncd external\\networkx\n"
-            f".venv\\Scripts\\smartci compare --bug {pick}", language="powershell")
+    res = pd.DataFrame([{"order": lab_, "failing file's queue position": f"{len(b['prefix'][k])} of {bt.get('n_test_files')}",
+                         "test s until it fails": tt.get(k), "≈ end-to-end s (+ measured start-up)": tt.get(k, 0) + su}
+                        for k, lab_ in (("default", "pytest's normal order"),
+                                        ("changed_files_first", "changed files first (simple rule)"),
+                                        ("smartci", "smartci (full code change)")) if k in b["prefix"]])
+    st.dataframe(res, hide_index=True, column_config={c: st.column_config.NumberColumn(format="%.1f") for c in
+                                                      ("test s until it fails", "≈ end-to-end s (+ measured start-up)")})
+    st.caption(f"Test seconds replay NetworkX's measured per-test durations in each order; end-to-end adds the "
+               f"measured start-up of ~{su:.0f} s. Step 4 measures all three for real.")
+    _live_section(pick, b)
 
 
-def nx_profile_order() -> list[str]:
-    p = load_json(str(BUNDLE / "repos" / "networkx" / "profile.json")) or {}
-    return p.get("default_order", [])
-
-
-PAGES = {"Start here": page_start, "Break the code (guided demo)": page_break, "The ML pipeline": page_pipeline,
-         "Predict live": page_predict, "Race replay": page_race, "Results": page_results,
-         "Limits and honesty": page_limits}
+PAGES = {"Start here": page_start, "ML Lab": page_lab, "Real PRs": page_real_prs,
+         "Break the code (guided demo)": page_break, "The ML pipeline": page_pipeline, "Predict live": page_predict,
+         "Results": page_results, "Limits and honesty": page_limits}
 
 
 def main():
@@ -795,7 +954,7 @@ def main():
     foot = f"results version {meta.get('git_sha', '?')} · bundle built {meta.get('generated', '?')}"
     st.sidebar.caption(foot)
     st.divider()
-    st.caption(foot + " · every number on this page is read from demo_bundle/")
+    st.caption(foot + " · every number on this page is read from demo_bundle/ or computed live")
 
 
 main()

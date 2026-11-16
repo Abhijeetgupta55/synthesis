@@ -186,7 +186,11 @@ def wins_analysis() -> dict:
     for p, g in f.groupby("project"):
         res = {}
         for o, h in g.groupby("outcome"):
+            per_build = h.groupby("run_idx").agg(any_rec=("recurring", "any"), all_flaky=("known_flaky", "all"))
             res[o] = {"n_builds": int(h.run_idx.nunique()), "n_failing_tests": int(len(h)),
+                      "share_builds_with_a_recurring_failure": float(per_build.any_rec.mean()),
+                      "share_builds_only_first_time_failures": float((~per_build.any_rec).mean()),
+                      "share_builds_only_known_flaky_failures": float(per_build.all_flaky.mean()),
                       "share_recurring": float(h.recurring.mean()), "share_first_time": float(h.first_time.mean()),
                       "share_known_flaky": float(h.known_flaky.mean()), "share_unstable": float(h.unstable.mean()),
                       "share_recurring_not_flaky_not_unstable": float((h.recurring & ~h.known_flaky

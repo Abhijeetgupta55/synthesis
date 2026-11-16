@@ -66,3 +66,21 @@ def reasons(s, change_files: list[str], n: int = 3) -> tuple[list[str], list[tup
         if len(out) == n:
             break
     return out or ["No strong signal; ranked by low cost."], contrib
+
+
+def top_from_receipt(receipt: dict, n: int = 10) -> list[dict]:
+    """smartci's top-n test files from a receipt, with P(fail) and up to three plain-sentence reasons (exact
+    LightGBM SHAP contributions recomputed from the stored features with the receipt's model variant)."""
+    from types import SimpleNamespace
+    rk = receipt.get("ranking", [])[:n]
+    if not rk:
+        return []
+    m = GlobalModel()
+    which = receipt.get("model_variant") or "model"
+    contrib = m.contributions([x["features"] for x in rk], which)
+    out = []
+    for x, c in zip(rk, contrib):
+        rs, _ = reasons(SimpleNamespace(contributions=c, features=x["features"]), receipt.get("changed_files", []))
+        out.append({"rank": x["rank"], "test_file": x["test_file"], "p_fail": x["p_fail"],
+                    "expected_duration_s": x.get("expected_duration_s"), "reasons": rs})
+    return out

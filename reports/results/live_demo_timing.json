@@ -1,0 +1,8 @@
+{
+ "profile": {
+  "returncode": 0,
+  "seconds": 1376.4,
+  "tail": "smartci profile: run 1/2 618.1s exit 0\nsmartci profile: run 2/2 387.9s exit 0\nsmartci profile: 267 test files, 337.1 s summed test time, 0 flaky, 0 failing on base; start-up overhead ~119.3 s\n",
+  "finished": "2026-11-16 19:20:19"
+ }
+}
