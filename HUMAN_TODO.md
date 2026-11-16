@@ -5,10 +5,16 @@ Each item has exact steps. Remove an item once it is done.
 
 ## Open
 
-0. **Plug the laptop into mains power for timing runs** (GATE 5, `smartci profile`, `smartci compare`, live demos).
-   On battery Windows throttled the CPU to ~42% of nominal; NetworkX tests then ran ~2.3x slower than profiled and
-   GATE 5 (simulated vs real time) cannot be judged. Then tell Claude Code "power is connected" so it re-runs
-   `smartci profile` and `python live_demo/gate5.py --repo external/networkx --seed 5`.
+0. **Phase C timing: plug the laptop into mains power, close other heavy programs, then run one command.**
+   On battery Windows throttles the CPU (~42% of nominal measured), so GATE 5 and the live-demo timings cannot be
+   judged. The script refuses to start on battery.
+   ```powershell
+   cd A:\ML\smart-ci-tcp
+   .venv\Scripts\python.exe live_demo\phase_c.py --repeats 3     # ~2-3 hours: profile, GATE 5, 3x live-demo timings
+   ```
+   Then tell Claude Code "Phase C timings are done" so it writes the timings into `reports/DEMO_SCRIPT.md`,
+   regenerates REAL_WORLD.md (GATE 5) and picks the recommended demo variant (full suite vs `networkx/algorithms`).
+   Set Windows to never sleep while it runs (item 1).
 1. **Keep the machine awake during long jobs.** The Phase 1 feature-store build and Phase 3 tuning run for hours.
    On Windows: Settings → System → Power → "When plugged in, put my device to sleep after" → **Never**, while jobs run.
    (Jobs are resumable per project, so an interruption costs only the unfinished project.)
