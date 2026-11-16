@@ -6,3 +6,5 @@ pandas==3.0.6
 numpy==2.4.6
 matplotlib==3.11.2
 lightgbm==4.7.0
+scikit-learn==1.9.1   # ML Lab: logistic regression, random forest, metrics
+pyarrow>=14           # ML Lab: reads the bundled parquet sample
