@@ -1,0 +1,77 @@
+{
+ "seed": 0,
+ "features": [
+  "hs_n_fail",
+  "hs_days_since_last_fail",
+  "hs_fails_last_7d",
+  "hs_fails_last_30d",
+  "hs_last_outcome",
+  "hs_n_transitions",
+  "hs_n_runs_seen",
+  "hs_fail_rate",
+  "is_new_test",
+  "dur_last_asof",
+  "dur_ema_asof",
+  "dur_source",
+  "test_file_in_diff",
+  "same_top_module",
+  "path_prefix_overlap",
+  "name_token_overlap",
+  "bm25_test_vs_diff",
+  "chg_n_files",
+  "chg_additions",
+  "chg_deletions",
+  "chg_n_top_modules",
+  "has_change_data",
+  "cof_max",
+  "cof_sum",
+  "cof_count_max"
+ ],
+ "groups": {
+  "history": [
+   "hs_n_fail",
+   "hs_days_since_last_fail",
+   "hs_fails_last_7d",
+   "hs_fails_last_30d",
+   "hs_last_outcome",
+   "hs_n_transitions",
+   "hs_n_runs_seen",
+   "hs_fail_rate",
+   "is_new_test"
+  ],
+  "cost": [
+   "dur_last_asof",
+   "dur_ema_asof",
+   "dur_source"
+  ],
+  "change": [
+   "test_file_in_diff",
+   "same_top_module",
+   "path_prefix_overlap",
+   "name_token_overlap",
+   "bm25_test_vs_diff",
+   "chg_n_files",
+   "chg_additions",
+   "chg_deletions",
+   "chg_n_top_modules",
+   "has_change_data"
+  ],
+  "cofail": [
+   "cof_max",
+   "cof_sum",
+   "cof_count_max"
+  ]
+ },
+ "train_sample": {
+  "rows": 100000,
+  "failure_rate": 0.02258,
+  "source": "random rows of data/processed/train/train.parquet (negative-sampled)"
+ },
+ "later_builds": {
+  "rows": 100189,
+  "runs": 122,
+  "failure_rate": 0.0017566798750361817,
+  "first_time_failures": 9,
+  "source": "all rows of random valA runs (time-later than training, unsampled)"
+ }
+}

@@ -6,7 +6,7 @@ name: smartci-shadow
 on: [push, pull_request]
 jobs:
   test:
-    if: github.repository != 'OWNER/smart-ci-tcp'
+    if: github.repository != 'Abhijeetgupta55/synthesis'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -14,7 +14,7 @@ jobs:
       - uses: actions/setup-python@v5
         with: {python-version: "3.11"}
       - run: python -m pip install -e ".[test]" || python -m pip install -e . pytest
-      - uses: OWNER/smart-ci-tcp@main
+      - uses: Abhijeetgupta55/synthesis@main
         with:
           mode: shadow
       - name: smartci report

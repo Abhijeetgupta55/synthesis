@@ -14,7 +14,7 @@ inputs:
     default: ""
   smartci-spec:
     description: pip requirement for smartci (a path, a git URL or a version)
-    default: "smartci @ git+https://github.com/OWNER/smart-ci-tcp.git"
+    default: "smartci @ git+https://github.com/Abhijeetgupta55/synthesis.git"
 runs:
   using: composite
   steps:

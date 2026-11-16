@@ -9,7 +9,7 @@ from stp.reports.error_md import _ci, get, verdict
 from stp.reports.fmt import HEADLINE, NAME, QUESTION, table
 from stp.reports.results_md import _r
 
-OWNER = "OWNER"   # replaced by the students after creating the GitHub repository (HUMAN_TODO)
+REPO = "Abhijeetgupta55/synthesis"   # the GitHub repository (git remote origin), confirmed by the owner
 
 
 def build() -> str:
@@ -42,7 +42,7 @@ def build() -> str:
     ]
     return "\n".join([
         f"# {NAME}", "",
-        f"![tests](https://github.com/{OWNER}/smart-ci-tcp/actions/workflows/tests.yml/badge.svg)", "",
+        f"![tests](https://github.com/{REPO}/actions/workflows/tests.yml/badge.svg)", "",
         "Predict which tests will fail for a code change and run those first, so a broken change is caught in "
         "seconds instead of after the whole suite. Nothing is skipped; only the order changes.", "",
         "> **In plain words:** like looking for lost keys where you last had them instead of searching the house "
@@ -72,7 +72,7 @@ def build() -> str:
         "you pick), Race replay, Results, Limits and honesty. Screenshots of every page: [`reports/demo_screenshots/`](reports/demo_screenshots).", "",
         "## Use smartci on your own repo", "",
         "```bash",
-        f"pip install \"smartci @ git+https://github.com/{OWNER}/smart-ci-tcp.git\"   # into the venv you test with",
+        f"pip install \"smartci @ git+https://github.com/{REPO}.git\"   # into the venv you test with",
         "smartci evaluate           # replays your own past bugs; verdict: smartci, a simple rule, or nothing",
         "pytest --smartci           # run your tests in smartci's order (nothing is skipped)",
         "pytest --smartci --smartci-rule changed_files_first   # or the simple rule evaluate recommended", "```", "",

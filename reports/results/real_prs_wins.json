@@ -1,0 +1,73 @@
+{
+  "definition": {
+    "outcome": "per held-out failed build: stacked model vs ChangedOrNewFirst APFDc (stored harness values), tie if |diff| < 0.001",
+    "recurring": "the failing test had failed before in a finished earlier run (h_n_fail > 0)",
+    "first_time": "the failing test had never failed before (as-of)",
+    "known_flaky": "the test class is on the LRTS JIRA flaky list (any date)",
+    "unstable": "the test flipped between pass and fail in more than 20% of its earlier runs"
+  },
+  "projects": {
+    "kafka": {
+      "loss": {
+        "n_builds": 1693,
+        "n_failing_tests": 11675,
+        "share_recurring": 0.997602,
+        "share_first_time": 0.002398,
+        "share_known_flaky": 0.327623,
+        "share_unstable": 0.036745,
+        "share_recurring_not_flaky_not_unstable": 0.636916
+      },
+      "tie": {
+        "n_builds": 121,
+        "n_failing_tests": 607,
+        "share_recurring": 0.968699,
+        "share_first_time": 0.031301,
+        "share_known_flaky": 0.372323,
+        "share_unstable": 0.044481,
+        "share_recurring_not_flaky_not_unstable": 0.555189
+      },
+      "win": {
+        "n_builds": 6264,
+        "n_failing_tests": 38778,
+        "share_recurring": 0.993347,
+        "share_first_time": 0.006653,
+        "share_known_flaky": 0.36923,
+        "share_unstable": 0.065836,
+        "share_recurring_not_flaky_not_unstable": 0.565707
+      }
+    },
+    "tvm": {
+      "loss": {
+        "n_builds": 51,
+        "n_failing_tests": 506,
+        "share_recurring": 1.0,
+        "share_first_time": 0.0,
+        "share_known_flaky": 0.043478,
+        "share_unstable": 0.0,
+        "share_recurring_not_flaky_not_unstable": 0.956522
+      },
+      "tie": {
+        "n_builds": 82,
+        "n_failing_tests": 164,
+        "share_recurring": 0.72561,
+        "share_first_time": 0.27439,
+        "share_known_flaky": 0.02439,
+        "share_unstable": 0.0,
+        "share_recurring_not_flaky_not_unstable": 0.70122
+      },
+      "win": {
+        "n_builds": 144,
+        "n_failing_tests": 2393,
+        "share_recurring": 0.570832,
+        "share_first_time": 0.429168,
+        "share_known_flaky": 0.019641,
+        "share_unstable": 0.0,
+        "share_recurring_not_flaky_not_unstable": 0.55537
+      }
+    }
+  },
+  "_meta": {
+    "generated": "2026-11-16 21:44:28",
+    "git_sha": "4a2bb7e"
+  }
+}
