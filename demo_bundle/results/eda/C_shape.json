@@ -1,0 +1,245 @@
+{
+  "per_project": [
+    {
+      "project": "activemq",
+      "runs": 446,
+      "failed_runs": 197,
+      "builds": 446,
+      "failed_builds": 197,
+      "stages": 1,
+      "prs": 262,
+      "paper_subset_runs": 207,
+      "first_month": "2021-04",
+      "last_month": "2024-04",
+      "failed_run_rate": 0.441704,
+      "share_of_all_runs": 0.004116,
+      "share_of_paper_runs": 0.003604
+    },
+    {
+      "project": "hadoop",
+      "runs": 1980,
+      "failed_runs": 797,
+      "builds": 1980,
+      "failed_builds": 797,
+      "stages": 1,
+      "prs": 935,
+      "paper_subset_runs": 1299,
+      "first_month": "2020-07",
+      "last_month": "2024-04",
+      "failed_run_rate": 0.402525,
+      "share_of_all_runs": 0.018271,
+      "share_of_paper_runs": 0.022616
+    },
+    {
+      "project": "hbase",
+      "runs": 1018,
+      "failed_runs": 439,
+      "builds": 485,
+      "failed_builds": 289,
+      "stages": 4,
+      "prs": 184,
+      "paper_subset_runs": 553,
+      "first_month": "2022-03",
+      "last_month": "2024-04",
+      "failed_run_rate": 0.431238,
+      "share_of_all_runs": 0.009394,
+      "share_of_paper_runs": 0.009628
+    },
+    {
+      "project": "hive",
+      "runs": 2131,
+      "failed_runs": 1472,
+      "builds": 2131,
+      "failed_builds": 1472,
+      "stages": 1,
+      "prs": 593,
+      "paper_subset_runs": 2056,
+      "first_month": "2021-11",
+      "last_month": "2024-03",
+      "failed_run_rate": 0.690756,
+      "share_of_all_runs": 0.019665,
+      "share_of_paper_runs": 0.035796
+    },
+    {
+      "project": "jackrabbit-oak",
+      "runs": 1654,
+      "failed_runs": 1006,
+      "builds": 1654,
+      "failed_builds": 1006,
+      "stages": 1,
+      "prs": 679,
+      "paper_subset_runs": 860,
+      "first_month": "2021-07",
+      "last_month": "2024-04",
+      "failed_run_rate": 0.608222,
+      "share_of_all_runs": 0.015263,
+      "share_of_paper_runs": 0.014973
+    },
+    {
+      "project": "james",
+      "runs": 5838,
+      "failed_runs": 2528,
+      "builds": 4353,
+      "failed_builds": 2528,
+      "stages": 2,
+      "prs": 1114,
+      "paper_subset_runs": 3147,
+      "first_month": "2021-06",
+      "last_month": "2024-04",
+      "failed_run_rate": 0.433025,
+      "share_of_all_runs": 0.053873,
+      "share_of_paper_runs": 0.05479
+    },
+    {
+      "project": "kafka",
+      "runs": 53554,
+      "failed_runs": 37842,
+      "builds": 16088,
+      "failed_builds": 14856,
+      "stages": 24,
+      "prs": 5414,
+      "paper_subset_runs": 39006,
+      "first_month": "2020-11",
+      "last_month": "2024-04",
+      "failed_run_rate": 0.706614,
+      "share_of_all_runs": 0.494196,
+      "share_of_paper_runs": 0.679109
+    },
+    {
+      "project": "karaf",
+      "runs": 726,
+      "failed_runs": 205,
+      "builds": 726,
+      "failed_builds": 205,
+      "stages": 1,
+      "prs": 528,
+      "paper_subset_runs": 620,
+      "first_month": "2020-12",
+      "last_month": "2024-04",
+      "failed_run_rate": 0.282369,
+      "share_of_all_runs": 0.0067,
+      "share_of_paper_runs": 0.010794
+    },
+    {
+      "project": "log4j",
+      "runs": 528,
+      "failed_runs": 162,
+      "builds": 270,
+      "failed_builds": 115,
+      "stages": 2,
+      "prs": 154,
+      "paper_subset_runs": 528,
+      "first_month": "2020-11",
+      "last_month": "2022-01",
+      "failed_run_rate": 0.306818,
+      "share_of_all_runs": 0.004872,
+      "share_of_paper_runs": 0.009193
+    },
+    {
+      "project": "tvm",
+      "runs": 40491,
+      "failed_runs": 5026,
+      "builds": 6512,
+      "failed_builds": 1972,
+      "stages": 19,
+      "prs": 1742,
+      "paper_subset_runs": 9161,
+      "first_month": "2021-03",
+      "last_month": "2024-04",
+      "failed_run_rate": 0.124126,
+      "share_of_all_runs": 0.37365,
+      "share_of_paper_runs": 0.159496
+    }
+  ],
+  "totals": {
+    "runs": 108366,
+    "failed_runs": 49674,
+    "builds": 34645,
+    "failed_builds": 23437,
+    "prs": 11605,
+    "paper_subset_runs": 57437
+  },
+  "macro_failed_run_rate": 0.44274,
+  "pooled_failed_run_rate": 0.458391,
+  "monthly_gaps": {
+    "activemq": {
+      "active_span_months": 37,
+      "zero_build_months_inside_span": 6,
+      "zero_months": [
+        "2021-06",
+        "2021-10",
+        "2021-11",
+        "2021-12",
+        "2022-04",
+        "2022-06"
+      ]
+    },
+    "hadoop": {
+      "active_span_months": 46,
+      "zero_build_months_inside_span": 1,
+      "zero_months": [
+        "2021-08"
+      ]
+    },
+    "hbase": {
+      "active_span_months": 26,
+      "zero_build_months_inside_span": 0,
+      "zero_months": []
+    },
+    "hive": {
+      "active_span_months": 29,
+      "zero_build_months_inside_span": 6,
+      "zero_months": [
+        "2022-01",
+        "2022-10",
+        "2022-11",
+        "2023-08",
+        "2024-01",
+        "2024-02"
+      ]
+    },
+    "jackrabbit-oak": {
+      "active_span_months": 34,
+      "zero_build_months_inside_span": 1,
+      "zero_months": [
+        "2021-10"
+      ]
+    },
+    "james": {
+      "active_span_months": 35,
+      "zero_build_months_inside_span": 4,
+      "zero_months": [
+        "2021-11",
+        "2021-12",
+        "2022-01",
+        "2022-02"
+      ]
+    },
+    "kafka": {
+      "active_span_months": 42,
+      "zero_build_months_inside_span": 0,
+      "zero_months": []
+    },
+    "karaf": {
+      "active_span_months": 41,
+      "zero_build_months_inside_span": 0,
+      "zero_months": []
+    },
+    "log4j": {
+      "active_span_months": 15,
+      "zero_build_months_inside_span": 0,
+      "zero_months": []
+    },
+    "tvm": {
+      "active_span_months": 38,
+      "zero_build_months_inside_span": 5,
+      "zero_months": [
+        "2021-04",
+        "2021-05",
+        "2021-06",
+        "2021-07",
+        "2021-11"
+      ]
+    }
+  }
+}

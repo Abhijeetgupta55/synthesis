@@ -10,8 +10,11 @@
                                                          / transfer / gate results (numbers shown on the Scoreboard)
   demo_bundle/repos/<name>/backtest.json, backtest.md, profile.json, bugs.jsonl, mutants.jsonl
                                                          copies of the smartci outputs of the real repos
+  demo_bundle/results/*.json, results/eda/*.json         copies of reports/results and reports/eda_json
+  demo_bundle/figures/*.png                              copies of reports/figures
+  demo_bundle/live/networkx/.smartci/, live_meta.json    inputs of the 'Predict live' page (same files smartci reads)
 Repos the *user* picks are never precomputed: the app reads their .smartci/ folder directly.
-Usage: python -m stp.demo.build_bundle [--per-project 30] [--seed 7]
+Usage: python -m stp.demo.build_bundle [--per-project 30] [--seed 7] [--parts scoreboard,results,figures,repos,live]
 """
 from __future__ import annotations
 
@@ -136,22 +139,86 @@ def copy_repos() -> None:
                 shutil.copyfile(f, dst / "compare" / f.name)
 
 
+def copy_results() -> None:
+    """Every results JSON and EDA JSON (all small), so each app page reads its numbers from the source file."""
+    dst = OUT / "results"
+    dst.mkdir(parents=True, exist_ok=True)
+    for f in paths.RESULTS.glob("*.json"):
+        shutil.copyfile(f, dst / f.name)
+    (dst / "eda").mkdir(exist_ok=True)
+    for f in (paths.ROOT / "reports" / "eda_json").glob("*.json"):
+        shutil.copyfile(f, dst / "eda" / f.name)
+
+
+def copy_figures() -> None:
+    dst = OUT / "figures"
+    dst.mkdir(parents=True, exist_ok=True)
+    for f in (paths.ROOT / "reports" / "figures").glob("*.png"):
+        shutil.copyfile(f, dst / f.name)
+
+
+def build_live() -> None:
+    """Inputs for the app's 'Predict live' page: a copy of NetworkX's smartci state (the same files `smartci rank
+    --files` reads), the list of NetworkX source files to pick from, and the as-of time used for history."""
+    repo = REPOS["networkx"]
+    src = repo / ".smartci"
+    dst = OUT / "live" / "networkx" / ".smartci"
+    dst.mkdir(parents=True, exist_ok=True)
+    prof = json.loads((src / "profile.json").read_text(encoding="utf-8"))
+    keep = {k: prof[k] for k in ("base_sha", "created", "durations", "default_order", "suite_test_time_s")}
+    (dst / "profile.json").write_text(json.dumps(keep), encoding="utf-8")
+    for f in ("history.jsonl", "runs.jsonl", "adapter.json", "coverage_map.json", "bugs.jsonl"):
+        if (src / f).exists():
+            shutil.copyfile(src / f, dst / f)
+    import subprocess
+    files = subprocess.check_output(["git", "-C", str(repo), "ls-files", "networkx/*.py"], text=True).split()
+    sources = sorted(f for f in files if "/tests/" not in f and not f.endswith(("__init__.py", "conftest.py")))
+    runs = [json.loads(x) for x in (src / "runs.jsonl").read_text(encoding="utf-8").splitlines() if x.strip()]
+    as_of = max((r["end_ts"] for r in runs), default=time.time()) + 1.0
+    (OUT / "live" / "networkx" / "live_meta.json").write_text(json.dumps(
+        {"sources": sources, "as_of": as_of, "base_sha": prof["base_sha"],
+         "note": "history is scored as of `as_of` (just after the last recorded run), so results are reproducible"}),
+        encoding="utf-8")
+
+
+PARTS = ("lrts", "scoreboard", "results", "figures", "repos", "live")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--per-project", type=int, default=30)
     ap.add_argument("--seed", type=int, default=7)
+    ap.add_argument("--parts", default=",".join(PARTS), help="rebuild only these parts (others are kept)")
     a = ap.parse_args()
-    if OUT.exists():
-        shutil.rmtree(OUT)
-    OUT.mkdir()
-    idx = build_lrts(a.per_project, a.seed)
-    build_scoreboard()
-    copy_repos()
+    parts = a.parts.split(",")
+    OUT.mkdir(exist_ok=True)
+    old = json.loads((OUT / "meta.json").read_text(encoding="utf-8")) if (OUT / "meta.json").exists() else {}
+    for part, d in (("lrts", "lrts"), ("results", "results"), ("figures", "figures"), ("repos", "repos"),
+                    ("live", "live")):
+        if part in parts and (OUT / d).exists():
+            shutil.rmtree(OUT / d)
+    n_lrts = old.get("n_lrts_runs")
+    if "lrts" in parts:
+        n_lrts = len(build_lrts(a.per_project, a.seed))
+    if "scoreboard" in parts:
+        build_scoreboard()
+    if "results" in parts:
+        copy_results()
+    if "figures" in parts:
+        copy_figures()
+    if "repos" in parts:
+        copy_repos()
+    if "live" in parts:
+        build_live()
     meta = {"git_sha": git_sha(), "generated": time.strftime("%Y-%m-%d %H:%M:%S"), "seed": a.seed,
-            "per_project": a.per_project, "n_lrts_runs": len(idx)}
+            "per_project": a.per_project, "n_lrts_runs": n_lrts,
+            "lrts_generated": time.strftime("%Y-%m-%d %H:%M:%S") if "lrts" in parts else old.get("lrts_generated",
+                                                                                                old.get("generated"))}
     (OUT / "meta.json").write_text(json.dumps(meta, indent=1), encoding="utf-8")
-    size = sum(f.stat().st_size for f in OUT.rglob("*") if f.is_file())
-    print(f"demo_bundle: {len(idx)} LRTS runs, {size / 1e6:.1f} MB")
+    files = [f for f in OUT.rglob("*") if f.is_file()]
+    size = sum(f.stat().st_size for f in files)
+    big = max(files, key=lambda f: f.stat().st_size)
+    print(f"demo_bundle: {n_lrts} LRTS runs, {size / 1e6:.1f} MB, largest file {big.name} {big.stat().st_size / 1e6:.1f} MB")
 
 
 if __name__ == "__main__":

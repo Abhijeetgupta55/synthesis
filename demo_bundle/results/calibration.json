@@ -1,0 +1,26 @@
+{
+  "lr": {
+    "valB_mean_raw": 0.019849,
+    "valB_base_rate": 0.002989
+  },
+  "rf": {
+    "valB_mean_raw": 0.019131,
+    "valB_base_rate": 0.002989
+  },
+  "lgbm": {
+    "valB_mean_raw": 0.014683,
+    "valB_base_rate": 0.002989
+  },
+  "stack_coef": {
+    "logit_lr": 0.029687,
+    "logit_rf": 0.537054,
+    "logit_lgbm": 0.444193,
+    "cbt_lastfail_rank": -0.26627,
+    "changed_or_new": 0.095034
+  },
+  "stack_intercept": 0.19542,
+  "_meta": {
+    "generated": "2026-10-20 23:12:34",
+    "git_sha": "3fe161c"
+  }
+}

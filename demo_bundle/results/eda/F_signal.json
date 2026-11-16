@@ -1,0 +1,832 @@
+{
+  "p_fail": {
+    "per_project": {
+      "activemq": 0.001321,
+      "hadoop": 0.003438,
+      "hbase": 0.001108,
+      "hive": 0.00479,
+      "jackrabbit-oak": 0.003959,
+      "james": 0.001413,
+      "kafka": 0.002545,
+      "karaf": 0.002655,
+      "log4j": 0.001544,
+      "tvm": 0.001958
+    },
+    "macro": 0.002473
+  },
+  "p_ftf": {
+    "per_project": {
+      "activemq": 0.000406,
+      "hadoop": 0.00092,
+      "hbase": 0.000571,
+      "hive": 0.000262,
+      "jackrabbit-oak": 0.000304,
+      "james": 0.000114,
+      "kafka": 0.000105,
+      "karaf": 0.000555,
+      "log4j": 0.000373,
+      "tvm": 0.000347
+    },
+    "macro": 0.000396
+  },
+  "share_rows_overlap_ge1": {
+    "per_project": {
+      "activemq": 0.108071,
+      "hadoop": 0.658911,
+      "hbase": 0.342099,
+      "hive": 0.246479,
+      "jackrabbit-oak": 0.338747,
+      "james": 0.346605,
+      "kafka": 0.281934,
+      "karaf": 0.126062,
+      "log4j": 0.870653,
+      "tvm": 0.334224
+    },
+    "macro": 0.365378
+  },
+  "lift_fail_k1": {
+    "per_project": {
+      "activemq": 0.775719,
+      "hadoop": 1.35434,
+      "hbase": 1.866084,
+      "hive": 2.003545,
+      "jackrabbit-oak": 0.847838,
+      "james": 1.353588,
+      "kafka": 1.404286,
+      "karaf": 2.879389,
+      "log4j": 0.975732,
+      "tvm": 1.991377
+    },
+    "macro": 1.54519
+  },
+  "lift_ftf_k1": {
+    "per_project": {
+      "activemq": 1.021459,
+      "hadoop": 1.356174,
+      "hbase": 2.057883,
+      "hive": 2.252726,
+      "jackrabbit-oak": 0.915169,
+      "james": 1.692123,
+      "kafka": 2.296992,
+      "karaf": 3.282464,
+      "log4j": 0.994819,
+      "tvm": 2.015693
+    },
+    "macro": 1.78855
+  },
+  "lift_repeat_k1": {
+    "per_project": {
+      "activemq": 0.666658,
+      "hadoop": 1.35367,
+      "hbase": 1.662561,
+      "hive": 1.989098,
+      "jackrabbit-oak": 0.842236,
+      "james": 1.323916,
+      "kafka": 1.365876,
+      "karaf": 2.772801,
+      "log4j": 0.969642,
+      "tvm": 1.986133
+    },
+    "macro": 1.493259
+  },
+  "recall_ftf_k1": {
+    "per_project": {
+      "activemq": 0.11039,
+      "hadoop": 0.893597,
+      "hbase": 0.704,
+      "hive": 0.555249,
+      "jackrabbit-oak": 0.310011,
+      "james": 0.586498,
+      "kafka": 0.647599,
+      "karaf": 0.413793,
+      "log4j": 0.866142,
+      "tvm": 0.673694
+    },
+    "macro": 0.576097
+  },
+  "share_rows_overlap_ge2": {
+    "per_project": {
+      "activemq": 0.02408,
+      "hadoop": 0.388477,
+      "hbase": 0.093543,
+      "hive": 0.083528,
+      "jackrabbit-oak": 0.130654,
+      "james": 0.129572,
+      "kafka": 0.098035,
+      "karaf": 0.027594,
+      "log4j": 0.211198,
+      "tvm": 0.118408
+    },
+    "macro": 0.130509
+  },
+  "lift_fail_k2": {
+    "per_project": {
+      "activemq": 1.160492,
+      "hadoop": 1.571219,
+      "hbase": 3.231744,
+      "hive": 2.746734,
+      "jackrabbit-oak": 1.065562,
+      "james": 1.880483,
+      "kafka": 1.933542,
+      "karaf": 4.704208,
+      "log4j": 0.838753,
+      "tvm": 3.707234
+    },
+    "macro": 2.283997
+  },
+  "lift_ftf_k2": {
+    "per_project": {
+      "activemq": 1.618014,
+      "hadoop": 1.640962,
+      "hbase": 3.386684,
+      "hive": 3.489074,
+      "jackrabbit-oak": 1.466502,
+      "james": 2.872155,
+      "kafka": 5.261345,
+      "karaf": 4.165497,
+      "log4j": 2.050545,
+      "tvm": 3.897297
+    },
+    "macro": 2.984808
+  },
+  "lift_repeat_k2": {
+    "per_project": {
+      "activemq": 0.957441,
+      "hadoop": 1.545732,
+      "hbase": 3.067333,
+      "hive": 2.703693,
+      "jackrabbit-oak": 1.032207,
+      "james": 1.793565,
+      "kafka": 1.790355,
+      "karaf": 4.846663,
+      "log4j": 0.452075,
+      "tvm": 3.666241
+    },
+    "macro": 2.185531
+  },
+  "recall_ftf_k2": {
+    "per_project": {
+      "activemq": 0.038961,
+      "hadoop": 0.637476,
+      "hbase": 0.3168,
+      "hive": 0.291436,
+      "jackrabbit-oak": 0.191604,
+      "james": 0.372152,
+      "kafka": 0.515797,
+      "karaf": 0.114943,
+      "log4j": 0.433071,
+      "tvm": 0.46147
+    },
+    "macro": 0.337371
+  },
+  "share_rows_overlap_ge3": {
+    "per_project": {
+      "activemq": 0.005632,
+      "hadoop": 0.211383,
+      "hbase": 0.025024,
+      "hive": 0.034063,
+      "jackrabbit-oak": 0.043445,
+      "james": 0.04901,
+      "kafka": 0.039103,
+      "karaf": 0.006579,
+      "log4j": 0.046791,
+      "tvm": 0.042927
+    },
+    "macro": 0.050396
+  },
+  "lift_fail_k3": {
+    "per_project": {
+      "activemq": 3.543877,
+      "hadoop": 1.756147,
+      "hbase": 7.241902,
+      "hive": 3.695528,
+      "jackrabbit-oak": 1.760176,
+      "james": 2.693235,
+      "kafka": 2.596826,
+      "karaf": 9.133974,
+      "log4j": 1.913281,
+      "tvm": 5.93251
+    },
+    "macro": 4.026746
+  },
+  "lift_ftf_k3": {
+    "per_project": {
+      "activemq": 6.917463,
+      "hadoop": 2.0001,
+      "hbase": 7.033335,
+      "hive": 3.973814,
+      "jackrabbit-oak": 2.725418,
+      "james": 5.682105,
+      "kafka": 10.264967,
+      "karaf": 8.735019,
+      "log4j": 5.553291,
+      "tvm": 6.491279
+    },
+    "macro": 5.937679
+  },
+  "lift_repeat_k3": {
+    "per_project": {
+      "activemq": 2.046665,
+      "hadoop": 1.666995,
+      "hbase": 7.463217,
+      "hive": 3.679393,
+      "jackrabbit-oak": 1.679876,
+      "james": 2.431266,
+      "kafka": 2.266885,
+      "karaf": 9.239473,
+      "log4j": 0.75177,
+      "tvm": 5.811994
+    },
+    "macro": 3.703754
+  },
+  "recall_ftf_k3": {
+    "per_project": {
+      "activemq": 0.038961,
+      "hadoop": 0.422787,
+      "hbase": 0.176,
+      "hive": 0.135359,
+      "jackrabbit-oak": 0.118407,
+      "james": 0.278481,
+      "kafka": 0.401392,
+      "karaf": 0.057471,
+      "log4j": 0.259843,
+      "tvm": 0.278654
+    },
+    "macro": 0.216735
+  },
+  "mean_overlap_pass": {
+    "per_project": {
+      "activemq": 0.140095,
+      "hadoop": 1.379754,
+      "hbase": 0.469266,
+      "hive": 0.379898,
+      "jackrabbit-oak": 0.529222,
+      "james": 0.555958,
+      "kafka": 0.443929,
+      "karaf": 0.16061,
+      "log4j": 1.141723,
+      "tvm": 0.509289
+    },
+    "macro": 0.570974
+  },
+  "share_overlap_ge1_pass": {
+    "per_project": {
+      "activemq": 0.108103,
+      "hadoop": 0.658105,
+      "hbase": 0.34177,
+      "hive": 0.245288,
+      "jackrabbit-oak": 0.338952,
+      "james": 0.346431,
+      "kafka": 0.281643,
+      "karaf": 0.125431,
+      "log4j": 0.870685,
+      "tvm": 0.333574
+    },
+    "macro": 0.364998
+  },
+  "mean_overlap_repeat_fail": {
+    "per_project": {
+      "activemq": 0.118156,
+      "hadoop": 2.187199,
+      "hbase": 1.183362,
+      "hive": 0.95171,
+      "jackrabbit-oak": 0.527089,
+      "james": 0.917973,
+      "kafka": 0.772969,
+      "karaf": 0.547112,
+      "log4j": 1.005025,
+      "tvm": 1.568601
+    },
+    "macro": 0.97792
+  },
+  "share_overlap_ge1_repeat_fail": {
+    "per_project": {
+      "activemq": 0.072046,
+      "hadoop": 0.891948,
+      "hbase": 0.568761,
+      "hive": 0.49027,
+      "jackrabbit-oak": 0.285305,
+      "james": 0.458876,
+      "kafka": 0.385086,
+      "karaf": 0.349544,
+      "log4j": 0.844221,
+      "tvm": 0.663814
+    },
+    "macro": 0.500987
+  },
+  "mean_overlap_first_time_fail": {
+    "per_project": {
+      "activemq": 0.246753,
+      "hadoop": 2.536723,
+      "hbase": 1.3808,
+      "hive": 1.125691,
+      "jackrabbit-oak": 0.724435,
+      "james": 1.659916,
+      "kafka": 2.555045,
+      "karaf": 0.597701,
+      "log4j": 1.787402,
+      "tvm": 1.650487
+    },
+    "macro": 1.426495
+  },
+  "share_overlap_ge1_first_time_fail": {
+    "per_project": {
+      "activemq": 0.11039,
+      "hadoop": 0.893597,
+      "hbase": 0.704,
+      "hive": 0.555249,
+      "jackrabbit-oak": 0.310011,
+      "james": 0.586498,
+      "kafka": 0.647599,
+      "karaf": 0.413793,
+      "log4j": 0.866142,
+      "tvm": 0.673694
+    },
+    "macro": 0.576097
+  },
+  "meta": {
+    "activemq": {
+      "rows_total": 379243,
+      "rows_with_change_data": 379243,
+      "distinct_test_classes": 1126,
+      "builds_with_change_data": 446,
+      "vocab": 813
+    },
+    "hadoop": {
+      "rows_total": 1154052,
+      "rows_with_change_data": 1154052,
+      "distinct_test_classes": 3191,
+      "builds_with_change_data": 1980,
+      "vocab": 1933
+    },
+    "hbase": {
+      "rows_total": 1095402,
+      "rows_with_change_data": 1095402,
+      "distinct_test_classes": 1956,
+      "builds_with_change_data": 485,
+      "vocab": 1223
+    },
+    "hive": {
+      "rows_total": 2758143,
+      "rows_with_change_data": 2758143,
+      "distinct_test_classes": 1663,
+      "builds_with_change_data": 2131,
+      "vocab": 1779
+    },
+    "jackrabbit-oak": {
+      "rows_total": 3055030,
+      "rows_with_change_data": 3055030,
+      "distinct_test_classes": 2158,
+      "builds_with_change_data": 1654,
+      "vocab": 1113
+    },
+    "james": {
+      "rows_total": 10403308,
+      "rows_with_change_data": 10403308,
+      "distinct_test_classes": 2802,
+      "builds_with_change_data": 4353,
+      "vocab": 1603
+    },
+    "kafka": {
+      "rows_total": 68441191,
+      "rows_with_change_data": 68441191,
+      "distinct_test_classes": 2465,
+      "builds_with_change_data": 16088,
+      "vocab": 1470
+    },
+    "karaf": {
+      "rows_total": 156701,
+      "rows_with_change_data": 156701,
+      "distinct_test_classes": 243,
+      "builds_with_change_data": 726,
+      "vocab": 409
+    },
+    "log4j": {
+      "rows_total": 340046,
+      "rows_with_change_data": 340046,
+      "distinct_test_classes": 772,
+      "builds_with_change_data": 270,
+      "vocab": 550
+    },
+    "tvm": {
+      "rows_total": 16249532,
+      "rows_with_change_data": 16249532,
+      "distinct_test_classes": 2275,
+      "builds_with_change_data": 8058,
+      "vocab": 1458
+    }
+  },
+  "counts_by_category_and_overlap": {
+    "activemq": [
+      [
+        337799,
+        31825,
+        6992,
+        1525,
+        420,
+        111,
+        50,
+        19,
+        1,
+        0,
+        0
+      ],
+      [
+        322,
+        17,
+        4,
+        2,
+        1,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        137,
+        11,
+        0,
+        2,
+        1,
+        1,
+        2,
+        0,
+        0,
+        0,
+        0
+      ]
+    ],
+    "hadoop": [
+      [
+        393208,
+        310975,
+        203427,
+        155824,
+        49961,
+        24666,
+        7926,
+        2572,
+        1069,
+        314,
+        142
+      ],
+      [
+        314,
+        847,
+        721,
+        558,
+        189,
+        153,
+        48,
+        38,
+        28,
+        6,
+        4
+      ],
+      [
+        113,
+        272,
+        228,
+        167,
+        113,
+        78,
+        44,
+        27,
+        13,
+        4,
+        3
+      ]
+    ],
+    "hbase": [
+      [
+        720227,
+        271861,
+        74909,
+        20357,
+        4869,
+        1037,
+        574,
+        239,
+        102,
+        9,
+        4
+      ],
+      [
+        254,
+        166,
+        59,
+        52,
+        43,
+        7,
+        7,
+        0,
+        1,
+        0,
+        0
+      ],
+      [
+        185,
+        242,
+        88,
+        48,
+        31,
+        16,
+        10,
+        3,
+        2,
+        0,
+        0
+      ]
+    ],
+    "hive": [
+      [
+        2071633,
+        445947,
+        135065,
+        59237,
+        21039,
+        8600,
+        2416,
+        705,
+        220,
+        41,
+        29
+      ],
+      [
+        6365,
+        3302,
+        1255,
+        673,
+        423,
+        460,
+        5,
+        3,
+        0,
+        0,
+        1
+      ],
+      [
+        322,
+        191,
+        113,
+        46,
+        24,
+        14,
+        7,
+        6,
+        0,
+        0,
+        1
+      ]
+    ],
+    "jackrabbit-oak": [
+      [
+        2011526,
+        633941,
+        265665,
+        96902,
+        25538,
+        6106,
+        1906,
+        721,
+        429,
+        187,
+        13
+      ],
+      [
+        7981,
+        1680,
+        691,
+        558,
+        177,
+        56,
+        14,
+        5,
+        2,
+        3,
+        0
+      ],
+      [
+        641,
+        110,
+        68,
+        52,
+        35,
+        11,
+        9,
+        2,
+        1,
+        0,
+        0
+      ]
+    ],
+    "james": [
+      [
+        6789665,
+        2254540,
+        836471,
+        300915,
+        131736,
+        47821,
+        17710,
+        6435,
+        2191,
+        668,
+        451
+      ],
+      [
+        7316,
+        3062,
+        1531,
+        850,
+        414,
+        132,
+        123,
+        60,
+        25,
+        7,
+        0
+      ],
+      [
+        490,
+        254,
+        111,
+        88,
+        106,
+        54,
+        53,
+        20,
+        6,
+        3,
+        0
+      ]
+    ],
+    "kafka": [
+      [
+        49040107,
+        12550285,
+        4018053,
+        1636478,
+        619464,
+        226289,
+        93030,
+        30517,
+        47856,
+        3483,
+        1458
+      ],
+      [
+        102682,
+        34995,
+        14507,
+        6263,
+        3657,
+        1772,
+        915,
+        387,
+        1705,
+        80,
+        23
+      ],
+      [
+        2532,
+        947,
+        822,
+        655,
+        644,
+        329,
+        220,
+        95,
+        895,
+        24,
+        22
+      ]
+    ],
+    "karaf": [
+      [
+        136682,
+        15333,
+        3264,
+        856,
+        105,
+        32,
+        4,
+        4,
+        5,
+        0,
+        0
+      ],
+      [
+        214,
+        71,
+        24,
+        19,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        51,
+        26,
+        5,
+        4,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    ],
+    "log4j": [
+      [
+        43905,
+        223892,
+        55860,
+        12348,
+        2808,
+        553,
+        116,
+        27,
+        8,
+        3,
+        1
+      ],
+      [
+        62,
+        298,
+        24,
+        7,
+        5,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      [
+        17,
+        55,
+        22,
+        11,
+        16,
+        5,
+        1,
+        0,
+        0,
+        0,
+        0
+      ]
+    ],
+    "tvm": [
+      [
+        10807903,
+        3499707,
+        1220657,
+        509304,
+        129130,
+        36957,
+        10458,
+        2273,
+        1321,
+        4,
+        0
+      ],
+      [
+        8799,
+        6012,
+        4832,
+        3264,
+        1803,
+        753,
+        427,
+        234,
+        31,
+        18,
+        0
+      ],
+      [
+        1842,
+        1198,
+        1032,
+        786,
+        457,
+        167,
+        116,
+        40,
+        5,
+        2,
+        0
+      ]
+    ]
+  },
+  "definition": "3.F Is there a change signal at all? Token overlap between a test-class name and the build's changed-file paths.\n\nTokens: split on non-alphanumerics and camelCase, lowercase, keep len >= 3, drop generic/project-name stopwords.\noverlap(test, run) = |tokens(test class FQN) \u2229 tokens(all changed paths of the run's build)|.\nComputed on ALL (run, test_class) rows of runs whose build has compare data. Cheap sanity check, not a model.\nlift_k = P(fail | overlap >= k) / P(fail); likewise for first-time failures.\n"
+}

@@ -49,15 +49,20 @@ def explain(repo: Path, test_files: list[str], base: str | None = None, top: int
     out = []
     for rank, i in enumerate(stable_order(sc)[:top], 1):
         s = sc[i]
-        contrib = sorted(((k, v) for k, v in s.contributions.items() if k != "_bias" and v > 0), key=lambda kv: -kv[1])
-        reasons = []
-        for k, v in contrib:
-            t = sentence(k, s.features, diff.change.files)
-            if t and t not in reasons:
-                reasons.append(t)
-            if len(reasons) == 3:
-                break
+        rs, contrib = reasons(s, diff.change.files)
         out.append({"rank": rank, "test_file": s.test_file, "p_fail": s.p_fail, "expected_duration_s":
-                    s.expected_duration, "reasons": reasons or ["No strong signal; ranked by low cost."],
-                    "top_contributions": contrib[:3]})
+                    s.expected_duration, "reasons": rs, "top_contributions": contrib[:3]})
     return out
+
+
+def reasons(s, change_files: list[str], n: int = 3) -> tuple[list[str], list[tuple[str, float]]]:
+    """Up to n plain sentences for the features that raise this test's risk most (SHAP > 0), plus those features."""
+    contrib = sorted(((k, v) for k, v in s.contributions.items() if k != "_bias" and v > 0), key=lambda kv: -kv[1])
+    out: list[str] = []
+    for k, _ in contrib:
+        t = sentence(k, s.features, change_files)
+        if t and t not in out:
+            out.append(t)
+        if len(out) == n:
+            break
+    return out or ["No strong signal; ranked by low cost."], contrib

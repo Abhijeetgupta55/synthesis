@@ -1,0 +1,283 @@
+{
+  "builds": {
+    "activemq": 446,
+    "hadoop": 1980,
+    "hbase": 485,
+    "hive": 2131,
+    "jackrabbit-oak": 1654,
+    "james": 4353,
+    "kafka": 16088,
+    "karaf": 726,
+    "log4j": 270,
+    "tvm": 8058
+  },
+  "compare_found_share": {
+    "per_project": {
+      "activemq": 1.0,
+      "hadoop": 1.0,
+      "hbase": 1.0,
+      "hive": 1.0,
+      "jackrabbit-oak": 1.0,
+      "james": 1.0,
+      "kafka": 1.0,
+      "karaf": 1.0,
+      "log4j": 1.0,
+      "tvm": 1.0
+    },
+    "macro": 1.0
+  },
+  "files_per_build_median": {
+    "per_project": {
+      "activemq": 2.0,
+      "hadoop": 4.0,
+      "hbase": 4.0,
+      "hive": 6.0,
+      "jackrabbit-oak": 4.0,
+      "james": 7.0,
+      "kafka": 4.0,
+      "karaf": 1.0,
+      "log4j": 3.0,
+      "tvm": 4.0
+    },
+    "macro": 3.9
+  },
+  "files_per_build_p90": {
+    "per_project": {
+      "activemq": 10.0,
+      "hadoop": 23.0,
+      "hbase": 18.0,
+      "hive": 70.0,
+      "jackrabbit-oak": 27.0,
+      "james": 41.0,
+      "kafka": 25.0,
+      "karaf": 5.0,
+      "log4j": 17.0,
+      "tvm": 28.0
+    },
+    "macro": 26.4
+  },
+  "lines_per_build_median": {
+    "per_project": {
+      "activemq": 18.0,
+      "hadoop": 95.0,
+      "hbase": 146.0,
+      "hive": 241.0,
+      "jackrabbit-oak": 118.0,
+      "james": 164.0,
+      "kafka": 140.0,
+      "karaf": 2.0,
+      "log4j": 79.0,
+      "tvm": 150.0
+    },
+    "macro": 115.3
+  },
+  "lines_per_build_p90": {
+    "per_project": {
+      "activemq": 364.0,
+      "hadoop": 1026.0,
+      "hbase": 897.0,
+      "hive": 5007.0,
+      "jackrabbit-oak": 1167.7,
+      "james": 1358.0,
+      "kafka": 1386.0,
+      "karaf": 124.0,
+      "log4j": 803.4,
+      "tvm": 1214.0
+    },
+    "macro": 1334.71
+  },
+  "share_builds_with_patch_text": {
+    "per_project": {
+      "activemq": 0.997758,
+      "hadoop": 0.998485,
+      "hbase": 1.0,
+      "hive": 0.999531,
+      "jackrabbit-oak": 0.998791,
+      "james": 0.999541,
+      "kafka": 0.998073,
+      "karaf": 1.0,
+      "log4j": 1.0,
+      "tvm": 1.0
+    },
+    "macro": 0.999218
+  },
+  "share_builds_with_diff_file": {
+    "per_project": {
+      "activemq": 1.0,
+      "hadoop": 1.0,
+      "hbase": 1.0,
+      "hive": 1.0,
+      "jackrabbit-oak": 1.0,
+      "james": 1.0,
+      "kafka": 1.0,
+      "karaf": 1.0,
+      "log4j": 1.0,
+      "tvm": 1.0
+    },
+    "macro": 1.0
+  },
+  "share_changed_files_with_patch": {
+    "per_project": {
+      "activemq": 0.993659,
+      "hadoop": 0.966029,
+      "hbase": 0.999724,
+      "hive": 0.809026,
+      "jackrabbit-oak": 0.998307,
+      "james": 0.96476,
+      "kafka": 0.907732,
+      "karaf": 0.91334,
+      "log4j": 0.954854,
+      "tvm": 0.951868
+    },
+    "macro": 0.94593
+  },
+  "share_builds_with_zero_files": {
+    "per_project": {
+      "activemq": 0.0,
+      "hadoop": 0.0,
+      "hbase": 0.0,
+      "hive": 0.000469,
+      "jackrabbit-oak": 0.001209,
+      "james": 0.0,
+      "kafka": 0.000311,
+      "karaf": 0.0,
+      "log4j": 0.0,
+      "tvm": 0.0
+    },
+    "macro": 0.000199
+  },
+  "share_builds_over_300_files": {
+    "per_project": {
+      "activemq": 0.0,
+      "hadoop": 0.0,
+      "hbase": 0.0,
+      "hive": 0.056781,
+      "jackrabbit-oak": 0.0,
+      "james": 0.006662,
+      "kafka": 0.003667,
+      "karaf": 0.0,
+      "log4j": 0.003704,
+      "tvm": 0.002234
+    },
+    "macro": 0.007305
+  },
+  "commits_per_build_median": {
+    "per_project": {
+      "activemq": 1.0,
+      "hadoop": 2.0,
+      "hbase": 2.0,
+      "hive": 2.0,
+      "jackrabbit-oak": 3.0,
+      "james": 2.0,
+      "kafka": 3.0,
+      "karaf": 1.0,
+      "log4j": 1.0,
+      "tvm": 2.0
+    },
+    "macro": 1.9
+  },
+  "authors_per_build_median": {
+    "per_project": {
+      "activemq": 1.0,
+      "hadoop": 1.0,
+      "hbase": 1.0,
+      "hive": 1.0,
+      "jackrabbit-oak": 1.0,
+      "james": 1.0,
+      "kafka": 1.0,
+      "karaf": 1.0,
+      "log4j": 1.0,
+      "tvm": 1.0
+    },
+    "macro": 1.0
+  },
+  "top_extensions_overall": {
+    ".java": 0.5365,
+    ".scala": 0.1139,
+    ".py": 0.108,
+    ".xml": 0.045,
+    ".cc": 0.0427,
+    ".out": 0.031,
+    ".h": 0.0208,
+    ".php": 0.0147,
+    ".q": 0.0083,
+    ".sh": 0.008,
+    ".json": 0.008,
+    "(none)": 0.0077,
+    ".properties": 0.0064,
+    ".md": 0.0047,
+    ".gradle": 0.0042
+  },
+  "top_extensions_per_project": {
+    "activemq": {
+      ".java": 0.5541,
+      ".xml": 0.3376,
+      "(none)": 0.0302,
+      ".jsp": 0.0195,
+      ".conf": 0.0141
+    },
+    "hadoop": {
+      ".java": 0.8816,
+      ".xml": 0.0734,
+      ".md": 0.0149,
+      ".proto": 0.0075,
+      "(none)": 0.0049
+    },
+    "hbase": {
+      ".java": 0.8778,
+      ".xml": 0.0577,
+      ".proto": 0.0262,
+      ".rb": 0.0196,
+      ".adoc": 0.0058
+    },
+    "hive": {
+      ".java": 0.4783,
+      ".out": 0.2092,
+      ".php": 0.0991,
+      ".q": 0.0558,
+      ".xml": 0.0538
+    },
+    "jackrabbit-oak": {
+      ".java": 0.8578,
+      ".xml": 0.0998,
+      ".json": 0.0131,
+      ".md": 0.0127,
+      ".txt": 0.0046
+    },
+    "james": {
+      ".java": 0.7092,
+      ".xml": 0.1215,
+      ".scala": 0.0504,
+      ".adoc": 0.023,
+      ".properties": 0.016
+    },
+    "kafka": {
+      ".java": 0.6593,
+      ".scala": 0.26,
+      ".xml": 0.0136,
+      ".json": 0.013,
+      ".py": 0.0112
+    },
+    "karaf": {
+      ".xml": 0.4445,
+      ".java": 0.4182,
+      ".properties": 0.0316,
+      ".adoc": 0.0287,
+      "(none)": 0.018
+    },
+    "log4j": {
+      ".java": 0.7646,
+      ".xml": 0.1607,
+      ".json": 0.0209,
+      ".gz": 0.0141,
+      ".vm": 0.0107
+    },
+    "tvm": {
+      ".py": 0.5596,
+      ".cc": 0.2336,
+      ".h": 0.1057,
+      ".sh": 0.0275,
+      ".groovy": 0.0098
+    }
+  }
+}

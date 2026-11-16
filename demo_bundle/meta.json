@@ -1,7 +1,8 @@
 {
- "git_sha": "b73ce51",
- "generated": "2026-10-22 09:59:19",
+ "git_sha": "afd3659",
+ "generated": "2026-11-16 10:19:15",
  "seed": 7,
  "per_project": 30,
- "n_lrts_runs": 287
+ "n_lrts_runs": 287,
+ "lrts_generated": "2026-10-22 09:59:19"
 }

@@ -1,0 +1,163 @@
+{
+  "on_ac_power": false,
+  "started": "2026-11-16 09:34:57",
+  "regen": {
+    "generator_returncodes": {
+      "baselines_md": 0,
+      "features_md": 0,
+      "modeling_md": 0,
+      "real_world_md": 0,
+      "results_md": 0,
+      "viva_md": 0,
+      "model_card": 0
+    },
+    "changed_lines": {
+      "reports/REAL_WORLD.md": [
+        "+Mined bugs: 215 candidate fix commits \u2192 **138 reproducible bugs**; excluded 77 (timeout 6, fails_on_fix 15, no_failure 46, collection_error 10); 25 could not run in the current pinned environment."
+      ],
+      "reports/RESULTS.md": [
+        "-- **sympy**: None reproducible mined bugs, 0 mutants; best simple baseline (all bugs): None; None",
+        "+- **sympy**: 138 reproducible mined bugs, 0 mutants; best simple baseline (all bugs): None; None"
+      ],
+      "reports/SLIDE_NUMBERS.md": [
+        "+| sympy: reproducible mined bugs | 138 | real_world.json |"
+      ],
+      "reports/results/real_world.json": [
+        "-    \"learn\": null,",
+        "+    \"learn\": {",
+        "+      \"n_candidates\": 215,",
+        "+      \"n_kept\": 138,",
+        "+      \"n_excluded\": 77,",
+        "+      \"exclusions\": {",
+        "+        \"timeout\": 6,",
+        "+        \"fails_on_fix\": 15,",
+        "+        \"no_failure\": 46,",
+        "+        \"collection_error\": 10",
+        "+      },",
+        "+      \"could_not_run_in_current_env\": 25",
+        "+    },"
+      ]
+    },
+    "identical": false
+  },
+  "tests": {
+    "returncode": 0,
+    "seconds": 140.7,
+    "tests": 48,
+    "passed": 48,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "skip_reasons": []
+  },
+  "fresh_venv": {
+    "install_returncode": 0,
+    "install_seconds": 608.5,
+    "probe_returncode": 0,
+    "install_mode": "non-editable (copies the package; stp.paths.ROOT points into site-packages, no data/)",
+    "installed_at": "C:\\Users\\Abhi\\AppData\\Local\\Temp\\smartci_audit_yi79dw3j\\freshvenv\\Lib\\site-packages\\smartci\\__init__.py",
+    "model_version": "0.1.0",
+    "n_features": 25,
+    "n_features_coldstart": 13,
+    "scores": {
+      "tests/test_graph.py": 0.007995,
+      "tests/test_paths.py": 0.019207,
+      "tests/test_io.py": 0.007995
+    },
+    "top": "tests/test_paths.py",
+    "model_used": "model_coldstart",
+    "research_modules_imported": [],
+    "python": "C:\\Users\\Abhi\\AppData\\Local\\Temp\\smartci_audit_yi79dw3j\\freshvenv\\Scripts\\python.exe"
+  },
+  "smoke": {
+    "returncode": 0,
+    "seconds": 52.2,
+    "lines": [
+      "[smoke] pages: OK",
+      "[smoke] scoreboard: OK",
+      "[smoke] replays: OK",
+      "[smoke] backtests: OK",
+      "SMOKE: PASS"
+    ]
+  },
+  "server": {
+    "health_ok": true,
+    "seconds_to_healthy": 7.5
+  },
+  "leftovers": {
+    "candidate_clones_mb": {
+      "cand_attrs": 5.1,
+      "cand_black": 9.5,
+      "cand_pydantic": 34.4,
+      "cand_sympy": 489.8
+    },
+    "candidate_clones_ignored": true,
+    "heal_wording": {},
+    "owner_placeholders": {
+      ".github/workflows/smartci-compare.yml": 3,
+      ".github/workflows/smartci-shadow.yml": 2,
+      "HUMAN_TODO.md": 1,
+      "action.yml": 1,
+      "live_demo/public_ci/collect_runs.py": 1
+    },
+    "sympy_mentions": {
+      "README.md": 1,
+      "STATUS.md": 2,
+      "app/demo.py": 2,
+      "reports/REAL_WORLD.md": 1,
+      "reports/RESULTS.md": 1,
+      "reports/SLIDE_NUMBERS.md": 1,
+      "reports/WORKLOG.md": 6,
+      "reports/results/real_world.json": 1,
+      "src/smartci/learn.py": 1,
+      "src/stp/demo/build_bundle.py": 1,
+      "src/stp/reports/real_world_md.py": 1
+    },
+    "cand_paths_in_code": {
+      "src/stp/demo/build_bundle.py": 1,
+      "src/stp/reports/real_world_md.py": 1
+    }
+  },
+  "fixture": {
+    "profile": {
+      "returncode": 0,
+      "seconds": 19.0,
+      "tail": "smartci profile: run 1/2 3.5s exit 0\nsmartci profile: run 2/2 5.6s exit 0\nsmartci profile: 3 test files, 0.9 s summed test time, 0 flaky, 0 failing on base; start-up overhead ~2.5 s\n"
+    },
+    "learn": {
+      "returncode": 0,
+      "seconds": 107.4,
+      "tail": "smartci learn: 1 candidate commits, 0 already processed, 1 to run\n  [1/1] 0426ac8663 kept      (7s) Fix sub argument order (bug #12)\n{\n \"n_candidates\": 1,\n \"n_kept\": 1,\n \"n_excluded\": 0,\n \"exclusions\": {},\n \"could_not_run_in_current_env\": 0\n}\n  [rebase 1/1] 0426ac8663 ok (1 failing)\n{\n \"base_sha\": \"6c8a84e164b9c157c391897449242b118d071bc5\",\n \"status\": {\n  \"ok\": 1\n }\n}\n{\n \"fitted\": false,\n \"reason\": \"only 1 adapt bugs (< 20)\",\n \"n_bugs\": 1\n}\n"
+    },
+    "backtest": {
+      "returncode": 0,
+      "seconds": 13.7,
+      "tail": "61 [0.61, 0.61] | 0.467 | 1/0/0 | 0.14 [0.14, 0.14] |\n| default | 0.73 [0.73, 0.73] | 0.330 | 1/0/0 | 0.12 [0.12, 0.12] |\n\nBest simple baseline: **changed_files_first**. Recommendation: smartci does not clearly beat 'changed_files_first' here; use changed_files_first (or keep smartci only if its median is lower and you accept the uncertainty).\n\n## Every bug\n\n| Kind | Bug | Title | Failing tests | Default s | smartci s | smartci rank of 1st failing file |\n|---|---|---|---|---|---|---|\n| mined | 0426ac8663a211a623483fe78a81e6d38f90ce59 | Fix sub argument order (bug #12) | 1 | 0.73 | 0.08 | 1 |\n\n"
+    },
+    "compare": {
+      "returncode": 0,
+      "seconds": 18.4,
+      "tail": "  assert -2 == 2\nE        +  where -2 = sub(5, 3)\n\ntests\\test_ops.py:14: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/test_ops.py::test_sub - assert -2 == 2\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 2 passed in 2.62s\n\n=== result ===\ndefault  elapsed    8.49s   first failure after 0.82s   FAILED tests/test_ops.py::test_sub - assert -2 == 2\nsmartci  elapsed    4.98s   first failure after 0.34s   FAILED tests/test_ops.py::test_sub - assert -2 == 2\nelapsed ratio default / smartci = 1.70x\n"
+    },
+    "compare_parsed": {
+      "default": {
+        "elapsed_s": 8.49,
+        "first_failure_s": 0.82,
+        "line": "FAILED tests/test_ops.py::test_sub"
+      },
+      "smartci": {
+        "elapsed_s": 4.98,
+        "first_failure_s": 0.34,
+        "line": "FAILED tests/test_ops.py::test_sub"
+      }
+    },
+    "learn_summary": {
+      "n_candidates": 1,
+      "n_kept": 1,
+      "n_excluded": 0,
+      "exclusions": {},
+      "could_not_run_in_current_env": 0
+    }
+  },
+  "finished": "2026-11-16 09:55:25"
+}

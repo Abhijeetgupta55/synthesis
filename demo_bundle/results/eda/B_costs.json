@@ -1,0 +1,242 @@
+{
+  "full": {
+    "n_runs": {
+      "activemq": 446,
+      "hadoop": 1980,
+      "hbase": 1018,
+      "hive": 2131,
+      "jackrabbit-oak": 1654,
+      "james": 5838,
+      "kafka": 53554,
+      "karaf": 726,
+      "log4j": 528,
+      "tvm": 40491
+    },
+    "duration_h_median": {
+      "per_project": {
+        "activemq": 5.540994,
+        "hadoop": 0.812547,
+        "hbase": 10.481517,
+        "hive": 27.560656,
+        "jackrabbit-oak": 3.15738,
+        "james": 2.762983,
+        "kafka": 6.789577,
+        "karaf": 0.297047,
+        "log4j": 0.217289,
+        "tvm": 4.241904
+      },
+      "macro": 6.18619
+    },
+    "duration_h_mean": {
+      "per_project": {
+        "activemq": 4.840763,
+        "hadoop": 3.32796,
+        "hbase": 9.400657,
+        "hive": 26.67218,
+        "jackrabbit-oak": 2.996086,
+        "james": 3.028228,
+        "kafka": 8.161129,
+        "karaf": 0.387927,
+        "log4j": 0.231193,
+        "tvm": 4.86518
+      },
+      "macro": 6.39113
+    },
+    "classes_per_run_median": {
+      "per_project": {
+        "activemq": 1009.0,
+        "hadoop": 533.0,
+        "hbase": 1217.0,
+        "hive": 1361.0,
+        "jackrabbit-oak": 1991.0,
+        "james": 2145.0,
+        "kafka": 1264.0,
+        "karaf": 218.0,
+        "log4j": 651.0,
+        "tvm": 257.0
+      },
+      "macro": 1064.6
+    },
+    "classes_per_run_mean": {
+      "per_project": {
+        "activemq": 850.320628,
+        "hadoop": 582.854545,
+        "hbase": 1076.033399,
+        "hive": 1294.295167,
+        "jackrabbit-oak": 1847.055623,
+        "james": 1781.99863,
+        "kafka": 1278.166729,
+        "karaf": 215.841598,
+        "log4j": 644.026515,
+        "tvm": 453.339063
+      },
+      "macro": 1002.39319
+    },
+    "share_runs_over_1h": {
+      "per_project": {
+        "activemq": 0.934978,
+        "hadoop": 0.493939,
+        "hbase": 0.833988,
+        "hive": 0.997654,
+        "jackrabbit-oak": 0.942563,
+        "james": 0.855087,
+        "kafka": 0.868357,
+        "karaf": 0.027548,
+        "log4j": 0.0,
+        "tvm": 0.741424
+      },
+      "macro": 0.669554
+    },
+    "share_runs_over_2h": {
+      "per_project": {
+        "activemq": 0.876682,
+        "hadoop": 0.410101,
+        "hbase": 0.828094,
+        "hive": 0.997654,
+        "jackrabbit-oak": 0.900242,
+        "james": 0.70418,
+        "kafka": 0.86789,
+        "karaf": 0.015152,
+        "log4j": 0.0,
+        "tvm": 0.645156
+      },
+      "macro": 0.624515
+    },
+    "share_runs_over_6h": {
+      "per_project": {
+        "activemq": 0.264574,
+        "hadoop": 0.286869,
+        "hbase": 0.823183,
+        "hive": 0.994369,
+        "jackrabbit-oak": 0.0,
+        "james": 0.117506,
+        "kafka": 0.592561,
+        "karaf": 0.002755,
+        "log4j": 0.0,
+        "tvm": 0.354153
+      },
+      "macro": 0.343597
+    },
+    "pooled_share_over_2h": 0.760248
+  },
+  "paper_subset": {
+    "n_runs": {
+      "activemq": 207,
+      "hadoop": 1299,
+      "hbase": 553,
+      "hive": 2056,
+      "jackrabbit-oak": 860,
+      "james": 3147,
+      "kafka": 39006,
+      "karaf": 620,
+      "log4j": 528,
+      "tvm": 9161
+    },
+    "duration_h_median": {
+      "per_project": {
+        "activemq": 5.461714,
+        "hadoop": 0.592472,
+        "hbase": 10.072551,
+        "hive": 27.644286,
+        "jackrabbit-oak": 3.223988,
+        "james": 2.520948,
+        "kafka": 6.117704,
+        "karaf": 0.291775,
+        "log4j": 0.217289,
+        "tvm": 5.125897
+      },
+      "macro": 6.126862
+    },
+    "duration_h_mean": {
+      "per_project": {
+        "activemq": 4.571383,
+        "hadoop": 3.319624,
+        "hbase": 8.423671,
+        "hive": 26.805363,
+        "jackrabbit-oak": 3.118746,
+        "james": 2.450449,
+        "kafka": 6.18108,
+        "karaf": 0.373935,
+        "log4j": 0.231193,
+        "tvm": 5.19474
+      },
+      "macro": 6.067018
+    },
+    "classes_per_run_median": {
+      "per_project": {
+        "activemq": 875.0,
+        "hadoop": 509.0,
+        "hbase": 1169.0,
+        "hive": 1362.0,
+        "jackrabbit-oak": 1959.0,
+        "james": 2151.0,
+        "kafka": 1204.0,
+        "karaf": 218.0,
+        "log4j": 651.0,
+        "tvm": 213.0
+      },
+      "macro": 1031.1
+    },
+    "classes_per_run_mean": {
+      "per_project": {
+        "activemq": 770.057971,
+        "hadoop": 550.985373,
+        "hbase": 989.672694,
+        "hive": 1297.393969,
+        "jackrabbit-oak": 1848.648837,
+        "james": 2010.877979,
+        "kafka": 1187.663795,
+        "karaf": 214.341935,
+        "log4j": 644.026515,
+        "tvm": 393.21144
+      },
+      "macro": 990.688051
+    },
+    "share_runs_over_1h": {
+      "per_project": {
+        "activemq": 0.917874,
+        "hadoop": 0.485758,
+        "hbase": 0.790235,
+        "hive": 0.997568,
+        "jackrabbit-oak": 0.955814,
+        "james": 0.974579,
+        "kafka": 0.823181,
+        "karaf": 0.024194,
+        "log4j": 0.0,
+        "tvm": 0.829495
+      },
+      "macro": 0.67987
+    },
+    "share_runs_over_2h": {
+      "per_project": {
+        "activemq": 0.801932,
+        "hadoop": 0.387991,
+        "hbase": 0.781193,
+        "hive": 0.997568,
+        "jackrabbit-oak": 0.919767,
+        "james": 0.710836,
+        "kafka": 0.822771,
+        "karaf": 0.012903,
+        "log4j": 0.0,
+        "tvm": 0.750136
+      },
+      "macro": 0.61851
+    },
+    "share_runs_over_6h": {
+      "per_project": {
+        "activemq": 0.21256,
+        "hadoop": 0.314858,
+        "hbase": 0.77396,
+        "hive": 0.994163,
+        "jackrabbit-oak": 0.0,
+        "james": 0.002224,
+        "kafka": 0.521817,
+        "karaf": 0.003226,
+        "log4j": 0.0,
+        "tvm": 0.411309
+      },
+      "macro": 0.323412
+    },
+    "pooled_share_over_2h": 0.786148
+  }
+}

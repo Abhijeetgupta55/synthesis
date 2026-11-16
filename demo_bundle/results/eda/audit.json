@@ -1,0 +1,1233 @@
+{
+  "runs": {
+    "full_dataset_csv_rows": 108366,
+    "full_failed_runs": 49674,
+    "full_builds_by_definition": {
+      "project,pr_name,build_id": 34645,
+      "project,build_head_sha": 28227,
+      "project,pr_name,build_id,build_timestamp": 56815
+    },
+    "full_failed_builds": 23437,
+    "readme_claims": {
+      "runs": 108366,
+      "builds": 32199,
+      "failed_runs": 49674,
+      "failed_builds": 22763,
+      "mean_duration_h": 6.75,
+      "mean_classes_per_run": 980,
+      "mean_failed_classes_per_failed_run": 5
+    },
+    "full_mean_duration_h": 6.75721,
+    "full_share_runs_over_2h": 0.760248,
+    "full_mean_classes_per_run": 979.54172,
+    "full_mean_failed_classes_per_failed_run": 5.084692,
+    "repo_dataset_csv_rows": 57437,
+    "repo_dataset_init_builds": 23099,
+    "repo_rows_found_in_full": 57437,
+    "repo_rows_missing_from_full": 0,
+    "repo_vs_full_column_match": [
+      {
+        "project": "activemq",
+        "left_only": 239,
+        "right_only": 0,
+        "matched_rows": 207,
+        "all_equal": 207,
+        "match_rate": 1.0
+      },
+      {
+        "project": "hadoop",
+        "left_only": 681,
+        "right_only": 0,
+        "matched_rows": 1299,
+        "all_equal": 1297,
+        "match_rate": 0.99846
+      },
+      {
+        "project": "hbase",
+        "left_only": 465,
+        "right_only": 0,
+        "matched_rows": 553,
+        "all_equal": 548,
+        "match_rate": 0.990958
+      },
+      {
+        "project": "hive",
+        "left_only": 75,
+        "right_only": 0,
+        "matched_rows": 2056,
+        "all_equal": 2056,
+        "match_rate": 1.0
+      },
+      {
+        "project": "jackrabbit-oak",
+        "left_only": 794,
+        "right_only": 0,
+        "matched_rows": 860,
+        "all_equal": 857,
+        "match_rate": 0.996512
+      },
+      {
+        "project": "james",
+        "left_only": 2691,
+        "right_only": 0,
+        "matched_rows": 3147,
+        "all_equal": 3138,
+        "match_rate": 0.99714
+      },
+      {
+        "project": "kafka",
+        "left_only": 14548,
+        "right_only": 0,
+        "matched_rows": 39006,
+        "all_equal": 38841,
+        "match_rate": 0.99577
+      },
+      {
+        "project": "karaf",
+        "left_only": 106,
+        "right_only": 0,
+        "matched_rows": 620,
+        "all_equal": 619,
+        "match_rate": 0.998387
+      },
+      {
+        "project": "log4j",
+        "left_only": 0,
+        "right_only": 0,
+        "matched_rows": 528,
+        "all_equal": 528,
+        "match_rate": 1.0
+      },
+      {
+        "project": "tvm",
+        "left_only": 31330,
+        "right_only": 0,
+        "matched_rows": 9161,
+        "all_equal": 9161,
+        "match_rate": 1.0
+      }
+    ],
+    "repo_vs_full_first_mismatches": [
+      {
+        "project": "hadoop",
+        "pr_name": "PR-5888",
+        "build_id": 4,
+        "stage_id": "single",
+        "ok_num_pass_class": true,
+        "ok_num_fail_class": true,
+        "ok_num_trans_class": false,
+        "ok_build_timestamp": true,
+        "ok_build_head_sha": true,
+        "ok_trunk_sha": true
+      },
+      {
+        "project": "hadoop",
+        "pr_name": "PR-5898",
+        "build_id": 1,
+        "stage_id": "single",
+        "ok_num_pass_class": true,
+        "ok_num_fail_class": true,
+        "ok_num_trans_class": false,
+        "ok_build_timestamp": true,
+        "ok_build_head_sha": true,
+        "ok_trunk_sha": true
+      },
+      {
+        "project": "hbase",
+        "pr_name": "PR-4258",
+        "build_id": 10,
+        "stage_id": "yetus_jdk11_hadoop3_checks_precommit_checks",
+        "ok_num_pass_class": true,
+        "ok_num_fail_class": true,
+        "ok_num_trans_class": false,
+        "ok_build_timestamp": true,
+        "ok_build_head_sha": true,
+        "ok_trunk_sha": true
+      },
+      {
+        "project": "hbase",
+        "pr_name": "PR-4258",
+        "build_id": 10,
+        "stage_id": "yetus_jdk8_Hadoop3_checks_precommit_checks",
+        "ok_num_pass_class": true,
+        "ok_num_fail_class": true,
+        "ok_num_trans_class": false,
+        "ok_build_timestamp": true,
+        "ok_build_head_sha": true,
+        "ok_trunk_sha": true
+      },
+      {
+        "project": "hbase",
+        "pr_name": "PR-4258",
+        "build_id": 12,
+        "stage_id": "yetus_jdk11_hadoop3_checks_precommit_checks",
+        "ok_num_pass_class": true,
+        "ok_num_fail_class": true,
+        "ok_num_trans_class": false,
+        "ok_build_timestamp": true,
+        "ok_build_head_sha": true,
+        "ok_trunk_sha": true
+      },
+      {
+        "project": "hbase",
+        "pr_name": "PR-5155",
+        "build_id": 9,
+        "stage_id": "yetus_jdk11_hadoop3_checks_precommit_checks",
+        "ok_num_pass_class": true,
+        "ok_num_fail_class": true,
+        "ok_num_trans_class": false,
+        "ok_build_timestamp": true,
+        "ok_build_head_sha": true,
+        "ok_trunk_sha": true
+      },
+      {
+        "project": "hbase",
+        "pr_name": "PR-5155",
+        "build_id": 10,
+        "stage_id": "yetus_jdk11_hadoop3_checks_precommit_checks",
+        "ok_num_pass_class": true,
+        "ok_num_fail_class": true,
+        "ok_num_trans_class": false,
+        "ok_build_timestamp": true,
+        "ok_build_head_sha": true,
+        "ok_trunk_sha": true
+      },
+      {
+        "project": "jackrabbit-oak",
+        "pr_name": "PR-544",
+        "build_id": 1,
+        "stage_id": "single",
+        "ok_num_pass_class": true,
+        "ok_num_fail_class": true,
+        "ok_num_trans_class": false,
+        "ok_build_timestamp": true,
+        "ok_build_head_sha": true,
+        "ok_trunk_sha": true
+      },
+      {
+        "project": "jackrabbit-oak",
+        "pr_name": "PR-545",
+        "build_id": 1,
+        "stage_id": "single",
+        "ok_num_pass_class": true,
+        "ok_num_fail_class": true,
+        "ok_num_trans_class": false,
+        "ok_build_timestamp": true,
+        "ok_build_head_sha": true,
+        "ok_trunk_sha": true
+      },
+      {
+        "project": "jackrabbit-oak",
+        "pr_name": "PR-546",
+        "build_id": 1,
+        "stage_id": "single",
+        "ok_num_pass_class": true,
+        "ok_num_fail_class": true,
+        "ok_num_trans_class": false,
+        "ok_build_timestamp": true,
+        "ok_build_head_sha": true,
+        "ok_trunk_sha": true
+      },
+      {
+        "project": "james",
+        "pr_name": "PR-1099",
+        "build_id": 19,
+        "stage_id": "Stable_Tests",
+        "ok_num_pass_class": true,
+        "ok_num_fail_class": true,
+        "ok_num_trans_class": false,
+        "ok_build_timestamp": true,
+        "ok_build_head_sha": true,
+        "ok_trunk_sha": true
+      },
+      {
+        "project": "james",
+        "pr_name": "PR-1108",
+        "build_id": 12,
+        "stage_id": "Stable_Tests",
+        "ok_num_pass_class": true,
+        "ok_num_fail_class": true,
+        "ok_num_trans_class": false,
+        "ok_build_timestamp": true,
+        "ok_build_head_sha": true,
+        "ok_trunk_sha": true
+      },
+      {
+        "project": "james",
+        "pr_name": "PR-1119",
+        "build_id": 8,
+        "stage_id": "Stable_Tests",
+        "ok_num_pass_class": true,
+        "ok_num_fail_class": true,
+        "ok_num_trans_class": false,
+        "ok_build_timestamp": true,
+        "ok_build_head_sha": true,
+        "ok_trunk_sha": true
+      },
+      {
+        "project": "james",
+        "pr_name": "PR-1121",
+        "build_id": 9,
+        "stage_id": "Stable_Tests",
+        "ok_num_pass_class": true,
+        "ok_num_fail_class": true,
+        "ok_num_trans_class": false,
+        "ok_build_timestamp": true,
+        "ok_build_head_sha": true,
+        "ok_trunk_sha": true
+      },
+      {
+        "project": "james",
+        "pr_name": "PR-1125",
+        "build_id": 4,
+        "stage_id": "Stable_Tests",
+        "ok_num_pass_class": true,
+        "ok_num_fail_class": true,
+        "ok_num_trans_class": false,
+        "ok_build_timestamp": true,
+        "ok_build_head_sha": true,
+        "ok_trunk_sha": true
+      },
+      {
+        "project": "james",
+        "pr_name": "PR-1126",
+        "build_id": 5,
+        "stage_id": "Stable_Tests",
+        "ok_num_pass_class": true,
+        "ok_num_fail_class": true,
+        "ok_num_trans_class": false,
+        "ok_build_timestamp": true,
+        "ok_build_head_sha": true,
+        "ok_trunk_sha": true
+      },
+      {
+        "project": "james",
+        "pr_name": "PR-1132",
+        "build_id": 1,
+        "stage_id": "Stable_Tests",
+        "ok_num_pass_class": true,
+        "ok_num_fail_class": true,
+        "ok_num_trans_class": false,
+        "ok_build_timestamp": true,
+        "ok_build_head_sha": true,
+        "ok_trunk_sha": true
+      },
+      {
+        "project": "james",
+        "pr_name": "PR-1549",
+        "build_id": 3,
+        "stage_id": "Stable_Tests",
+        "ok_num_pass_class": true,
+        "ok_num_fail_class": true,
+        "ok_num_trans_class": false,
+        "ok_build_timestamp": true,
+        "ok_build_head_sha": true,
+        "ok_trunk_sha": true
+      },
+      {
+        "project": "james",
+        "pr_name": "PR-1552",
+        "build_id": 1,
+        "stage_id": "Stable_Tests",
+        "ok_num_pass_class": true,
+        "ok_num_fail_class": true,
+        "ok_num_trans_class": false,
+        "ok_build_timestamp": true,
+        "ok_build_head_sha": true,
+        "ok_trunk_sha": true
+      },
+      {
+        "project": "kafka",
+        "pr_name": "PR-10072",
+        "build_id": 2,
+        "stage_id": "JDK_15_Build",
+        "ok_num_pass_class": true,
+        "ok_num_fail_class": true,
+        "ok_num_trans_class": false,
+        "ok_build_timestamp": true,
+        "ok_build_head_sha": true,
+        "ok_trunk_sha": true
+      }
+    ],
+    "duration_rel_diff_repo_vs_full": {
+      "median": 0.028175,
+      "p90": 0.073819,
+      "max": 21613.06,
+      "share_gt_10pct": 0.024897
+    },
+    "per_project": [
+      {
+        "project": "activemq",
+        "runs": 446,
+        "failed_runs": 197,
+        "paper_runs": 207
+      },
+      {
+        "project": "hadoop",
+        "runs": 1980,
+        "failed_runs": 797,
+        "paper_runs": 1299
+      },
+      {
+        "project": "hbase",
+        "runs": 1018,
+        "failed_runs": 439,
+        "paper_runs": 553
+      },
+      {
+        "project": "hive",
+        "runs": 2131,
+        "failed_runs": 1472,
+        "paper_runs": 2056
+      },
+      {
+        "project": "jackrabbit-oak",
+        "runs": 1654,
+        "failed_runs": 1006,
+        "paper_runs": 860
+      },
+      {
+        "project": "james",
+        "runs": 5838,
+        "failed_runs": 2528,
+        "paper_runs": 3147
+      },
+      {
+        "project": "kafka",
+        "runs": 53554,
+        "failed_runs": 37842,
+        "paper_runs": 39006
+      },
+      {
+        "project": "karaf",
+        "runs": 726,
+        "failed_runs": 205,
+        "paper_runs": 620
+      },
+      {
+        "project": "log4j",
+        "runs": 528,
+        "failed_runs": 162,
+        "paper_runs": 528
+      },
+      {
+        "project": "tvm",
+        "runs": 40491,
+        "failed_runs": 5026,
+        "paper_runs": 9161
+      }
+    ],
+    "kafka_share": {
+      "full": 0.494196,
+      "paper_subset": 0.679109
+    },
+    "tvm_share": {
+      "full": 0.37365,
+      "paper_subset": 0.159496
+    },
+    "builds_with_multiple_timestamps_by_project": {
+      "activemq": 0.0,
+      "hadoop": 0.0,
+      "hbase": 0.0,
+      "hive": 0.0,
+      "jackrabbit-oak": 0.0,
+      "james": 0.0,
+      "kafka": 0.0,
+      "karaf": 0.0,
+      "log4j": 0.0,
+      "tvm": 0.623771
+    }
+  },
+  "test_files": {
+    "file_inventory": [
+      {
+        "project": "activemq",
+        "files": 446,
+        "files_not_in_dataset_csv": 0,
+        "runs_without_file": 0
+      },
+      {
+        "project": "hadoop",
+        "files": 2109,
+        "files_not_in_dataset_csv": 129,
+        "runs_without_file": 0
+      },
+      {
+        "project": "hbase",
+        "files": 1018,
+        "files_not_in_dataset_csv": 0,
+        "runs_without_file": 0
+      },
+      {
+        "project": "hive",
+        "files": 2131,
+        "files_not_in_dataset_csv": 0,
+        "runs_without_file": 0
+      },
+      {
+        "project": "jackrabbit-oak",
+        "files": 1657,
+        "files_not_in_dataset_csv": 3,
+        "runs_without_file": 0
+      },
+      {
+        "project": "james",
+        "files": 5838,
+        "files_not_in_dataset_csv": 0,
+        "runs_without_file": 0
+      },
+      {
+        "project": "kafka",
+        "files": 60579,
+        "files_not_in_dataset_csv": 7033,
+        "runs_without_file": 8
+      },
+      {
+        "project": "karaf",
+        "files": 726,
+        "files_not_in_dataset_csv": 0,
+        "runs_without_file": 0
+      },
+      {
+        "project": "log4j",
+        "files": 528,
+        "files_not_in_dataset_csv": 0,
+        "runs_without_file": 0
+      },
+      {
+        "project": "tvm",
+        "files": 40496,
+        "files_not_in_dataset_csv": 5,
+        "runs_without_file": 0
+      }
+    ],
+    "files_total": 115528,
+    "files_not_in_dataset_csv": 7170,
+    "runs_without_file": 8,
+    "pass_fail_count_match": [
+      {
+        "project": "activemq",
+        "left_only": 0,
+        "right_only": 0,
+        "matched_rows": 446,
+        "all_equal": 446,
+        "match_rate": 1.0
+      },
+      {
+        "project": "hadoop",
+        "left_only": 0,
+        "right_only": 0,
+        "matched_rows": 1980,
+        "all_equal": 1980,
+        "match_rate": 1.0
+      },
+      {
+        "project": "hbase",
+        "left_only": 0,
+        "right_only": 0,
+        "matched_rows": 1018,
+        "all_equal": 1018,
+        "match_rate": 1.0
+      },
+      {
+        "project": "hive",
+        "left_only": 0,
+        "right_only": 0,
+        "matched_rows": 2131,
+        "all_equal": 2131,
+        "match_rate": 1.0
+      },
+      {
+        "project": "jackrabbit-oak",
+        "left_only": 0,
+        "right_only": 0,
+        "matched_rows": 1654,
+        "all_equal": 1654,
+        "match_rate": 1.0
+      },
+      {
+        "project": "james",
+        "left_only": 0,
+        "right_only": 0,
+        "matched_rows": 5838,
+        "all_equal": 5838,
+        "match_rate": 1.0
+      },
+      {
+        "project": "kafka",
+        "left_only": 8,
+        "right_only": 0,
+        "matched_rows": 53546,
+        "all_equal": 53546,
+        "match_rate": 1.0
+      },
+      {
+        "project": "karaf",
+        "left_only": 0,
+        "right_only": 0,
+        "matched_rows": 726,
+        "all_equal": 726,
+        "match_rate": 1.0
+      },
+      {
+        "project": "log4j",
+        "left_only": 0,
+        "right_only": 0,
+        "matched_rows": 528,
+        "all_equal": 528,
+        "match_rate": 1.0
+      },
+      {
+        "project": "tvm",
+        "left_only": 0,
+        "right_only": 0,
+        "matched_rows": 40491,
+        "all_equal": 13658,
+        "match_rate": 0.33731
+      }
+    ],
+    "pass_fail_overall_match_rate": 0.752367,
+    "first_20_mismatches": [
+      {
+        "project": "tvm",
+        "pr_name": "PR-11779",
+        "build_id": 2,
+        "stage_id": "tvm-arm",
+        "num_pass_class": 1130,
+        "file_pass": 938.0,
+        "num_fail_class": 0,
+        "file_fail": 0.0
+      },
+      {
+        "project": "tvm",
+        "pr_name": "PR-11779",
+        "build_id": 2,
+        "stage_id": "tvm-cortexm",
+        "num_pass_class": 96,
+        "file_pass": 94.0,
+        "num_fail_class": 0,
+        "file_fail": 0.0
+      },
+      {
+        "project": "tvm",
+        "pr_name": "PR-11779",
+        "build_id": 2,
+        "stage_id": "tvm-cpu",
+        "num_pass_class": 1058,
+        "file_pass": 910.0,
+        "num_fail_class": 0,
+        "file_fail": 0.0
+      },
+      {
+        "project": "tvm",
+        "pr_name": "PR-11779",
+        "build_id": 2,
+        "stage_id": "tvm-gpu",
+        "num_pass_class": 252,
+        "file_pass": 227.0,
+        "num_fail_class": 0,
+        "file_fail": 0.0
+      },
+      {
+        "project": "tvm",
+        "pr_name": "PR-11779",
+        "build_id": 2,
+        "stage_id": "tvm-hexagon",
+        "num_pass_class": 59,
+        "file_pass": 52.0,
+        "num_fail_class": 0,
+        "file_fail": 0.0
+      },
+      {
+        "project": "tvm",
+        "pr_name": "PR-11779",
+        "build_id": 2,
+        "stage_id": "tvm-i386",
+        "num_pass_class": 1049,
+        "file_pass": 861.0,
+        "num_fail_class": 0,
+        "file_fail": 0.0
+      },
+      {
+        "project": "tvm",
+        "pr_name": "PR-11779",
+        "build_id": 2,
+        "stage_id": "tvm-minimal",
+        "num_pass_class": 695,
+        "file_pass": 643.0,
+        "num_fail_class": 0,
+        "file_fail": 0.0
+      },
+      {
+        "project": "tvm",
+        "pr_name": "PR-11779",
+        "build_id": 2,
+        "stage_id": "tvm-minimal-cross-isa",
+        "num_pass_class": 695,
+        "file_pass": 641.0,
+        "num_fail_class": 0,
+        "file_fail": 0.0
+      },
+      {
+        "project": "tvm",
+        "pr_name": "PR-11939",
+        "build_id": 4,
+        "stage_id": "tvm-arm",
+        "num_pass_class": 605,
+        "file_pass": 557.0,
+        "num_fail_class": 0,
+        "file_fail": 0.0
+      },
+      {
+        "project": "tvm",
+        "pr_name": "PR-11939",
+        "build_id": 4,
+        "stage_id": "tvm-cortexm",
+        "num_pass_class": 13,
+        "file_pass": 11.0,
+        "num_fail_class": 0,
+        "file_fail": 0.0
+      },
+      {
+        "project": "tvm",
+        "pr_name": "PR-11939",
+        "build_id": 4,
+        "stage_id": "tvm-cpu",
+        "num_pass_class": 9,
+        "file_pass": 4.0,
+        "num_fail_class": 0,
+        "file_fail": 0.0
+      },
+      {
+        "project": "tvm",
+        "pr_name": "PR-11939",
+        "build_id": 5,
+        "stage_id": "tvm-arm",
+        "num_pass_class": 1053,
+        "file_pass": 870.0,
+        "num_fail_class": 0,
+        "file_fail": 0.0
+      },
+      {
+        "project": "tvm",
+        "pr_name": "PR-11939",
+        "build_id": 5,
+        "stage_id": "tvm-cortexm",
+        "num_pass_class": 93,
+        "file_pass": 91.0,
+        "num_fail_class": 0,
+        "file_fail": 0.0
+      },
+      {
+        "project": "tvm",
+        "pr_name": "PR-11939",
+        "build_id": 5,
+        "stage_id": "tvm-cpu",
+        "num_pass_class": 989,
+        "file_pass": 846.0,
+        "num_fail_class": 0,
+        "file_fail": 0.0
+      },
+      {
+        "project": "tvm",
+        "pr_name": "PR-11939",
+        "build_id": 5,
+        "stage_id": "tvm-gpu",
+        "num_pass_class": 84,
+        "file_pass": 82.0,
+        "num_fail_class": 0,
+        "file_fail": 0.0
+      },
+      {
+        "project": "tvm",
+        "pr_name": "PR-11939",
+        "build_id": 5,
+        "stage_id": "tvm-i386",
+        "num_pass_class": 316,
+        "file_pass": 292.0,
+        "num_fail_class": 0,
+        "file_fail": 0.0
+      },
+      {
+        "project": "tvm",
+        "pr_name": "PR-11939",
+        "build_id": 5,
+        "stage_id": "tvm-minimal",
+        "num_pass_class": 629,
+        "file_pass": 583.0,
+        "num_fail_class": 0,
+        "file_fail": 0.0
+      },
+      {
+        "project": "tvm",
+        "pr_name": "PR-11939",
+        "build_id": 6,
+        "stage_id": "tvm-arm",
+        "num_pass_class": 1048,
+        "file_pass": 864.0,
+        "num_fail_class": 0,
+        "file_fail": 0.0
+      },
+      {
+        "project": "tvm",
+        "pr_name": "PR-11939",
+        "build_id": 6,
+        "stage_id": "tvm-cortexm",
+        "num_pass_class": 93,
+        "file_pass": 91.0,
+        "num_fail_class": 0,
+        "file_fail": 0.0
+      },
+      {
+        "project": "tvm",
+        "pr_name": "PR-11939",
+        "build_id": 6,
+        "stage_id": "tvm-cpu",
+        "num_pass_class": 984,
+        "file_pass": 840.0,
+        "num_fail_class": 0,
+        "file_fail": 0.0
+      }
+    ],
+    "rows_with_other_outcome_codes": 0,
+    "runs_with_duplicate_testclass": 0,
+    "rows_null_duration": 0,
+    "file_column_sets": {
+      "testclass,duration,outcome,last_outcome": 108358
+    }
+  },
+  "first_time_failure": {
+    "per_project": [
+      {
+        "project": "activemq",
+        "runs": 207,
+        "count_agree": 1.0,
+        "lrts_ftf_rows": 137.0,
+        "my_ftf_paper_rows": 137.0,
+        "my_ftf_full_history_rows": 137.0,
+        "lrts_ftf_runs": 44,
+        "my_ftf_runs": 44,
+        "run_flag_agree": 1.0
+      },
+      {
+        "project": "hadoop",
+        "runs": 1299,
+        "count_agree": 1.0,
+        "lrts_ftf_rows": 1020.0,
+        "my_ftf_paper_rows": 1020.0,
+        "my_ftf_full_history_rows": 1020.0,
+        "lrts_ftf_runs": 159,
+        "my_ftf_runs": 159,
+        "run_flag_agree": 1.0
+      },
+      {
+        "project": "hbase",
+        "runs": 553,
+        "count_agree": 1.0,
+        "lrts_ftf_rows": 201.0,
+        "my_ftf_paper_rows": 201.0,
+        "my_ftf_full_history_rows": 201.0,
+        "lrts_ftf_runs": 126,
+        "my_ftf_runs": 126,
+        "run_flag_agree": 1.0
+      },
+      {
+        "project": "hive",
+        "runs": 2056,
+        "count_agree": 1.0,
+        "lrts_ftf_rows": 700.0,
+        "my_ftf_paper_rows": 700.0,
+        "my_ftf_full_history_rows": 700.0,
+        "lrts_ftf_runs": 136,
+        "my_ftf_runs": 136,
+        "run_flag_agree": 1.0
+      },
+      {
+        "project": "jackrabbit-oak",
+        "runs": 860,
+        "count_agree": 0.998837,
+        "lrts_ftf_rows": 811.0,
+        "my_ftf_paper_rows": 812.0,
+        "my_ftf_full_history_rows": 812.0,
+        "lrts_ftf_runs": 119,
+        "my_ftf_runs": 119,
+        "run_flag_agree": 1.0
+      },
+      {
+        "project": "james",
+        "runs": 3147,
+        "count_agree": 1.0,
+        "lrts_ftf_rows": 910.0,
+        "my_ftf_paper_rows": 910.0,
+        "my_ftf_full_history_rows": 910.0,
+        "lrts_ftf_runs": 259,
+        "my_ftf_runs": 259,
+        "run_flag_agree": 1.0
+      },
+      {
+        "project": "kafka",
+        "runs": 39006,
+        "count_agree": 0.999769,
+        "lrts_ftf_rows": 5947.0,
+        "my_ftf_paper_rows": 5934.0,
+        "my_ftf_full_history_rows": 5934.0,
+        "lrts_ftf_runs": 1948,
+        "my_ftf_runs": 1942,
+        "run_flag_agree": 0.999795
+      },
+      {
+        "project": "karaf",
+        "runs": 620,
+        "count_agree": 1.0,
+        "lrts_ftf_rows": 55.0,
+        "my_ftf_paper_rows": 55.0,
+        "my_ftf_full_history_rows": 55.0,
+        "lrts_ftf_runs": 37,
+        "my_ftf_runs": 37,
+        "run_flag_agree": 1.0
+      },
+      {
+        "project": "log4j",
+        "runs": 528,
+        "count_agree": 1.0,
+        "lrts_ftf_rows": 127.0,
+        "my_ftf_paper_rows": 127.0,
+        "my_ftf_full_history_rows": 127.0,
+        "lrts_ftf_runs": 59,
+        "my_ftf_runs": 59,
+        "run_flag_agree": 1.0
+      },
+      {
+        "project": "tvm",
+        "runs": 9161,
+        "count_agree": 1.0,
+        "lrts_ftf_rows": 1240.0,
+        "my_ftf_paper_rows": 1240.0,
+        "my_ftf_full_history_rows": 1240.0,
+        "lrts_ftf_runs": 387,
+        "my_ftf_runs": 387,
+        "run_flag_agree": 1.0
+      }
+    ],
+    "overall_count_agreement": 0.999826,
+    "overall_run_flag_agreement": 0.999861,
+    "first_20_disagreements": [
+      {
+        "project": "jackrabbit-oak",
+        "pr_name": "PR-544",
+        "build_id": 1,
+        "stage_id": "single",
+        "lrts_num_first_failure": 34.0,
+        "num_fail_class": 70,
+        "my_ftf_paper": 35.0,
+        "my_ftf": 35.0,
+        "agree": false,
+        "run_has_ftf_lrts": true,
+        "run_has_ftf_mine": true
+      },
+      {
+        "project": "kafka",
+        "pr_name": "PR-10426",
+        "build_id": 5,
+        "stage_id": "JDK_11_Build",
+        "lrts_num_first_failure": 0.0,
+        "num_fail_class": 3,
+        "my_ftf_paper": 1.0,
+        "my_ftf": 1.0,
+        "agree": false,
+        "run_has_ftf_lrts": false,
+        "run_has_ftf_mine": true
+      },
+      {
+        "project": "kafka",
+        "pr_name": "PR-10426",
+        "build_id": 5,
+        "stage_id": "JDK_15_Build",
+        "lrts_num_first_failure": 1.0,
+        "num_fail_class": 3,
+        "my_ftf_paper": 2.0,
+        "my_ftf": 2.0,
+        "agree": false,
+        "run_has_ftf_lrts": true,
+        "run_has_ftf_mine": true
+      },
+      {
+        "project": "kafka",
+        "pr_name": "PR-11865",
+        "build_id": 2,
+        "stage_id": "ppc64le:_JDK_11_and_Scala_2.13_Build",
+        "lrts_num_first_failure": 3.0,
+        "num_fail_class": 3,
+        "my_ftf_paper": 0.0,
+        "my_ftf": 0.0,
+        "agree": false,
+        "run_has_ftf_lrts": true,
+        "run_has_ftf_mine": false
+      },
+      {
+        "project": "kafka",
+        "pr_name": "PR-11865",
+        "build_id": 2,
+        "stage_id": "x86_64:_JDK_11_and_Scala_2.13_Build",
+        "lrts_num_first_failure": 1.0,
+        "num_fail_class": 1,
+        "my_ftf_paper": 0.0,
+        "my_ftf": 0.0,
+        "agree": false,
+        "run_has_ftf_lrts": true,
+        "run_has_ftf_mine": false
+      },
+      {
+        "project": "kafka",
+        "pr_name": "PR-11865",
+        "build_id": 2,
+        "stage_id": "x86_64:_JDK_17_and_Scala_2.13_Build",
+        "lrts_num_first_failure": 2.0,
+        "num_fail_class": 2,
+        "my_ftf_paper": 0.0,
+        "my_ftf": 0.0,
+        "agree": false,
+        "run_has_ftf_lrts": true,
+        "run_has_ftf_mine": false
+      },
+      {
+        "project": "kafka",
+        "pr_name": "PR-11865",
+        "build_id": 2,
+        "stage_id": "x86_64:_JDK_8_and_Scala_2.12_Build",
+        "lrts_num_first_failure": 2.0,
+        "num_fail_class": 2,
+        "my_ftf_paper": 0.0,
+        "my_ftf": 0.0,
+        "agree": false,
+        "run_has_ftf_lrts": true,
+        "run_has_ftf_mine": false
+      },
+      {
+        "project": "kafka",
+        "pr_name": "PR-11865",
+        "build_id": 3,
+        "stage_id": "ppc64le:_JDK_11_and_Scala_2.13_Build",
+        "lrts_num_first_failure": 1.0,
+        "num_fail_class": 3,
+        "my_ftf_paper": 0.0,
+        "my_ftf": 0.0,
+        "agree": false,
+        "run_has_ftf_lrts": true,
+        "run_has_ftf_mine": false
+      },
+      {
+        "project": "kafka",
+        "pr_name": "PR-11865",
+        "build_id": 3,
+        "stage_id": "x86_64:_JDK_11_and_Scala_2.13_Build",
+        "lrts_num_first_failure": 1.0,
+        "num_fail_class": 2,
+        "my_ftf_paper": 0.0,
+        "my_ftf": 0.0,
+        "agree": false,
+        "run_has_ftf_lrts": true,
+        "run_has_ftf_mine": false
+      },
+      {
+        "project": "kafka",
+        "pr_name": "PR-11865",
+        "build_id": 3,
+        "stage_id": "x86_64:_JDK_17_and_Scala_2.13_Build",
+        "lrts_num_first_failure": 5.0,
+        "num_fail_class": 7,
+        "my_ftf_paper": 0.0,
+        "my_ftf": 0.0,
+        "agree": false,
+        "run_has_ftf_lrts": true,
+        "run_has_ftf_mine": false
+      }
+    ]
+  },
+  "changes": {
+    "change_rows": 36191,
+    "builds_with_multiple_base_head_pairs": 2697,
+    "compare_found_rate": [
+      {
+        "project": "activemq",
+        "compare_found": 1.0
+      },
+      {
+        "project": "hadoop",
+        "compare_found": 1.0
+      },
+      {
+        "project": "hbase",
+        "compare_found": 1.0
+      },
+      {
+        "project": "hive",
+        "compare_found": 1.0
+      },
+      {
+        "project": "jackrabbit-oak",
+        "compare_found": 1.0
+      },
+      {
+        "project": "james",
+        "compare_found": 1.0
+      },
+      {
+        "project": "kafka",
+        "compare_found": 1.0
+      },
+      {
+        "project": "karaf",
+        "compare_found": 1.0
+      },
+      {
+        "project": "log4j",
+        "compare_found": 1.0
+      },
+      {
+        "project": "tvm",
+        "compare_found": 1.0
+      }
+    ],
+    "vs_change_stats_csv": [
+      {
+        "project": "activemq",
+        "left_only": 239,
+        "right_only": 0,
+        "matched_rows": 207,
+        "all_equal": 207,
+        "match_rate": 1.0
+      },
+      {
+        "project": "hadoop",
+        "left_only": 681,
+        "right_only": 0,
+        "matched_rows": 1299,
+        "all_equal": 1299,
+        "match_rate": 1.0
+      },
+      {
+        "project": "hbase",
+        "left_only": 207,
+        "right_only": 0,
+        "matched_rows": 278,
+        "all_equal": 278,
+        "match_rate": 1.0
+      },
+      {
+        "project": "hive",
+        "left_only": 75,
+        "right_only": 0,
+        "matched_rows": 2056,
+        "all_equal": 2056,
+        "match_rate": 1.0
+      },
+      {
+        "project": "jackrabbit-oak",
+        "left_only": 794,
+        "right_only": 0,
+        "matched_rows": 860,
+        "all_equal": 860,
+        "match_rate": 1.0
+      },
+      {
+        "project": "james",
+        "left_only": 1949,
+        "right_only": 0,
+        "matched_rows": 2404,
+        "all_equal": 2404,
+        "match_rate": 1.0
+      },
+      {
+        "project": "kafka",
+        "left_only": 4245,
+        "right_only": 0,
+        "matched_rows": 11843,
+        "all_equal": 11843,
+        "match_rate": 1.0
+      },
+      {
+        "project": "karaf",
+        "left_only": 106,
+        "right_only": 0,
+        "matched_rows": 620,
+        "all_equal": 620,
+        "match_rate": 1.0
+      },
+      {
+        "project": "log4j",
+        "left_only": 0,
+        "right_only": 0,
+        "matched_rows": 270,
+        "all_equal": 270,
+        "match_rate": 1.0
+      },
+      {
+        "project": "tvm",
+        "left_only": 5094,
+        "right_only": 0,
+        "matched_rows": 1418,
+        "all_equal": 1412,
+        "match_rate": 0.995769
+      }
+    ],
+    "vs_change_stats_overall_match_rate": 0.999718,
+    "first_20_mismatches": [
+      {
+        "project": "tvm",
+        "pr_name": "PR-12935",
+        "build_id": 2,
+        "n_files_raw_sum_pages": 24,
+        "num_changed_files": 7.0,
+        "additions_raw": 350,
+        "num_addition": 74.0
+      },
+      {
+        "project": "tvm",
+        "pr_name": "PR-13500",
+        "build_id": 2,
+        "n_files_raw_sum_pages": 18,
+        "num_changed_files": 9.0,
+        "additions_raw": 401,
+        "num_addition": 260.0
+      },
+      {
+        "project": "tvm",
+        "pr_name": "PR-13530",
+        "build_id": 5,
+        "n_files_raw_sum_pages": 9,
+        "num_changed_files": 5.0,
+        "additions_raw": 1500,
+        "num_addition": 744.0
+      },
+      {
+        "project": "tvm",
+        "pr_name": "PR-13530",
+        "build_id": 6,
+        "n_files_raw_sum_pages": 9,
+        "num_changed_files": 5.0,
+        "additions_raw": 1500,
+        "num_addition": 744.0
+      },
+      {
+        "project": "tvm",
+        "pr_name": "PR-13530",
+        "build_id": 7,
+        "n_files_raw_sum_pages": 8,
+        "num_changed_files": 4.0,
+        "additions_raw": 1501,
+        "num_addition": 745.0
+      },
+      {
+        "project": "tvm",
+        "pr_name": "PR-13530",
+        "build_id": 8,
+        "n_files_raw_sum_pages": 8,
+        "num_changed_files": 4.0,
+        "additions_raw": 1507,
+        "num_addition": 751.0
+      }
+    ],
+    "dedup_vs_raw_files_differ_share": 0.0
+  }
+}

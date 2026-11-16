@@ -69,6 +69,16 @@ def cmd_rank(a):
     from smartci import gitdiff
     from smartci.scoring import score, stable_order
     repo = _repo(a)
+    if a.files:
+        from smartci.whatif import rank_paths
+        rows = rank_paths(repo, a.files, t=a.at, explain=False, additions=a.additions, deletions=a.deletions)
+        if a.json:
+            print(json.dumps(rows))
+            return
+        print(f"hypothetical change: {len(a.files)} paths (no patch); model {rows[0]['model'] if rows else '-'}")
+        for r in rows[: a.top]:
+            print(f"{r['rank']:3d}. {r['test_file']:60s} p={r['p_fail']:.4f}  ~{r['expected_duration_s']:.2f}s")
+        return
     files = _collect(repo, a.python, a.pytest_args)
     diff = gitdiff.compute(repo, a.base)
     sc = score(repo, files, diff.change)
@@ -136,6 +146,14 @@ def main(argv: list[str] | None = None) -> int:
         p = add(name, fn, help=f"{name} test files for the current change")
         p.add_argument("--base", default=None)
         p.add_argument("--top", type=int, default=10)
+        if name == "rank":
+            p.add_argument("--files", nargs="+", default=None,
+                           help="rank for a hypothetical change of these paths (no patch text, no pytest run)")
+            p.add_argument("--at", type=float, default=None, help="score history as of this unix time")
+            p.add_argument("--json", action="store_true", help="print every ranked test file as JSON")
+            p.add_argument("--additions", type=int, default=None, help="with --files: lines added (default: median "
+                           "of the repo's mined bug fixes)")
+            p.add_argument("--deletions", type=int, default=None, help="with --files: lines removed")
     p = add("record", cmd_record, help="ingest a JUnit XML run into .smartci/history")
     p.add_argument("--junit", required=True)
     p.add_argument("--start", required=True)

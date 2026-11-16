@@ -1,0 +1,301 @@
+{
+  "cap_hours": 24.0,
+  "share_runs_capped": 0.001246,
+  "n_runs_capped": 135,
+  "window_days": 30.0,
+  "runs": {
+    "activemq": {
+      "train": 312,
+      "val": 67,
+      "test": 67
+    },
+    "hadoop": {
+      "train": 1386,
+      "val": 297,
+      "test": 297
+    },
+    "hbase": {
+      "train": 675,
+      "val": 146,
+      "test": 197
+    },
+    "hive": {
+      "train": 1491,
+      "val": 320,
+      "test": 320
+    },
+    "jackrabbit-oak": {
+      "train": 1157,
+      "val": 248,
+      "test": 249
+    },
+    "james": {
+      "train": 3957,
+      "val": 939,
+      "test": 942
+    },
+    "kafka": {
+      "train": 37141,
+      "val": 8112,
+      "test": 8301
+    },
+    "karaf": {
+      "train": 508,
+      "val": 109,
+      "test": 109
+    },
+    "log4j": {
+      "train": 367,
+      "val": 79,
+      "test": 82
+    },
+    "tvm": {
+      "train": 29465,
+      "val": 5648,
+      "test": 5378
+    }
+  },
+  "builds": {
+    "activemq": {
+      "test": 67,
+      "train": 312,
+      "val": 67
+    },
+    "hadoop": {
+      "test": 297,
+      "train": 1386,
+      "val": 297
+    },
+    "hbase": {
+      "test": 73,
+      "train": 339,
+      "val": 73
+    },
+    "hive": {
+      "test": 320,
+      "train": 1491,
+      "val": 320
+    },
+    "jackrabbit-oak": {
+      "test": 249,
+      "train": 1157,
+      "val": 248
+    },
+    "james": {
+      "test": 653,
+      "train": 3047,
+      "val": 653
+    },
+    "kafka": {
+      "test": 2414,
+      "train": 11261,
+      "val": 2413
+    },
+    "karaf": {
+      "test": 109,
+      "train": 508,
+      "val": 109
+    },
+    "log4j": {
+      "test": 41,
+      "train": 189,
+      "val": 40
+    },
+    "tvm": {
+      "test": 977,
+      "train": 4558,
+      "val": 977
+    }
+  },
+  "failed_run_rate": {
+    "activemq": {
+      "test": 0.313433,
+      "train": 0.464744,
+      "val": 0.462687
+    },
+    "hadoop": {
+      "test": 0.360269,
+      "train": 0.408369,
+      "val": 0.417508
+    },
+    "hbase": {
+      "test": 0.390863,
+      "train": 0.420741,
+      "val": 0.534247
+    },
+    "hive": {
+      "test": 0.575,
+      "train": 0.745137,
+      "val": 0.553125
+    },
+    "jackrabbit-oak": {
+      "test": 0.618474,
+      "train": 0.662921,
+      "val": 0.342742
+    },
+    "james": {
+      "test": 0.366242,
+      "train": 0.461208,
+      "val": 0.381257
+    },
+    "kafka": {
+      "test": 0.973136,
+      "train": 0.600926,
+      "val": 0.917776
+    },
+    "karaf": {
+      "test": 0.293578,
+      "train": 0.287402,
+      "val": 0.247706
+    },
+    "log4j": {
+      "test": 0.317073,
+      "train": 0.294278,
+      "val": 0.35443
+    },
+    "tvm": {
+      "test": 0.051506,
+      "train": 0.144375,
+      "val": 0.087642
+    }
+  },
+  "date_range": {
+    "activemq|test": [
+      "2024-02-27",
+      "2024-04-12"
+    ],
+    "activemq|train": [
+      "2021-04-01",
+      "2023-11-06"
+    ],
+    "activemq|val": [
+      "2023-11-06",
+      "2024-02-27"
+    ],
+    "hadoop|test": [
+      "2024-01-16",
+      "2024-04-16"
+    ],
+    "hadoop|train": [
+      "2020-07-30",
+      "2023-09-19"
+    ],
+    "hadoop|val": [
+      "2023-09-22",
+      "2024-01-15"
+    ],
+    "hbase|test": [
+      "2024-02-07",
+      "2024-04-16"
+    ],
+    "hbase|train": [
+      "2022-03-11",
+      "2023-11-14"
+    ],
+    "hbase|val": [
+      "2023-11-15",
+      "2024-02-02"
+    ],
+    "hive|test": [
+      "2023-07-07",
+      "2024-03-12"
+    ],
+    "hive|train": [
+      "2021-11-18",
+      "2023-06-09"
+    ],
+    "hive|val": [
+      "2023-06-09",
+      "2023-07-07"
+    ],
+    "jackrabbit-oak|test": [
+      "2024-01-22",
+      "2024-04-16"
+    ],
+    "jackrabbit-oak|train": [
+      "2021-07-13",
+      "2023-11-01"
+    ],
+    "jackrabbit-oak|val": [
+      "2023-11-01",
+      "2024-01-22"
+    ],
+    "james|test": [
+      "2024-02-05",
+      "2024-04-16"
+    ],
+    "james|train": [
+      "2021-06-02",
+      "2023-11-10"
+    ],
+    "james|val": [
+      "2023-11-10",
+      "2024-02-05"
+    ],
+    "kafka|test": [
+      "2023-11-29",
+      "2024-04-16"
+    ],
+    "kafka|train": [
+      "2020-11-16",
+      "2023-06-29"
+    ],
+    "kafka|val": [
+      "2023-06-29",
+      "2023-11-29"
+    ],
+    "karaf|test": [
+      "2023-07-29",
+      "2024-04-08"
+    ],
+    "karaf|train": [
+      "2020-12-12",
+      "2022-10-14"
+    ],
+    "karaf|val": [
+      "2022-10-14",
+      "2023-07-28"
+    ],
+    "log4j|test": [
+      "2022-01-19",
+      "2022-01-28"
+    ],
+    "log4j|train": [
+      "2020-11-17",
+      "2022-01-10"
+    ],
+    "log4j|val": [
+      "2022-01-10",
+      "2022-01-19"
+    ],
+    "tvm|test": [
+      "2024-02-28",
+      "2024-04-17"
+    ],
+    "tvm|train": [
+      "2021-03-15",
+      "2023-12-01"
+    ],
+    "tvm|val": [
+      "2023-11-29",
+      "2024-03-27"
+    ]
+  },
+  "n_roll_windows": {
+    "activemq": 6,
+    "hadoop": 7,
+    "hbase": 6,
+    "hive": 10,
+    "jackrabbit-oak": 6,
+    "james": 6,
+    "kafka": 10,
+    "karaf": 19,
+    "log4j": 1,
+    "tvm": 5
+  },
+  "builds_with_stages_in_different_splits": 0,
+  "_meta": {
+    "generated": "2026-10-20 04:33:27",
+    "git_sha": "ebe9eca"
+  }
+}
