@@ -1,0 +1,11 @@
+{
+ "fitted": true,
+ "intercept": 4.243732391571371,
+ "coef_logit": 1.8445734064829682,
+ "coef_cov": 3.4726679836873764,
+ "uses_coverage": true,
+ "n_adapt_bugs": 28,
+ "n_eval_bugs": 18,
+ "adapt_until": 1767752500,
+ "n_rows": 7364
+}
