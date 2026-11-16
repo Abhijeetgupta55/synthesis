@@ -1,0 +1,32 @@
+{
+ "n_files": 643,
+ "dataset_files": [],
+ "secrets": [],
+ "personal_paths": [],
+ "over_50mb": [],
+ "tracked_mb": 84.0,
+ "git_objects_mb": 24.5,
+ "largest_files": [
+  [
+   "demo_bundle/repos/networkx/backtest.json",
+   9.1
+  ],
+  [
+   "src/smartci/model/model.txt",
+   8.4
+  ],
+  [
+   "models/global/model.txt",
+   8.4
+  ],
+  [
+   "src/smartci/model/model_coldstart.txt",
+   3.1
+  ],
+  [
+   "models/global/model_coldstart.txt",
+   3.1
+  ]
+ ],
+ "pass": true
+}

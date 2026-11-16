@@ -1,0 +1,25 @@
+# Runs every test that needs no dataset on each push (the LRTS data and the NetworkX clone are not in the repo:
+# tests that need them skip themselves). Gives the README its "tests passing" badge.
+name: tests
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install
+        run: |
+          git config --global user.email "ci@example.com"
+          git config --global user.name "ci"
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[ci]"
+      - name: Tests
+        run: python -m pytest -q -rs -p no:cacheprovider
