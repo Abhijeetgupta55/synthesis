@@ -1,4 +1,8 @@
-# smart-ci-tcp — smartci: run the tests most likely to fail first
+# smartci: predicting CI test failures to run the right tests first
+
+Predict which tests will fail for a code change and run those first, so a broken change is caught in seconds instead of after the whole suite. Nothing is skipped; only the order changes.
+
+**Headline.** Reordering tests helps enormously. ML gives a modest gain over simple rules on recurring failures, and loses to "fastest test first" on tests that fail for the first time.
 
 Two things on one codebase:
 
@@ -124,4 +128,4 @@ demo pages need nothing else; `stp.demo.verify` additionally needs the raw LRTS 
 | `app/demo.py`, `demo_bundle/` | Streamlit demo and its data |
 | `live_demo/` | NetworkX setup, GATE 5 script, public-CI scripts |
 | `reports/` | generated reports, `results/*.json`, `figures/` |
-| `data/`, `external/` | git-ignored (LRTS data, LRTS repo, NetworkX / sympy clones) |
+| `data/`, `external/` | git-ignored (LRTS data, LRTS repo, NetworkX clone) |

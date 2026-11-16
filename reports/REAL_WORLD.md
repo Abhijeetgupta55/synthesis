@@ -76,10 +76,9 @@ Every bug with its commit link: `external/networkx/.smartci/backtest.md` (also i
 
 Rule: |real - simulated| <= 0.1*simulated + overhead; measured overhead 27.82 s. **GATE 5: FAIL** (11/20 checks). End-to-end seconds include pytest start-up and smartci's scoring cost.
 
-## sympy
+## A second repository
 
-Pinned commit `b386392cd62e`. 
-Mutants kept (killed by ≥ 1 existing test): 0.
+A second repository (sympy, a documented subset of its suite) was attempted. Bug mining ran, but profiling, the adapter and the backtest were not completed, so no sympy result is reported anywhere in this project.
 
 ## Caveats
 

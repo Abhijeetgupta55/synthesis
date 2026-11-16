@@ -51,7 +51,7 @@ def is_source_file(path: str) -> bool:
 def candidates(repo: Path, since: str | None = None, branch: str = "HEAD",
                paths: list[str] | None = None) -> list[dict]:
     """Fix commits that touch source and tests. `paths` restricts to commits touching tests under those directories
-    (for a suite subset, e.g. sympy/core); only those test files are run."""
+    (for a suite subset, e.g. networkx/algorithms); only those test files are run."""
     args = ["log", branch, "--no-merges", "--format=%x1e%H%x1f%P%x1f%ct%x1f%s", "--name-status", "-M"]
     if since:
         args.insert(2, f"--since={since}")

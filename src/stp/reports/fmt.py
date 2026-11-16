@@ -1,6 +1,12 @@
 """Small formatting helpers for generated markdown."""
 from __future__ import annotations
 
+# The project's name and honest headline (docs/PROMPT_FINISH.md); every generated page uses these exact words.
+NAME = "smartci: predicting CI test failures to run the right tests first"
+QUESTION = "When does machine learning beat simple rules for ordering tests, and when doesn't it?"
+HEADLINE = ("Reordering tests helps enormously. ML gives a modest gain over simple rules on recurring failures, "
+            "and loses to \"fastest test first\" on tests that fail for the first time.")
+
 
 def f3(x) -> str:
     return "–" if x is None else f"{x:.3f}"

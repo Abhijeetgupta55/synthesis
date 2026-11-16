@@ -796,17 +796,8 @@
       "failing_on_base": []
     }
   },
-  "sympy": {
-    "pinned_sha": "b386392cd62ed543aadd696d9953ab35cb38d666",
-    "learn": null,
-    "n_mutants": 0,
-    "adapter": null,
-    "backtest_summary": null,
-    "gate5": null,
-    "profile": null
-  },
   "_meta": {
-    "generated": "2026-10-22 09:51:04",
-    "git_sha": "b73ce51"
+    "generated": "2026-11-16 10:05:46",
+    "git_sha": "dd1dd11"
   }
 }

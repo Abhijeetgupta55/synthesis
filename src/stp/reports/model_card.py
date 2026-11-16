@@ -4,6 +4,7 @@ from __future__ import annotations
 import json
 import shutil
 
+from stp.reports.fmt import HEADLINE, NAME
 from stp import paths
 from stp.results import load_result
 
@@ -16,7 +17,7 @@ def main() -> None:
     models = load_result("models") if (paths.RESULTS / "models.json").exists() else {}
     head = models.get("headline", {})
     lines = [
-        f"# smartci global model {sch['version']}", "",
+        f"# smartci global model {sch['version']}", "", f"Part of **{NAME}**. {HEADLINE}", "",
         f"Exported {sch['exported']} from git `{sch['git_sha']}`; variant `{sch['main_variant']}`.", "",
         "## Intended use",
         "Rank the test files of a Python + pytest repository so that the ones most likely to fail for the current "

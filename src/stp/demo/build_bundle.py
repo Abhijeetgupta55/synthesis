@@ -36,7 +36,7 @@ METHODS = ["Random", "QTF", "cbt_LastFail", "ChangedOrNewFirst", "smartci (Light
 GITHUB = {"activemq": "apache/activemq", "hadoop": "apache/hadoop", "hbase": "apache/hbase", "hive": "apache/hive",
           "jackrabbit-oak": "apache/jackrabbit-oak", "james": "apache/james-project", "kafka": "apache/kafka",
           "karaf": "apache/karaf", "log4j": "apache/logging-log4j2", "tvm": "apache/tvm"}
-REPOS = {"networkx": paths.ROOT / "external" / "networkx", "sympy": paths.ROOT / "external" / "cand_sympy"}
+REPOS = {"networkx": paths.ROOT / "external" / "networkx"}  # a second repo (sympy) was attempted, not completed
 
 
 def _metrics(order: np.ndarray, dur: np.ndarray, fail: np.ndarray) -> tuple[float, float]:

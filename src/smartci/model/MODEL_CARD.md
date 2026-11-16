@@ -1,5 +1,7 @@
 # smartci global model 0.1.0
 
+Part of **smartci: predicting CI test failures to run the right tests first**. Reordering tests helps enormously. ML gives a modest gain over simple rules on recurring failures, and loses to "fastest test first" on tests that fail for the first time.
+
 Exported 2026-10-21 11:53:19 from git `48a9b04`; variant `var_tr_all_to_tvm`.
 
 ## Intended use

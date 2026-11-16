@@ -11,7 +11,7 @@ from stp import paths
 from stp.reports.fmt import table
 from stp.results import save_result
 
-REPOS = {"networkx": paths.ROOT / "external" / "networkx", "sympy": paths.ROOT / "external" / "cand_sympy"}
+REPOS = {"networkx": paths.ROOT / "external" / "networkx"}  # a second repo (sympy) was attempted, not completed
 CAVEATS = [
     "**Mined bugs are reintroduced known bugs.** The revealing test usually arrived with the fix, so this measures "
     "*regression catching*: would the tests that guard a past fix have been run early?",
@@ -118,7 +118,7 @@ def main() -> None:
             "outputs and `reports/results/gate5_*.json`. Do not edit by hand.", "",
             "smartci never skips a test; it only reorders test files. Every number below comes from real pytest runs "
             "of the repository (durations, failing tests) — see the caveats at the end.", ""] + parts + \
-           ["## Caveats", ""] + [f"- {c}" for c in CAVEATS] + [""]
+           ["## A second repository", "", "A second repository (sympy, a documented subset of its suite) was attempted. Bug mining ran, but profiling, the adapter and the backtest were not completed, so no sympy result is reported anywhere in this project.", "", "## Caveats", ""] + [f"- {c}" for c in CAVEATS] + [""]
     (paths.ROOT / "reports" / "REAL_WORLD.md").write_text("\n".join(text), encoding="utf-8")
     save_result("real_world", js)
     print("wrote reports/REAL_WORLD.md")
