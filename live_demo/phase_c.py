@@ -93,6 +93,9 @@ def main(argv=None) -> int:
     if on_ac() is False and not a.allow_battery:
         print("phase_c: the laptop is on battery; timing is not meaningful. Plug in and re-run.")
         return 2
+    if os.name == "nt":       # keep Windows from sleeping while this process runs (no setting is changed)
+        import ctypes
+        ctypes.windll.kernel32.SetThreadExecutionState(0x80000000 | 0x00000001)
     out = json.loads(OUT.read_text(encoding="utf-8")) if OUT.exists() else {}
     for s in a.steps.split(","):
         print(f"[phase_c] {s} ...", flush=True)

@@ -15,3 +15,7 @@ data/processed/_duckdb_tmp/
 build/
 # the demo bundle ships a copy of NetworkX smartci state for the Predict live page
 !demo_bundle/live/networkx/.smartci/
+
+# local dashboard server logs
+.streamlit_*.log*
+.venv-demo/
