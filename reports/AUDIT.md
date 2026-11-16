@@ -71,6 +71,18 @@ No headline number is wrong, so work continues past GATE A.
 | 6 Ensembles | MODELING.md §6 | `ensemble_error_corr.png` (601×504, has content) | models_classification.json, models.json | thin: no figure of vote / stack vs base models (table only) |
 | 7 Performance analysis | MODELING.md §4, §5, §8, §9; RESULTS.md | `calibration_reliability.png` (1410×551, has content); `shap_global.png` (1004×598, has content) | models.json, calibration.json, interpret.json, baselines.json | thin: no figure of APFDc vs every baseline with CIs (tables only) |
 
+## Resolution after phases B–G
+
+| Item | Status | How |
+|---|---|---|
+| A2 GATE 4 (NetworkX part) | open | needs mains power: `python live_demo/phase_c.py --repeats 3` (HUMAN_TODO 0) |
+| A2 GATE 5 | open | same run re-profiles NetworkX and re-runs `live_demo/gate5.py --seed 5`; reported as it is |
+| A3 Regenerate reports | fixed | sympy dropped (one sentence in REAL_WORLD.md); `_meta` bullet removed; every report regenerated and committed |
+| A5 Rubric deliverables | fixed | new figures `cls_models`, `ens_vs_base`, `perf_apfdc_forest`, `error_firstfail`, `tradeoff_floor` (`python -m stp.reports.extra_figures`) |
+| A9 Leftovers | fixed | sympy removed; `external/cand_*` deleted; STATUS.md rewritten; `OWNER` placeholders kept on purpose until the repository exists (HUMAN_TODO 3); publish check passes |
+| Old RESULTS.md claim: model beats the best simple rule on all failures | corrected | it is a tie (CI includes 0); RESULTS.md and README now decide the wording from the CI |
+| Phase D floor | reported | LRTS ship rule met (f* = 0.0003); NetworkX deployment check failed, so it is off by default (RESULTS.md 4.3) |
+
 ## Leftovers (A9)
 
 | Item | Detail |

@@ -1,30 +1,42 @@
 # STATUS
 
-**Current:** Phase 5 (NetworkX: mutate 180/300 running; then profile → adapter → backtest → GATE 5 on a quiet
-machine), Phase 5.2 (sympy chosen; subset by measured suite time), Phase 6 (demo built and smoke-tested), Phase 7.
-**Gates:** GATE 0 PASS · GATE 1 PASS · GATE 2 PASS · GATE 3 PASS · GATE 4 fixture part PASS (NetworkX part pending)
-· GATE 5 pending.
+**Name:** smartci: predicting CI test failures to run the right tests first.
+**Working to:** `docs/PROMPT_FINISH.md` (supersedes `docs/PROMPT.md` where they conflict). Updated 2026-11-16.
 
-## Done
-- Phases 0–3 complete. Reports generated from JSON: `reports/BASELINES.md`, `FEATURES.md`, `MODELING.md`,
-  `VIVA_NOTES.md`; model exported to `models/global/` and packaged in `src/smartci/model/` (+ MODEL_CARD.md).
-  Headline: model beats cbt_LastFail on All (+0.020 [0.008, 0.032]); loses to QTF on first-time failures (all
-  ablations too). Shipped model: all-projects variant (TVM-only chosen by val failed confirmation on test; disclosed).
-- Phase 4: smartci complete; fixture tests pass; fresh-venv GATE 4 fixture run passes.
-- Phase 5: NetworkX pinned `abf2feda2252`; coverage map (259/267 test files); learn: 87 strict candidates → 68 bugs.
-- Phase 6: `demo_bundle/` (287 LRTS runs, 36 MB, committed), `app/demo.py`, `stp.demo.{build_bundle,verify,cli,smoke}`,
-  scripts; smoke: pages / scoreboard / 20 raw replays OK.
+## Gates
+
+| Gate | State | Evidence |
+|---|---|---|
+| 0–3 (data facts, leakage, paper reproduction, rubric deliverables) | PASS | `reports/AUDIT.md` A2 |
+| 4 (fresh venv; tool end to end) | fixture PASS; NetworkX part waits for mains power | AUDIT A6–A7 |
+| 5 (simulated vs real timing, NetworkX) | FAIL on battery (11/20); re-run on mains power pending | `reports/REAL_WORLD.md` |
+| A (audit complete, no headline number wrong) | PASS | `reports/AUDIT.md` |
+| C (live comparison timed ≥ 3× on AC power) | **pending**: laptop was on battery all session | HUMAN_TODO 0 |
+| E (fresh clone → setup_demo → run_demo, six pages, no data) | PASS | WORKLOG 2026-11-16 |
+
+## Phases of PROMPT_FINISH
+
+- **A audit:** done (`reports/AUDIT.md`, regenerable: `scripts/audit_runs.py`, `scripts/audit_spotcheck.py`).
+- **B cleanup and reframe:** done. sympy dropped, candidate clones deleted, name and headline applied, error analysis
+  in RESULTS.md §4.
+- **C timing:** scripts ready (`live_demo/phase_c.py`, `scripts/run_live_compare.ps1 -Pick N | -Edit`); measurements
+  pending mains power.
+- **D trade-off:** done. Floor f* chosen on validation, held on LRTS test; failed a NetworkX deployment check, so it is
+  opt-in (`SMARTCI_FLOOR`), off by default.
+- **E dashboard:** done. Six pages, offline, smoke test passing, screenshots in `reports/demo_screenshots/`.
+- **F GitHub readiness:** done except the push (students). README generated, `tests.yml`, `requirements.txt`,
+  `scripts/publish_check.py` passes.
+- **G presentation pack:** done. DEMO_SCRIPT.md (timing section fills itself after Phase C), RUBRIC_MAP.md,
+  VIVA_NOTES.md (eight framing questions), AI_USE_DISCLOSURE.md draft.
 
 ## Next
-1. NetworkX: wait for mutate (300); then on a quiet machine `smartci profile` → `learn.fit_adapter` → `backtest --set
-   both` → GATE 5 (5 bugs + 5 mutants, logged seed, `compare` sequential) → GATE 4 NetworkX part.
-2. sympy: time candidate subsets, pick subset, `profile`, `coverage-map`, `learn --since 2023-01-01`, `mutate`, backtest.
-3. `live_demo/public_ci/` scripts; REAL_WORLD.md generator; RESULTS.md; SLIDE_NUMBERS.md; README update.
-4. Rebuild demo bundle after backtests; rerun smoke.
 
-## Blockers
-None. Keep the machine awake (HUMAN_TODO 1). Timing-sensitive steps need no other heavy job running.
+1. On mains power: `.venv\Scripts\python.exe live_demo\phase_c.py --repeats 3` (HUMAN_TODO 0). Then regenerate:
+   `python -m stp.reports.real_world_md`, `results_md`, `presentation_md`, `readme_md`, `audit_md`; rebuild the bundle
+   (`python -m stp.demo.build_bundle --parts results,repos`); `python -m stp.demo.smoke`; commit.
+2. Students: HUMAN_TODO 3 (publish), 6 (optional hosting), 7 (disclosure), 8 (rehearse).
 
 ## How to resume
-"Continue the smartci project. Read STATUS.md, reports/WORKLOG.md and docs/PROMPT.md, then resume from the next
+
+"Continue finishing smartci. Read docs/PROMPT_FINISH.md, STATUS.md and reports/AUDIT.md, then resume from the next
 unfinished step."

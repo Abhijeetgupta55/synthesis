@@ -246,6 +246,23 @@ def build() -> str:
         fs = "; ".join(f"`{f}.png` ({figure_ok(f)[1]})" for f in figs) or "none"
         rr.append([n, sec, fs, res, note or "ok"])
     out.append(table(["Rubric item", "Report section", "Figures (checked)", "Result files", "Gap"], rr))
+    pc, fl = _r("publish_check"), _r("floor_tradeoff")
+    res_rows = [
+        ["A2 GATE 4 (NetworkX part)", "open", "needs mains power: `python live_demo/phase_c.py --repeats 3` (HUMAN_TODO 0)"],
+        ["A2 GATE 5", "open", "same run re-profiles NetworkX and re-runs `live_demo/gate5.py --seed 5`; reported as it is"],
+        ["A3 Regenerate reports", "fixed", "sympy dropped (one sentence in REAL_WORLD.md); `_meta` bullet removed; "
+                                           "every report regenerated and committed"],
+        ["A5 Rubric deliverables", "fixed", "new figures `cls_models`, `ens_vs_base`, `perf_apfdc_forest`, "
+                                            "`error_firstfail`, `tradeoff_floor` (`python -m stp.reports.extra_figures`)"],
+        ["A9 Leftovers", "fixed", "sympy removed; `external/cand_*` deleted; STATUS.md rewritten; `OWNER` placeholders "
+                                  "kept on purpose until the repository exists (HUMAN_TODO 3); publish check "
+                                  + ("passes" if pc.get("pass") else "FAILS")],
+        ["Old RESULTS.md claim: model beats the best simple rule on all failures", "corrected",
+         "it is a tie (CI includes 0); RESULTS.md and README now decide the wording from the CI"],
+        ["Phase D floor", "reported", f"LRTS ship rule met (f* = {fl.get('f_star')}); NetworkX deployment check failed, "
+                                      "so it is off by default (RESULTS.md 4.3)"],
+    ]
+    out += ["", "## Resolution after phases B–G", "", table(["Item", "Status", "How"], res_rows)]
     out += ["", "## Leftovers (A9)", "",
             table(["Item", "Detail"],
                   [["sympy", "mined bugs only; no profile, adapter or backtest; appears in README, STATUS, app, "

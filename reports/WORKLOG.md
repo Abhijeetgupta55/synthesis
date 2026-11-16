@@ -404,3 +404,30 @@ test files for file-level ordering. Strict-filter fix candidates since 2023 (sha
   9.1%, 74% of it on previously-failed tests.
   (2) TVM collapse: not feature drift (PSI vs train is large in both valB and test); valB is easier: failure rate
   3.1x higher and failures repeat more.
+
+## 2026-11-16 · Finishing prompt: phases C (prep), D, E, F, G
+
+- **Power.** The laptop reported "discharging" at every check, so no timing step ran. `live_demo/phase_c.py`
+  (refuses on battery) does profile + GATE 5 + 3x live-demo timings in one command; DEMO_SCRIPT.md fills its timing
+  section from its output. `scripts/run_live_compare.ps1` now lists bugs by number (`-Pick N`), takes the user's
+  own edit (`-Edit`) and a subset (`-Subset networkx/algorithms`, default; `-Subset ""` = full suite).
+- **Phase D.** Probability floor max(P, f) / duration on the tuned LightGBM, all val/test failed runs rescored
+  (Kafka about 16 min per split). f* chosen on validation by the declared rule, test reported once: ship rule met
+  (RESULTS.md 4.3). **Deployment check, not declared in advance:** on the NetworkX backtest the same floor made
+  smartci much slower (the per-repo adapter puts probabilities on another scale, so the floor promotes tiny unrelated
+  tests). Shipped default stays 0 (`ordering_floor` in schema.json); opt-in via `SMARTCI_FLOOR`. NetworkX backtest
+  re-run with the floor off reproduces the published one exactly (summary and every bug identical).
+- **Predict live.** `smartci.whatif.rank_paths` ranks for a paths-only change; `smartci rank --files/--at/--json`
+  and the app call it (parity test: identical order and scores). Bug found while building it: with additions =
+  deletions = 0 the model treated the change as unusual (large positive SHAP for the zero size) and ranked unrelated
+  tests first. A paths-only change now uses the median size of the repo's own mined bug fixes (overridable).
+- **Dashboard.** Six pages; reads only `demo_bundle/`; works with the five packages in requirements.txt and no
+  package install (`app/demo.py` adds `src/` to its path). Bug found: `demo_bundle/live/networkx/.smartci/` was
+  swallowed by the `.smartci/` ignore rule, so a fresh clone had no live data; un-ignored. Screenshot capture with
+  Playwright driving the installed Edge.
+- **GATE E: PASS.** Fresh clone (no data/, no external/) → `scripts/setup_demo.ps1` → `scripts/run_demo.ps1 -Port
+  8503`: health OK, all six pages render. `setup_demo` now picks Python 3.11+ (system `python` here is 3.10, too old
+  for the pins); `run_demo` takes `-Port` (8501 was taken by another app).
+- **Tests without data:** fresh clone with only `.[ci]` installed: all pass, one skip (LRTS repo not cloned).
+- **Publishing.** Local absolute paths scrubbed from bundled/committed JSON (`stp.scrub`);
+  `scripts/publish_check.py` passes.

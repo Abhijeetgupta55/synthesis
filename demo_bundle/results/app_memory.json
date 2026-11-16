@@ -1,0 +1,9 @@
+{
+  "working_set_mb": 248,
+  "peak_working_set_mb": 274,
+  "how": "Windows working set of the streamlit server process after visiting all six pages incl. Predict live (Get-Process), app started from .venv with the root requirements; measured 2026-11-16",
+  "_meta": {
+    "generated": "2026-11-16 11:04:38",
+    "git_sha": "63d27cc"
+  }
+}
