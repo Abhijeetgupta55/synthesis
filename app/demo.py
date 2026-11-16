@@ -150,7 +150,8 @@ digraph { rankdir=LR; node [shape=box, style="rounded,filled", fillcolor="#f4f4f
     c2.metric("Best model PR-AUC (held-out rows)", f"{get(C, 'models', best_m, 'pr_auc', default=0):.3f}",
               help=f"{label(best_m)}; a random ranking scores the base rate, {C.get('base_rate', 0):.2%}.")
     d = get(M, "vs_best_simple", "All", "macro10", "lgbm")
-    c3.metric("Model − best simple rule, all failures (APFDc)", f"{d['mean']:+.3f}" if d else "–",
+    c3.metric("Model − best simple rule, all failures (APFDc)",
+              (f"{d['mean']:+.3f}" + (" (tie)" if verdict(d) == "level" else "")) if d else "–",
               help=f"95% CI {ci(d, sign=True)}: {'a tie (CI includes 0)' if verdict(d) == 'level' else verdict(d)}. "
                    f"Best simple rule: {get(M, 'best_simple_by_val', 'All')}.")
     md, ms = get(nx, "median_ttff_s", "default", "median"), get(nx, "median_ttff_s", "smartci", "median")

@@ -24,6 +24,8 @@ def main() -> None:
     ap.add_argument("--url", default="http://localhost:8501")
     ap.add_argument("--channel", default=None, help="e.g. msedge or chrome (use an installed browser)")
     ap.add_argument("--wait", type=int, default=8000, help="ms to wait after each click")
+    ap.add_argument("--height", type=int, default=2800, help="viewport height: Streamlit scrolls inside the page, "
+                    "so a tall viewport is what captures the whole page")
     a = ap.parse_args()
     from playwright.sync_api import sync_playwright
 
@@ -31,16 +33,22 @@ def main() -> None:
     out.mkdir(parents=True, exist_ok=True)
 
     def shot(page, name):
+        page.wait_for_function("!document.body.innerText.includes('CONNECTING') && "
+                               "!document.body.innerText.includes('Running...')", timeout=120000)
+        page.wait_for_timeout(1000)
         f = out / f"{name}.png"
         page.screenshot(path=str(f), full_page=True)
         print("saved", f)
 
     with sync_playwright() as p:
         b = p.chromium.launch(channel=a.channel) if a.channel else p.chromium.launch()
-        page = b.new_page(viewport={"width": 1440, "height": 1000})
+        page = b.new_page(viewport={"width": 1440, "height": a.height})
         page.goto(a.url)
         page.wait_for_timeout(a.wait)
         for i, name in enumerate(PAGES, 1):
+            page.goto(a.url)                       # fresh load per page: no stale websocket or half-loaded chunk
+            page.wait_for_selector("section[data-testid='stSidebar']", timeout=60000)
+            page.wait_for_timeout(a.wait)
             page.locator("section[data-testid='stSidebar']").get_by_text(name, exact=True).click()
             page.wait_for_timeout(a.wait * (3 if name == "Predict live" else 1))
             shot(page, f"{i:02d}_{slug(name)}")
