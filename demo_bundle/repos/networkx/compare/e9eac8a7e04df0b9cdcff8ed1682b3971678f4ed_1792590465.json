@@ -233,7 +233,7 @@
    "file_durations_s": {
     "networkx/generators/tests/test_geometric.py": 4.159685799793806
    },
-   "receipt": "A:\\ML\\smart-ci-tcp\\external\\networkx\\.smartci\\receipts\\2026-10-21T191736_abf2feda.json",
+   "receipt": "<repo>\\external\\networkx\\.smartci\\receipts\\2026-10-21T191736_abf2feda.json",
    "stdout_tail": "           topological phase transition in spatial random graphs. Communications Physics, 5(1), 245.\n    \n        .. [3] Krioukov, D., Papadopoulos, F., Kitsak, M., Vahdat, A., & Bogun\ufffd, M. (2010).\n           Hyperbolic geometry of complex networks. Physical Review E, 82(3), 036106.\n    \n        \"\"\"\n        if beta <= 0:\n            raise nx.NetworkXError(\"The parameter beta cannot be smaller or equal to 0.\")\n    \n        if kappas is not None:\n            if not all((n is None, gamma is None, mean_degree is None)):\n                raise nx.NetworkXError(\n                    \"When kappas is input, n, gamma and mean_degree must not be.\"\n                )\n    \n            n = len(kappas)\n>           mean_degree = sum(kappas) / len(kappas)\n                          ^^^^^^^^^^^\nE           TypeError: unsupported operand type(s) for +: 'int' and 'str'\n\nnetworkx\\generators\\geometric.py:985: TypeError\n=========================== short test summary info ===========================\nFAILED networkx/generators/tests/test_geometric.py::test_S1_kappas_mean_degree_from_values\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 54 passed, 4 skipped in 81.99s (0:01:21)",
    "n_failed_lines": 1
   }

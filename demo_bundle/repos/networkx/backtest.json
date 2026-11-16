@@ -1,5 +1,5 @@
 {
- "repo": "A:\\ML\\smart-ci-tcp\\external\\networkx",
+ "repo": "<repo>\\external\\networkx",
  "profile_base_sha": "abf2feda2252ee4e0d5a66964addf179225dfe76",
  "suite_test_time_s": 239.5610000000001,
  "n_test_files": 263,

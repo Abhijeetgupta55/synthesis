@@ -1,0 +1,132 @@
+{
+  "floor": 0.0003,
+  "note": "NetworkX backtest (same bugs, same profile) with the LRTS-chosen floor applied to smartci ordering vs without it. Not pre-declared: a deployment check run after the LRTS ship rule passed.",
+  "without_floor": {
+    "mined": {
+      "median_ttff_s": {
+        "median": 0.716405,
+        "lo": 0.206573,
+        "hi": 3.417259
+      },
+      "mean_apfdc": 0.93586,
+      "vs_best": {
+        "win": 4,
+        "tie": 9,
+        "loss": 5,
+        "median_time_ratio_smartci_over_baseline": 1.0,
+        "ratio_ci": [
+          1.0,
+          1.028741
+        ]
+      },
+      "best": "coverage_first",
+      "n": 18
+    },
+    "mutant": {
+      "median_ttff_s": {
+        "median": 0.082832,
+        "lo": 0.065705,
+        "hi": 0.107493
+      },
+      "mean_apfdc": 0.990837,
+      "vs_best": {
+        "win": 41,
+        "tie": 214,
+        "loss": 45,
+        "median_time_ratio_smartci_over_baseline": 1.0,
+        "ratio_ci": [
+          1.0,
+          1.0
+        ]
+      },
+      "best": "changed_files_first",
+      "n": 300
+    },
+    "all": {
+      "median_ttff_s": {
+        "median": 0.085642,
+        "lo": 0.071413,
+        "hi": 0.146326
+      },
+      "mean_apfdc": 0.987725,
+      "vs_best": {
+        "win": 42,
+        "tie": 224,
+        "loss": 52,
+        "median_time_ratio_smartci_over_baseline": 1.0,
+        "ratio_ci": [
+          1.0,
+          1.0
+        ]
+      },
+      "best": "changed_files_first",
+      "n": 318
+    }
+  },
+  "with_floor": {
+    "mined": {
+      "median_ttff_s": {
+        "median": 5.33403,
+        "lo": 2.327828,
+        "hi": 12.374091
+      },
+      "mean_apfdc": 0.927541,
+      "vs_best": {
+        "win": 4,
+        "tie": 4,
+        "loss": 10,
+        "median_time_ratio_smartci_over_baseline": 2.790218,
+        "ratio_ci": [
+          1.0,
+          10.666629
+        ]
+      },
+      "best": "coverage_first",
+      "n": 18
+    },
+    "mutant": {
+      "median_ttff_s": {
+        "median": 2.811592,
+        "lo": 2.749407,
+        "hi": 2.965899
+      },
+      "mean_apfdc": 0.987147,
+      "vs_best": {
+        "win": 22,
+        "tie": 63,
+        "loss": 215,
+        "median_time_ratio_smartci_over_baseline": 12.165977,
+        "ratio_ci": [
+          8.782421,
+          16.828929
+        ]
+      },
+      "best": "changed_files_first",
+      "n": 300
+    },
+    "all": {
+      "median_ttff_s": {
+        "median": 2.829657,
+        "lo": 2.754126,
+        "hi": 2.980147
+      },
+      "mean_apfdc": 0.983773,
+      "vs_best": {
+        "win": 22,
+        "tie": 68,
+        "loss": 228,
+        "median_time_ratio_smartci_over_baseline": 11.123258,
+        "ratio_ci": [
+          7.761978,
+          16.028216
+        ]
+      },
+      "best": "changed_files_first",
+      "n": 318
+    }
+  },
+  "_meta": {
+    "generated": "2026-11-16 10:48:44",
+    "git_sha": "eca2819"
+  }
+}

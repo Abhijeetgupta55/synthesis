@@ -483,7 +483,7 @@
    "file_durations_s": {
     "networkx/generators/tests/test_trees.py": 0.04242890002205968
    },
-   "receipt": "A:\\ML\\smart-ci-tcp\\external\\networkx\\.smartci\\receipts\\2026-10-21T194211_abf2feda.json",
+   "receipt": "<repo>\\external\\networkx\\.smartci\\receipts\\2026-10-21T194211_abf2feda.json",
    "stdout_tail": "        \"\"\"\n        n = len(sequence) + 2\n        # `degree` stores the remaining degree (plus one) for each node. The\n        # degree of a node in the decoded tree is one more than the number\n        # of times it appears in the code.\n        degree = Counter(chain(sequence, range(n)))\n        T = nx.empty_graph(n)\n        # `not_orphaned` is the set of nodes that have a parent in the\n        # tree. After the loop, there should be exactly two nodes that are\n        # not in this set.\n        not_orphaned = set()\n        index = u = next(k for k in range(n) if degree[k] == 1)\n        for v in sequence:\n            # check the validity of the prufer sequence\n            if v < 0 or v > n - 1:\n>               raise nx.NetworkXError(\n                    f\"Invalid Prufer sequence: Values must be between 0 and {n - 1}, got {v}\"\n                )\nE               networkx.exception.NetworkXError: Invalid Prufer sequence: Values must be between 0 and 4, got 5\n\nnetworkx\\algorithms\\tree\\coding.py:399: NetworkXError\n=========================== short test summary info ===========================\nFAILED networkx/generators/tests/test_trees.py::test_random_labeled_rooted_tree\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 6 passed, 4 skipped in 283.43s (0:04:43)",
    "n_failed_lines": 1
   }

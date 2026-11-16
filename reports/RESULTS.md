@@ -122,7 +122,9 @@ Validation curve (macro APFDc, tuned LightGBM):
 | f=1 | 0.680 | 0.826 |
 | QTF | 0.683 | 0.815 |
 
-**Test split, reported once (f* = 0.0003).** Δ vs f = 0: all failures -0.004 [-0.006, -0.002], first-time failures of existing tests +0.050 [+0.024, +0.085]. With the floor the model scores 0.758 there against QTF's 0.800: it closes part of the gap but still loses to QTF. **Shipped in smartci** (`ordering_floor` in the model's schema.json).
+**Test split, reported once (f* = 0.0003).** Δ vs f = 0: all failures -0.004 [-0.006, -0.002], first-time failures of existing tests +0.050 [+0.024, +0.085]. With the floor the model scores 0.758 there against QTF's 0.800: it closes part of the gap but still loses to QTF. The LRTS ship rule was met. 
+
+**Deployment check on NetworkX (not declared in advance).** With the floor, smartci's median time to the first failure on NetworkX's 318 bugs went from 0.09 s to 2.83 s, and its losses against changed_files_first from 52 to 228. smartci's probabilities on a repository pass through a per-repo adapter, so a floor tuned on the LRTS model's scale promotes tiny unrelated tests there. **The floor is therefore off by default** and available as an option (`SMARTCI_FLOOR`); a floor would have to be tuned per repository.
 
 
 ## 5. Real repositories (smartci)

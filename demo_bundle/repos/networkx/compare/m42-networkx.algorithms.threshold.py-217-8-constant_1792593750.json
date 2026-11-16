@@ -187,7 +187,7 @@
    "file_durations_s": {
     "networkx/algorithms/tests/test_threshold.py": 0.1284885999339167
    },
-   "receipt": "A:\\ML\\smart-ci-tcp\\external\\networkx\\.smartci\\receipts\\2026-10-21T201227_abf2feda.json",
+   "receipt": "<repo>\\external\\networkx\\.smartci\\receipts\\2026-10-21T201227_abf2feda.json",
    "stdout_tail": ".....F\n================================== FAILURES ===================================\n__________ TestGeneratorThreshold.test_creation_sequence_to_weights ___________\n\nself = <networkx.algorithms.tests.test_threshold.TestGeneratorThreshold object at 0x00000203C2D71E20>\n\n    def test_creation_sequence_to_weights(self):\n>       assert nxt.creation_sequence_to_weights([3, 1, 2]) == [\n            0.5,\n            0.5,\n            0.5,\n            0.25,\n            0.75,\n            0.75,\n        ]\nE       assert [0.6000000000...0.4, 0.8, 0.8] == [0.5, 0.5, 0....5, 0.75, 0.75]\nE         \nE         At index 0 diff: 0.6000000000000001 != 0.5\nE         Use -v to get more diff\n\nnetworkx\\algorithms\\tests\\test_threshold.py:76: AssertionError\n=========================== short test summary info ===========================\nFAILED networkx/algorithms/tests/test_threshold.py::TestGeneratorThreshold::test_creation_sequence_to_weights\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 5 passed, 4 skipped in 72.97s (0:01:12)",
    "n_failed_lines": 1
   }

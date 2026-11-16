@@ -47,7 +47,7 @@
    "file_durations_s": {
     "networkx/algorithms/assortativity/tests/test_neighbor_degree.py": 0.01900159998331219
    },
-   "receipt": "A:\\ML\\smart-ci-tcp\\external\\networkx\\.smartci\\receipts\\2026-10-21T200257_abf2feda.json",
+   "receipt": "<repo>\\external\\networkx\\.smartci\\receipts\\2026-10-21T200257_abf2feda.json",
    "stdout_tail": ".F\n================================== FAILURES ===================================\n_________________ TestAverageNeighbor.test_degree_p4_weighted _________________\n\nself = <networkx.algorithms.assortativity.tests.test_neighbor_degree.TestAverageNeighbor object at 0x0000022EA2819040>\n\n    def test_degree_p4_weighted(self):\n        G = nx.path_graph(4)\n        G[1][2][\"weight\"] = 4\n        answer = {0: 2, 1: 1.8, 2: 1.8, 3: 2}\n        nd = nx.average_neighbor_degree(G, weight=\"weight\")\n>       assert nd == answer\nE       assert {0: 2.0, 1: 0...: 0.6, 3: 2.0} == {0: 2, 1: 1.8, 2: 1.8, 3: 2}\nE         \nE         Omitting 2 identical items, use -vv to show\nE         Differing items:\nE         {1: 0.6} != {1: 1.8}\nE         {2: 0.6} != {2: 1.8}\nE         Use -v to get more diff\n\nnetworkx\\algorithms\\assortativity\\tests\\test_neighbor_degree.py:32: AssertionError\n=========================== short test summary info ===========================\nFAILED networkx/algorithms/assortativity/tests/test_neighbor_degree.py::TestAverageNeighbor::test_degree_p4_weighted\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!\n1 failed, 1 passed, 4 skipped in 74.47s (0:01:14)",
    "n_failed_lines": 1
   }
