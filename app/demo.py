@@ -565,6 +565,23 @@ def page_results():
         st.subheader("Can the trade-off be tuned? A probability floor")
         fig("tradeoff_floor")
         st.markdown("\n".join(floor_md(F, R("floor_networkx"))[2:]))
+    v = R("verdict_networkx")
+    if v:
+        st.subheader("What `smartci evaluate` tells the NetworkX team")
+        med = v["median_s"]
+        st.code("\n".join([
+            f"Evidence: {v['n_bugs']} reproducible bugs, {v['n_test_files']} test files",
+            f"Median seconds of testing until the first failure:",
+            f"  pytest default order   {med['default']:8.2f} s",
+            f"  {v['best_simple_rule']:22s} {med[v['best_simple_rule']]:8.2f} s",
+            f"  smartci                {med['smartci']:8.2f} s",
+            f"smartci vs {v['best_simple_rule']}: {v['vs_best']['win']} wins / {v['vs_best']['tie']} ties / "
+            f"{v['vs_best']['loss']} losses",
+            f"RECOMMENDATION: {v['recommendation']}",
+            f"pytest start-up and collection ({v['startup_s']:.0f} s) comes on top for every order"
+            if v.get("startup_s") else ""]), language="text")
+        st.caption("The tool recommends the simple rule when the model does not clearly win, and can run it: "
+                   f"`pytest --smartci --smartci-rule {v['recommendation']}`.")
     st.subheader("What a team should actually use")
     st.success("On a small Python repository like NetworkX, a simple rule (changed files first, or coverage first) "
                "is enough: it reaches the first failure about as fast as the model. On long suites with recurring "
@@ -606,8 +623,168 @@ def page_limits():
 """)
 
 
-PAGES = {"Overview": page_overview, "The ML pipeline": page_pipeline, "Predict live": page_predict,
-         "Race replay": page_race, "Results": page_results, "Limits and honesty": page_limits}
+# ------------------------------------------------------------------------------------------------- 0 start here
+def _animate_race(b: dict, lanes_order: list[str], seconds: float = 8.0):
+    """Play a real bug's race: lanes advance through their measured test-file durations (time compressed)."""
+    import time as _t
+    fails = set(b["failing_files"])
+    lanes = {m: b["prefix"][m] for m in lanes_order if m in b.get("prefix", {})}
+    total = max(sum(d for _, d in segs) for segs in lanes.values())
+    holders = {m: (st.empty(), st.empty()) for m in lanes}
+    frames = 48
+    for k in range(frames + 1):
+        now = total * k / frames
+        for m, segs in lanes.items():
+            t, cur = 0.0, segs[0][0]
+            for f, d in segs:
+                if now < t + d:
+                    cur = f
+                    break
+                t += d
+            end = sum(d for _, d in segs)
+            done = now >= end
+            label_ = "pytest's normal order" if m == "default" else label(m)
+            txt = (f"**{label_}**: ❌ found the broken test after **{end:.2f} s** (`{segs[-1][0].split('/')[-1]}`)"
+                   if done else f"**{label_}**: running `{cur.split('/')[-1]}` … {now:.1f} s")
+            holders[m][0].markdown(txt)
+            holders[m][1].progress(min(1.0, min(now, end) / total))
+        _t.sleep(seconds / frames)
+    _ = fails
+
+
+def page_start():
+    S, M = R("savings"), R("models")
+    st.title("smartci")
+    st.markdown("### Catch a broken code change in seconds, not hours, by running the tests most likely to fail first.")
+    st.markdown("""
+**The idea in everyday words.** You have lost your keys. You don't search the house room by room in a fixed order:
+you look first where you last had them and where you just were. smartci does the same for software tests. When a
+developer changes code, it checks first the tests that are related to that change or that broke recently.
+**Every test still runs; only the order changes.** So if something is broken, the developer sees red almost at once
+instead of waiting for the whole test run.
+""")
+    c1, c2, c3 = st.columns(3)
+    c1.markdown("#### 1 · You change code\nA developer edits a few files and pushes. Normally hundreds of tests run "
+                "in a fixed order, often for hours.")
+    c2.markdown("#### 2 · smartci predicts\nA machine-learning model, trained on 108,366 real test runs from 10 "
+                "Apache projects, estimates for every test: *how likely is this to fail now?*")
+    c3.markdown("#### 3 · Likely failures run first\nTests are reordered by chance of failing ÷ time to run. A broken "
+                "change turns red in the first seconds.")
+    st.divider()
+    st.subheader("See it: a real bug in NetworkX, a popular Python library")
+    bt = nx_backtest()
+    bugs = [b for b in bt.get("bugs", []) if b["kind"] == "mined" and b.get("prefix")]
+    if bugs:
+        med = sorted(b["ttff_s"]["default"] for b in bugs)[len(bugs) // 2]
+        b = min(bugs, key=lambda x: abs(x["ttff_s"]["default"] - med))
+        st.caption(f"Bug: “{b['title']}”. Both lanes use NetworkX's real measured test times; 8 seconds of "
+                   "animation stand for the whole run.")
+        if st.button("▶ Run the race", type="primary"):
+            _animate_race(b, ["default", "smartci"])
+        else:
+            st.info("Press **Run the race** to watch pytest's normal order and smartci's order look for the same bug.")
+    st.divider()
+    st.subheader("What would it save your team?")
+    meth = S.get("methods") or {}
+    if meth:
+        c1, c2 = st.columns(2)
+        suite = c1.number_input("How long is one full test run? (minutes)", 1, 2000, 60)
+        broken = c2.number_input("How many test runs fail per week?", 1, 5000, 20)
+        f_fixed, f_ml = meth["Random"]["frac_waited_macro"], meth["lgbm"]["frac_waited_macro"]
+        best = get(M, "best_simple_by_val", "All")
+        f_rule = meth.get(best, {}).get("frac_waited_macro", f_ml)
+        k1, k2, k3 = st.columns(3)
+        k1.metric("Wait for the first failure, fixed order", f"{f_fixed * suite:.0f} min")
+        k2.metric("With smartci", f"{f_ml * suite:.1f} min",
+                  delta=f"{(f_fixed - f_ml) * suite:.0f} min sooner per broken run", delta_color="normal")
+        k3.metric("Developer waiting saved per week", f"{(f_fixed - f_ml) * suite * broken / 60:.1f} h")
+        st.caption(f"Estimate from {S.get('n_runs', 0):,} held-out failed CI runs of 10 Apache projects: before the "
+                   f"first failure appears, a fixed order goes through {f_fixed:.0%} of the test run, smartci's model "
+                   f"{f_ml:.1%}, and the best simple rule ({best}) {f_rule:.1%}. 'Fixed order' is approximated by a "
+                   "random order, because the dataset does not record the original order.")
+    st.divider()
+    st.subheader("What we found, honestly")
+    d = get(M, "vs_best_simple", "All", "macro10", "lgbm")
+    f = get(M, "vs_best_simple", "FirstFail-old", "macro10", "lgbm")
+    st.markdown(f"""
+1. **Reordering helps enormously.** Any sensible order finds the first failure far sooner than a fixed one.
+2. **Machine learning helps a little, sometimes.** On failures that have happened before, the model is level with
+   the best simple rule (APFDc {ci(d, sign=True)}) and beats the strongest rule from the research paper.
+3. **For tests failing for the very first time, 'fastest first' beats the model** ({ci(f, sign=True)}). We
+   measured why, and smartci tells each team which order works best on *their* code (`smartci evaluate`).
+""")
+    with st.expander("For the technical audience: the pipeline and four headline numbers"):
+        page_overview()
+
+
+# ------------------------------------------------------------------------------------------------- guided demo
+def page_break():
+    st.header("Break the code: a guided demo")
+    st.markdown("A real bug from NetworkX's history is put back into today's code. The model has **never seen this "
+                "bug**. Step through it.")
+    bt = nx_backtest()
+    bugs = {b["id"]: b for b in bt.get("bugs", []) if b["kind"] == "mined" and b.get("prefix")}
+    meta = {b["fix_sha"]: b for b in jsonl(BUNDLE / "repos" / "networkx" / "bugs.jsonl")}
+    ids = [i for i in bugs if i in meta]
+    if not ids:
+        st.warning("No mined NetworkX bugs in the bundle.")
+        return
+    def outcome(i):
+        t = bugs[i]["ttff_s"]
+        s, r = t.get("smartci", 0), t.get("changed_files_first", 0)
+        w = "smartci faster" if s < r - 0.05 else "simple rule faster" if r < s - 0.05 else "tie"
+        return f"[{w}: smartci {s:.1f} s, rule {r:.1f} s, normal order {t['default']:.0f} s] {bugs[i]['title'][:70]}"
+
+    ids = sorted(ids, key=lambda i: bugs[i]["ttff_s"]["smartci"])
+    st.caption("Every held-out real bug is listed with its outcome, including the ones smartci loses. The list opens "
+               "on a typical case (the median smartci time).")
+    pick = st.selectbox("Choose a bug", ids, index=len(ids) // 2, format_func=outcome)
+    b, m = bugs[pick], meta[pick]
+    st.markdown(f"#### Step 1 · The change\nSomeone edits **{', '.join(m['source_files'])}** and, without noticing, "
+                f"brings back the bug fixed in [this commit]({b.get('url')}): *{b['title']}*.")
+    diff = m["source_diff"]
+    st.code("\n".join(diff.splitlines()[:40]) + ("\n…" if len(diff.splitlines()) > 40 else ""), language="diff")
+    st.markdown("#### Step 2 · Ask the model which tests to run first")
+    adds = sum(1 for x in diff.splitlines() if x.startswith("+") and not x.startswith("+++"))
+    dels = sum(1 for x in diff.splitlines() if x.startswith("-") and not x.startswith("---"))
+    if not st.toggle("Run the model now", value=False, key=f"run_{pick}"):
+        st.info("Turn on **Run the model now**: the real model scores all NetworkX test files for this change.")
+        return
+    rows, base = _rank(tuple(m["source_files"]), adds, dels)
+    fails = set(b["failing_files"])
+    top = pd.DataFrame([{"rank": r["rank"], "test file": r["test_file"].replace("networkx/", ""),
+                         "really fails?": "❌ yes" if r["test_file"] in fails else "",
+                         "chance of failing": r["p_fail"], "why": " · ".join(r["reasons"])} for r in rows[:10]])
+    st.dataframe(top, hide_index=True, column_config={"chance of failing": st.column_config.NumberColumn(format="%.3f")})
+    st.markdown("#### Step 3 · The reveal: where did the truly failing test land?")
+    live_rank = min((r["rank"] for r in rows if r["test_file"] in fails), default=None)
+    pos = lambda order: min((order.index(f) + 1 for f in fails if f in order), default=None)  # noqa: E731
+    tt = b["ttff_s"]
+    res = pd.DataFrame([
+        {"order": "pytest's normal order", "position of the failing test file": pos(nx_profile_order()),
+         "seconds of testing until it fails": tt.get("default")},
+        {"order": "changed files first (simple rule)", "position of the failing test file":
+            pos(base["changed_files_first"]), "seconds of testing until it fails": tt.get("changed_files_first")},
+        {"order": "smartci, file names only (this page)", "position of the failing test file": live_rank,
+         "seconds of testing until it fails": None},
+        {"order": "smartci, full code change (backtest)", "position of the failing test file":
+            b.get("smartci_rank_of_first_failing_file"), "seconds of testing until it fails": tt.get("smartci")}])
+    st.dataframe(res, hide_index=True)
+    st.caption(f"Out of {bt.get('n_test_files')} test files. Seconds come from the backtest, which replays NetworkX's "
+               "real measured test times with the full code change; this page sees only the file names.")
+    st.markdown("#### Step 4 · Run it for real")
+    st.code(f"scripts\\run_live_compare.ps1   # prints a numbered list\ncd external\\networkx\n"
+            f".venv\\Scripts\\smartci compare --bug {pick}", language="powershell")
+
+
+def nx_profile_order() -> list[str]:
+    p = load_json(str(BUNDLE / "repos" / "networkx" / "profile.json")) or {}
+    return p.get("default_order", [])
+
+
+PAGES = {"Start here": page_start, "Break the code (guided demo)": page_break, "The ML pipeline": page_pipeline,
+         "Predict live": page_predict, "Race replay": page_race, "Results": page_results,
+         "Limits and honesty": page_limits}
 
 
 def main():

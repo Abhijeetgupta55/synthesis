@@ -182,3 +182,40 @@ def test_mutation_operators():
     assert ops == {"compare", "boolop", "constant", "return", "arith", "negate"}
     neg = [apply(src, s) for s in sites(src, {2}) if s[4] == "negate"][0]
     assert "if not (x > 1 and x < 5):" in neg
+
+
+def test_evaluate_gives_a_verdict(fx):
+    """`smartci evaluate` reuses finished steps and writes a verdict card (fixture has 1 bug: too little evidence)."""
+    from smartci import evaluate
+    repo = fx["repo"]
+    v = evaluate.evaluate(repo, max_bugs=5, log=lambda *_: None)
+    assert v["n_bugs"] >= 1 and v["recommendation"] == "not enough evidence"
+    text = (history.state_dir(repo) / "verdict.md").read_text(encoding="utf-8")
+    assert "RECOMMENDATION" in text and "Nothing is ever skipped" in text
+
+
+def test_verdict_rules():
+    from smartci.evaluate import verdict
+    def bt(win, tie, loss, med_s, med_rule):
+        return {"suite_test_time_s": 100, "n_test_files": 50, "summary": {"all": {
+            "n": win + tie + loss, "best_simple_baseline": "changed_files_first",
+            "median_ttff_s": {"default": {"median": 50.0}, "changed_files_first": {"median": med_rule},
+                              "smartci": {"median": med_s}},
+            "vs_smartci": {"changed_files_first": {"win": win, "tie": tie, "loss": loss}}}}}
+    assert verdict(bt(10, 5, 2, 1.0, 2.0))["recommendation"] == "smartci"
+    assert verdict(bt(2, 5, 10, 1.0, 2.0))["recommendation"] == "changed_files_first"
+    assert verdict(bt(10, 5, 2, 3.0, 2.0))["recommendation"] == "changed_files_first"   # slower median: the rule
+
+
+def test_rule_option_reorders(fx):
+    repo = fx["repo"]
+    (repo / "calc" / "ops.py").write_text((repo / "calc" / "ops.py").read_text().replace("return a - b", "return b - a"))
+    try:
+        r = _pytest(repo, "-v", "--smartci", "--smartci-base", "HEAD", "--smartci-rule", "fastest_first")
+        assert "reordered by rule fastest_first" in r.stdout, r.stdout
+        files = list(dict.fromkeys(ln.split("::")[0] for ln in r.stdout.splitlines()
+                                   if ln.startswith("tests/") and ("PASSED" in ln or "FAILED" in ln)))
+        assert files[-1] == "tests/test_misc.py"        # the slow file goes last; every file still runs
+        assert len(files) == 3
+    finally:
+        sh(repo, "checkout", "--", "calc/ops.py")

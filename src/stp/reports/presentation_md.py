@@ -116,59 +116,87 @@ def demo_script() -> str:
     pick = "scripts\\run_live_compare.ps1 -Pick 2" + (' -Subset ""' if rec == "full suite" else "")
     d = get(M, "vs_best_simple", "All", "macro10", "lgbm")
     f = get(M, "vs_best_simple", "FirstFail-old", "macro10", "lgbm")
+    S, V = _r("savings"), _r("verdict_networkx")
+    me = S.get("methods", {})
+    fx, ml = get(me, "Random", "frac_waited_macro", default=0), get(me, "lgbm", "frac_waited_macro", default=0)
     steps = [
-        ["0:00", "Terminal: `scripts\\run_live_compare.ps1` (prints the numbered bug list), then `" + pick + "`. Leave "
-                 "it running.", "Both lanes really run pytest on NetworkX: default order first, then smartci.",
-         "\"While real tests run in the background, here is the problem.\"",
-         f"Use the recorded result in REAL_WORLD.md, or `{SHOTS}/04_race_replay.png`."],
-        ["0:15", "Browser: **Overview**.", "The race picture, the pipeline, four numbers.",
-         "\"Tests run in a fixed order; the failing one is often near the end. We predict which tests fail and run "
-         "them first. Nothing is skipped.\"", f"`{SHOTS}/01_overview.png`"],
-        ["1:00", "**The ML pipeline** → tabs 1 to 3.", "EDA, features, classification.",
-         "\"Failures are rare, so accuracy is useless; PR-AUC measures ranking.\"", f"`{SHOTS}/02_1_*.png` … `02_3_*`"],
-        ["2:00", "Tabs 4 to 6.", "Regularization curves, Optuna history, ensemble error correlation.",
-         "\"Ensembles add little because all models make the same mistakes.\"", f"`{SHOTS}/02_4_*` … `02_6_*`"],
-        ["3:00", "Tab 7 Performance.", "APFDc vs every baseline with CIs.",
-         f"\"On all failures we tie the best simple rule ({_ci(d)}); on first-time failures we lose to fastest-first "
-         f"({_ci(f)}).\"", f"`{SHOTS}/02_7_7_performance.png`"],
-        ["3:45", "**Predict live**: add `networkx/algorithms/shortest_paths/weighted.py`.",
-         "The real model ranks all NetworkX test files now, with reasons; simple rules beside it.",
-         "\"This is the real model running now, the same function as the command line.\"",
-         f"`{SHOTS}/03_predict_live.png`"],
-        ["4:45", "Terminal: read the `=== result ===` block.", "Elapsed and first-failure seconds, both lanes.",
-         "\"Same bug, same tests: only the order differs.\"", "If the run failed: the timing table below."],
-        ["5:30", "**Results**.", "Scoreboard, error analysis, floor trade-off, recommendation.",
-         "\"ML wins on recurring failures, loses on first-time ones, and we can show why.\"",
-         f"`{SHOTS}/05_results.png`"],
-        ["6:45", "**Limits and honesty**.", "What is real, what is replayed, caveats.",
-         "\"On a small repo a simple rule is enough; the model helps on long suites with recurring failures.\"",
-         f"`{SHOTS}/06_limits_and_honesty.png`"],
-        ["7:30", "Questions.", "VIVA_NOTES.md 'Questions this framing invites'.", "", ""],
+        ["0:00", "Terminal: `scripts\\run_live_compare.ps1`, then `" + pick + "`. Leave it running.",
+         "Real pytest runs on NetworkX: normal order first, then smartci.",
+         "\"While real tests run in the background, let me show you the problem.\"",
+         f"Skip; use the recorded result in REAL_WORLD.md."],
+        ["0:15", "Browser: **Start here**. Read the keys analogy aloud.", "The idea in three steps.",
+         "\"You lost your keys: you look first where you last had them. We do that for software tests. Nothing is "
+         "skipped; only the order changes.\"", f"`{SHOTS}/01_start_here.png`"],
+        ["0:45", "Press **▶ Run the race**.", "Two lanes animate on a real NetworkX bug; smartci goes red at once.",
+         "\"Same tests, same bug. The normal order needs two minutes of testing; smartci a fraction of a second.\"",
+         "Show the static race picture in the screenshot."],
+        ["1:15", "Calculator: enter the audience's numbers (e.g. 60 min suite, 20 broken runs a week).",
+         "Minutes and hours of waiting saved.",
+         f"\"Across 9,000 real failed runs, a fixed order makes you wait through {fx:.0%} of the run before the first "
+         f"failure; the model {ml:.1%}.\"", ""],
+        ["1:45", "**Break the code (guided demo)**: keep the preselected typical bug; scroll through steps 1 to 3; "
+                 "turn on **Run the model now**.",
+         "The real code change, the model's live top 10 with reasons, then where the truly failing test landed.",
+         "\"The model never saw this bug. Here is what it predicts right now, and here is the truth.\"",
+         f"`{SHOTS}/02_break_the_code__guided_demo.png`"],
+        ["3:00", "**The ML pipeline**: tabs 1 to 7, about 20 seconds each.",
+         "EDA, features, classification, regularization, tuning, ensembles, performance.",
+         "\"Failures are 0.24% of results, so accuracy is useless; we use PR-AUC. Five models; ensembles add little "
+         "because the models make the same mistakes.\"", f"`{SHOTS}/03_*.png`"],
+        ["5:15", "Terminal: read the `=== result ===` block.", "Real elapsed seconds, both lanes.",
+         "\"That was not a simulation: real pytest, same bug, only the order differs.\"", "The timing table below."],
+        ["5:45", "**Results**: scoreboard, then the error analysis, then the `smartci evaluate` card.",
+         "Where ML wins, where it loses, and why.",
+         f"\"On repeat failures the model ties the best simple rule ({_ci(d)}); on first-time failures it loses to "
+         f"'fastest first' ({_ci(f)}), and we measured why. So our tool tells each team what works on their code: "
+         f"for NetworkX it recommends {V.get('recommendation', 'a simple rule')}.\"", f"`{SHOTS}/06_results.png`"],
+        ["7:00", "**Limits and honesty**, then close.", "What is real, what is replayed.",
+         "\"Reordering helps enormously; ML helps modestly and we know exactly where it does not.\"",
+         f"`{SHOTS}/07_limits_and_honesty.png`"],
+        ["7:30", "Questions.", "VIVA_NOTES.md (eight questions) and EXPLAINER.md (plain-language FAQ).", "", ""],
     ]
     _ = sub
     return "\n".join([
-        "# DEMO SCRIPT (7–8 minutes)", "", f"**{NAME}**", "",
-        "Generated by `python -m stp.reports.presentation_md`. Audience: a professor who knows ML but not CI/CD.",
-        "", "## Before the talk", "",
+        "# DEMO SCRIPT", "", f"**{NAME}**", "",
+        "Generated by `python -m stp.reports.presentation_md`.", "",
+        "## The 60-second pitch (for anyone who walks up)", "",
+        "> \"When programmers change code, a server re-runs thousands of automatic tests, often for hours, in a fixed "
+        "order. If something broke, the test that notices may be near the end, so people wait. We trained a "
+        "machine-learning model on 108,000 real test runs to predict which tests will fail for a given change, and "
+        f"run those first. Nothing is skipped. On real data, the first failure shows up after about {ml:.0%} of "
+        f"the run instead of {fx:.0%}. The honest twist: a simple rule like 'run the tests of the files you changed' "
+        "is almost as good, and for brand-new failures 'fastest test first' is better. So our tool measures which "
+        "order works best on your own code and recommends that.\"", "",
+        "Then press **▶ Run the race** on the *Start here* page.", "",
+        "## The 7–8 minute class demo", "",
+        "Audience: a professor who knows ML but not CI/CD, and classmates.", "",
+        "### Before the talk", "",
         "1. Laptop on mains power. Close other heavy programs.",
-        "2. `scripts\\run_demo.ps1` (dashboard at http://localhost:8501). Open it once, click 'Predict live' once so "
-        "the model is loaded.",
+        "2. `scripts\\run_demo.ps1` (dashboard at http://localhost:8501; `-Port 8505` if 8501 is busy). Click every "
+        "page once so the model is loaded and pages are cached.",
         "3. A second terminal in the repository root for the live comparison.",
         f"4. Fallbacks ready: screenshots in `{SHOTS}/`, and the text-only replay `python -m stp.demo.cli --seed 42`.",
-        "", "## Minute by minute", "",
+        "", "### Minute by minute", "",
         table(["Time", "Click / type", "What appears", "Say", "If it fails"], steps), "",
-        f"Key numbers to have in mind: NetworkX median seconds to first failure, default "
+        f"Key numbers to have in mind: NetworkX median seconds to first failure, normal order "
         f"{get(nx, 'median_ttff_s', 'default', 'median', default=0):.1f} vs smartci "
         f"{get(nx, 'median_ttff_s', 'smartci', 'median', default=0):.2f} vs changed-files-first "
         f"{get(nx, 'median_ttff_s', 'changed_files_first', 'median', default=0):.2f} ({nx.get('n')} bugs); model vs "
         f"best simple rule on all LRTS failures {_ci(d)} ({verdict(d)}).", "",
+        "## For a general audience (open day, friends, non-programmers)", "",
+        "- Use only *Start here* and *Break the code*. Skip the ML pipeline tabs.",
+        "- Lead with the keys analogy, then the race button, then the calculator with *their* numbers.",
+        "- Say \"test\" = an automatic check that the program still works; \"CI\" = the robot that runs all checks "
+        "after every change.",
+        "- Hand out or show `reports/EXPLAINER.md`; its last section answers the usual questions (does it skip "
+        "tests? is it big AI? is this a real problem?).", "",
         "## Live comparison: measured timings and the recommended variant", "", *tsec,
         "## If something fails", "",
         "- **Dashboard does not start:** show the screenshots in order; every page has one.",
         "- **Live comparison hangs or errors:** stop it (Ctrl+C), say that the replay uses the same measured "
         "durations, and show 'Race replay' for the same bug.",
         "- **No browser at all:** `python -m stp.demo.cli --seed 42` prints a replay as text.",
-        "- **Predict live is slow on first click:** it loads the model once (a few seconds); talk over it.", ""])
+        "- **A page is slow on first click:** it loads the model once (a few seconds); talk over it.", ""])
 
 
 def main() -> None:

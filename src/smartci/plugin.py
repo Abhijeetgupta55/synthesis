@@ -21,6 +21,9 @@ def pytest_addoption(parser):
     g.addoption("--smartci-base", default=None, help="git base to diff against (default: origin/HEAD, main, master)")
     g.addoption("--smartci-shadow", action="store_true", default=False,
                 help="compute and record the ranking but keep pytest's order (for CI shadow mode)")
+    g.addoption("--smartci-rule", default=None, metavar="RULE",
+                help="order by a simple rule instead of the model: changed_files_first, fastest_first, "
+                     "coverage_first or recently_failed_first (use what `smartci evaluate` recommends)")
     g.addoption("--smartci-timing", default=None, metavar="PATH",
                 help="only record when the first failure is reported (JSON at PATH); no ranking, no reordering")
 
@@ -67,7 +70,8 @@ def pytest_collection_modifyitems(session, config, items):
         from smartci import coverage_map
         from smartci.scoring import load_adapter
         ad = load_adapter(root)
-        if ad and ad.get("uses_coverage"):
+        rule = config.getoption("smartci_rule")
+        if (ad and ad.get("uses_coverage")) or rule == "coverage_first":
             cmap = coverage_map.load(root)
             if cmap is not None:
                 covering = coverage_map.covering_tests(cmap, diff.patch_by_file)
@@ -77,7 +81,8 @@ def pytest_collection_modifyitems(session, config, items):
         if tw:
             tw.write_line(f"smartci: disabled for this run ({type(e).__name__}: {e}); pytest order kept")
         return
-    order = stable_order(scored)
+    from smartci.scoring import rule_order
+    order = rule_order(scored, rule, covering) if rule else stable_order(scored)
     shadow = config.getoption("smartci_shadow")
     if not shadow:
         items[:] = [it for i in order for it in by_file[scored[i].test_file]]
@@ -87,13 +92,14 @@ def pytest_collection_modifyitems(session, config, items):
     rec = receipts.new_receipt(root, diff.base_sha, diff.head_sha, diff.diff_hash, model.version,
                                scored[0].model if scored else "", files, ranking, diff.change.files)
     rec["shadow"] = bool(shadow)
+    rec["rule"] = rule
     path = receipts.path_for(root, rec)
     _STATE.update(receipt=rec, path=path, start=None, first_fail=None, results={}, file_dur={}, root=root)
     receipts.write(path, rec)
     tw = config.pluginmanager.get_plugin("terminalreporter")
     if tw:
         top = ", ".join(f"{x['test_file']} ({x['p_fail']:.2f})" for x in ranking[:5])
-        mode = "shadow (order unchanged)" if shadow else "reordered"
+        mode = "shadow (order unchanged)" if shadow else (f"reordered by rule {rule}" if rule else "reordered")
         tw.write_line(f"smartci: {len(files)} test files ranked, {mode}; model {model.version}/{rec['model_variant']}; "
                       f"top 5: {top}")
         tw.write_line(f"smartci: receipt {path}")

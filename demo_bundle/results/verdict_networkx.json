@@ -1,0 +1,27 @@
+{
+  "n_bugs": 318,
+  "best_simple_rule": "changed_files_first",
+  "median_s": {
+    "changed_files_first": 0.084121,
+    "coverage_first": 0.088768,
+    "default": 124.738232,
+    "fastest_first": 25.826342,
+    "random": 142.320302,
+    "smartci": 0.085642
+  },
+  "vs_best": {
+    "win": 42,
+    "tie": 224,
+    "loss": 52
+  },
+  "recommendation": "changed_files_first",
+  "why": "changed_files_first is as good or better here (smartci wins 42, ties 224, loses 52); a simple rule is easier to run",
+  "speedup_vs_default": 1482.84437,
+  "suite_test_time_s": 239.561,
+  "n_test_files": 263,
+  "startup_s": 74.180207,
+  "_meta": {
+    "generated": "2026-11-16 16:26:40",
+    "git_sha": "a875958"
+  }
+}

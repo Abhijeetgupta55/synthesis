@@ -29,6 +29,15 @@
 - **G presentation pack:** done. DEMO_SCRIPT.md (timing section fills itself after Phase C), RUBRIC_MAP.md,
   VIVA_NOTES.md (eight framing questions), AI_USE_DISCLOSURE.md draft.
 
+## Added after the finishing prompt (2026-11-16)
+
+- `smartci evaluate` (one command → verdict card: smartci, a simple rule, or not enough evidence) and
+  `pytest --smartci --smartci-rule <rule>` so a team can run whichever order wins on its code.
+- Dashboard: *Start here* (analogy, animated race on a real bug, savings calculator from 9,301 held-out runs) and
+  *Break the code* (guided demo on a held-out real bug, live model, reveal); Results shows the NetworkX verdict.
+- `reports/EXPLAINER.md` (plain language + FAQ), `reports/ROADMAP.md` (scope), DEMO_SCRIPT.md rewritten as a story with
+  a 60-second pitch and a general-audience variant.
+
 ## Next
 
 1. On mains power: `.venv\Scripts\python.exe live_demo\phase_c.py --repeats 3` (HUMAN_TODO 0). Then regenerate:

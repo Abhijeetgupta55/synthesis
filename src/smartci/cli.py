@@ -1,5 +1,6 @@
 """smartci command line.
 
+  smartci evaluate       all of the below in one command, then a plain verdict: smartci, a simple rule, or nothing
   smartci profile        measure the suite twice on the clean base commit (durations, default order, flaky files)
   smartci learn          mine test-backed bug fixes from history; fit the per-repo adapter when there are enough
   smartci backtest       simulated time-to-first-failure on held-out bugs vs simple baselines (receipts + URLs)
@@ -53,6 +54,11 @@ def cmd_backtest(a):
     from smartci.history import state_dir
     backtest.run(_repo(a), a.set)
     print((state_dir(_repo(a)) / "backtest.md").read_text(encoding="utf-8"))
+
+
+def cmd_evaluate(a):
+    from smartci import evaluate
+    evaluate.evaluate(_repo(a), a.since, a.max, a.mutants, a.fresh, a.python, a.timeout)
 
 
 def cmd_compare(a):
@@ -122,6 +128,12 @@ def main(argv: list[str] | None = None) -> int:
         p.add_argument("pytest_args", nargs="*", help="extra pytest arguments (after --)")
         return p
 
+    p = add("evaluate", cmd_evaluate, help="one command: should this repo use smartci, a simple rule, or nothing?")
+    p.add_argument("--since", default=None)
+    p.add_argument("--max", type=int, default=None, help="at most this many candidate bug fixes")
+    p.add_argument("--mutants", type=int, default=0, help="also seed this many synthetic bugs (slow)")
+    p.add_argument("--fresh", action="store_true", help="redo every step instead of reusing .smartci/ outputs")
+    p.add_argument("--timeout", type=float, default=600)
     p = add("profile", cmd_profile, help="measure the suite on the clean base")
     p.add_argument("--base", default=None)
     p.add_argument("--runs", type=int, default=2)

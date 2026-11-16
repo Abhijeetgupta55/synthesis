@@ -1,0 +1,487 @@
+{
+  "n_runs": 9301,
+  "methods": {
+    "ChangedOrNewFirst": {
+      "frac_waited_macro": 0.040126,
+      "share_first_failure_in_first_10pct_macro": 0.80908,
+      "ttff_min_median_macro": 11.910339,
+      "suite_min_median_macro": 486.103144,
+      "per_project": {
+        "activemq": {
+          "frac_median": 0.0189,
+          "first10": 0.9048,
+          "ttff_min_median": 7.5658,
+          "suite_min_median": 368.7993
+        },
+        "hadoop": {
+          "frac_median": 0.0136,
+          "first10": 0.8505,
+          "ttff_min_median": 2.8833,
+          "suite_min_median": 345.6259
+        },
+        "hbase": {
+          "frac_median": 0.0297,
+          "first10": 0.7013,
+          "ttff_min_median": 17.4867,
+          "suite_min_median": 703.8096
+        },
+        "hive": {
+          "frac_median": 0.0436,
+          "first10": 0.7065,
+          "ttff_min_median": 68.0523,
+          "suite_min_median": 1688.2458
+        },
+        "jackrabbit-oak": {
+          "frac_median": 0.0269,
+          "first10": 0.8896,
+          "ttff_min_median": 5.5313,
+          "suite_min_median": 196.261
+        },
+        "james": {
+          "frac_median": 0.0055,
+          "first10": 0.887,
+          "ttff_min_median": 0.8088,
+          "suite_min_median": 232.0212
+        },
+        "kafka": {
+          "frac_median": 0.0078,
+          "first10": 0.9471,
+          "ttff_min_median": 7.0257,
+          "suite_min_median": 1057.9936
+        },
+        "karaf": {
+          "frac_median": 0.2489,
+          "first10": 0.4375,
+          "ttff_min_median": 9.3004,
+          "suite_min_median": 30.4529
+        },
+        "log4j": {
+          "frac_median": 0.0036,
+          "first10": 0.9615,
+          "ttff_min_median": 0.0447,
+          "suite_min_median": 13.2994
+        },
+        "tvm": {
+          "frac_median": 0.0026,
+          "first10": 0.8051,
+          "ttff_min_median": 0.4043,
+          "suite_min_median": 224.5226
+        }
+      }
+    },
+    "Oracle": {
+      "frac_waited_macro": 0.003026,
+      "share_first_failure_in_first_10pct_macro": 0.956654,
+      "ttff_min_median_macro": 0.700515,
+      "suite_min_median_macro": 486.103144,
+      "per_project": {
+        "activemq": {
+          "frac_median": 0.003,
+          "first10": 0.9524,
+          "ttff_min_median": 1.0421,
+          "suite_min_median": 368.7993
+        },
+        "hadoop": {
+          "frac_median": 0.0018,
+          "first10": 0.9813,
+          "ttff_min_median": 0.313,
+          "suite_min_median": 345.6259
+        },
+        "hbase": {
+          "frac_median": 0.0005,
+          "first10": 0.987,
+          "ttff_min_median": 0.3355,
+          "suite_min_median": 703.8096
+        },
+        "hive": {
+          "frac_median": 0.0024,
+          "first10": 1.0,
+          "ttff_min_median": 3.3146,
+          "suite_min_median": 1688.2458
+        },
+        "jackrabbit-oak": {
+          "frac_median": 0.0024,
+          "first10": 0.987,
+          "ttff_min_median": 0.5087,
+          "suite_min_median": 196.261
+        },
+        "james": {
+          "frac_median": 0.0,
+          "first10": 0.9855,
+          "ttff_min_median": 0.0004,
+          "suite_min_median": 232.0212
+        },
+        "kafka": {
+          "frac_median": 0.0009,
+          "first10": 0.9991,
+          "ttff_min_median": 0.7628,
+          "suite_min_median": 1057.9936
+        },
+        "karaf": {
+          "frac_median": 0.0183,
+          "first10": 0.75,
+          "ttff_min_median": 0.7109,
+          "suite_min_median": 30.4529
+        },
+        "log4j": {
+          "frac_median": 0.0009,
+          "first10": 1.0,
+          "ttff_min_median": 0.012,
+          "suite_min_median": 13.2994
+        },
+        "tvm": {
+          "frac_median": 0.0,
+          "first10": 0.9242,
+          "ttff_min_median": 0.0051,
+          "suite_min_median": 224.5226
+        }
+      }
+    },
+    "QTF": {
+      "frac_waited_macro": 0.155582,
+      "share_first_failure_in_first_10pct_macro": 0.485989,
+      "ttff_min_median_macro": 71.802629,
+      "suite_min_median_macro": 486.103144,
+      "per_project": {
+        "activemq": {
+          "frac_median": 0.2714,
+          "first10": 0.1429,
+          "ttff_min_median": 83.1127,
+          "suite_min_median": 368.7993
+        },
+        "hadoop": {
+          "frac_median": 0.278,
+          "first10": 0.3925,
+          "ttff_min_median": 21.0636,
+          "suite_min_median": 345.6259
+        },
+        "hbase": {
+          "frac_median": 0.0864,
+          "first10": 0.5325,
+          "ttff_min_median": 59.4901,
+          "suite_min_median": 703.8096
+        },
+        "hive": {
+          "frac_median": 0.2422,
+          "first10": 0.4457,
+          "ttff_min_median": 422.8382,
+          "suite_min_median": 1688.2458
+        },
+        "jackrabbit-oak": {
+          "frac_median": 0.2273,
+          "first10": 0.3701,
+          "ttff_min_median": 46.5286,
+          "suite_min_median": 196.261
+        },
+        "james": {
+          "frac_median": 0.0532,
+          "first10": 0.647,
+          "ttff_min_median": 8.342,
+          "suite_min_median": 232.0212
+        },
+        "kafka": {
+          "frac_median": 0.075,
+          "first10": 0.6312,
+          "ttff_min_median": 63.9495,
+          "suite_min_median": 1057.9936
+        },
+        "karaf": {
+          "frac_median": 0.2881,
+          "first10": 0.2812,
+          "ttff_min_median": 12.0793,
+          "suite_min_median": 30.4529
+        },
+        "log4j": {
+          "frac_median": 0.0325,
+          "first10": 0.6154,
+          "ttff_min_median": 0.3703,
+          "suite_min_median": 13.2994
+        },
+        "tvm": {
+          "frac_median": 0.0015,
+          "first10": 0.8014,
+          "ttff_min_median": 0.252,
+          "suite_min_median": 224.5226
+        }
+      }
+    },
+    "Random": {
+      "frac_waited_macro": 0.337198,
+      "share_first_failure_in_first_10pct_macro": 0.273102,
+      "ttff_min_median_macro": 147.717603,
+      "suite_min_median_macro": 486.103144,
+      "per_project": {
+        "activemq": {
+          "frac_median": 0.4893,
+          "first10": 0.1167,
+          "ttff_min_median": 158.3249,
+          "suite_min_median": 368.7993
+        },
+        "hadoop": {
+          "frac_median": 0.3319,
+          "first10": 0.2425,
+          "ttff_min_median": 97.7273,
+          "suite_min_median": 345.6259
+        },
+        "hbase": {
+          "frac_median": 0.456,
+          "first10": 0.1844,
+          "ttff_min_median": 288.0543,
+          "suite_min_median": 703.8096
+        },
+        "hive": {
+          "frac_median": 0.3874,
+          "first10": 0.2418,
+          "ttff_min_median": 608.5319,
+          "suite_min_median": 1688.2458
+        },
+        "jackrabbit-oak": {
+          "frac_median": 0.4073,
+          "first10": 0.2851,
+          "ttff_min_median": 76.9174,
+          "suite_min_median": 196.261
+        },
+        "james": {
+          "frac_median": 0.2785,
+          "first10": 0.3548,
+          "ttff_min_median": 35.4394,
+          "suite_min_median": 232.0212
+        },
+        "kafka": {
+          "frac_median": 0.1762,
+          "first10": 0.402,
+          "ttff_min_median": 159.2737,
+          "suite_min_median": 1057.9936
+        },
+        "karaf": {
+          "frac_median": 0.3761,
+          "first10": 0.1719,
+          "ttff_min_median": 13.522,
+          "suite_min_median": 30.4529
+        },
+        "log4j": {
+          "frac_median": 0.232,
+          "first10": 0.3577,
+          "ttff_min_median": 2.4949,
+          "suite_min_median": 13.2994
+        },
+        "tvm": {
+          "frac_median": 0.2372,
+          "first10": 0.3742,
+          "ttff_min_median": 36.8901,
+          "suite_min_median": 224.5226
+        }
+      }
+    },
+    "cbt_LastFail": {
+      "frac_waited_macro": 0.040679,
+      "share_first_failure_in_first_10pct_macro": 0.784834,
+      "ttff_min_median_macro": 10.87527,
+      "suite_min_median_macro": 486.103144,
+      "per_project": {
+        "activemq": {
+          "frac_median": 0.022,
+          "first10": 0.8571,
+          "ttff_min_median": 8.1374,
+          "suite_min_median": 368.7993
+        },
+        "hadoop": {
+          "frac_median": 0.0157,
+          "first10": 0.8037,
+          "ttff_min_median": 2.7136,
+          "suite_min_median": 345.6259
+        },
+        "hbase": {
+          "frac_median": 0.0315,
+          "first10": 0.6623,
+          "ttff_min_median": 18.1569,
+          "suite_min_median": 703.8096
+        },
+        "hive": {
+          "frac_median": 0.0357,
+          "first10": 0.7228,
+          "ttff_min_median": 57.6588,
+          "suite_min_median": 1688.2458
+        },
+        "jackrabbit-oak": {
+          "frac_median": 0.031,
+          "first10": 0.8701,
+          "ttff_min_median": 5.8294,
+          "suite_min_median": 196.261
+        },
+        "james": {
+          "frac_median": 0.0053,
+          "first10": 0.858,
+          "ttff_min_median": 0.8046,
+          "suite_min_median": 232.0212
+        },
+        "kafka": {
+          "frac_median": 0.0065,
+          "first10": 0.9483,
+          "ttff_min_median": 5.9366,
+          "suite_min_median": 1057.9936
+        },
+        "karaf": {
+          "frac_median": 0.2563,
+          "first10": 0.4062,
+          "ttff_min_median": 9.3004,
+          "suite_min_median": 30.4529
+        },
+        "log4j": {
+          "frac_median": 0.0016,
+          "first10": 0.9615,
+          "ttff_min_median": 0.0216,
+          "suite_min_median": 13.2994
+        },
+        "tvm": {
+          "frac_median": 0.0012,
+          "first10": 0.7581,
+          "ttff_min_median": 0.1934,
+          "suite_min_median": 224.5226
+        }
+      }
+    },
+    "lgbm": {
+      "frac_waited_macro": 0.026708,
+      "share_first_failure_in_first_10pct_macro": 0.796709,
+      "ttff_min_median_macro": 7.194466,
+      "suite_min_median_macro": 486.103144,
+      "per_project": {
+        "activemq": {
+          "frac_median": 0.0293,
+          "first10": 0.7143,
+          "ttff_min_median": 10.0371,
+          "suite_min_median": 368.7993
+        },
+        "hadoop": {
+          "frac_median": 0.0119,
+          "first10": 0.8318,
+          "ttff_min_median": 1.9319,
+          "suite_min_median": 345.6259
+        },
+        "hbase": {
+          "frac_median": 0.0313,
+          "first10": 0.6364,
+          "ttff_min_median": 18.5541,
+          "suite_min_median": 703.8096
+        },
+        "hive": {
+          "frac_median": 0.0224,
+          "first10": 0.7446,
+          "ttff_min_median": 30.9843,
+          "suite_min_median": 1688.2458
+        },
+        "jackrabbit-oak": {
+          "frac_median": 0.0292,
+          "first10": 0.8636,
+          "ttff_min_median": 6.104,
+          "suite_min_median": 196.261
+        },
+        "james": {
+          "frac_median": 0.001,
+          "first10": 0.9043,
+          "ttff_min_median": 0.1519,
+          "suite_min_median": 232.0212
+        },
+        "kafka": {
+          "frac_median": 0.0016,
+          "first10": 0.9682,
+          "ttff_min_median": 1.5795,
+          "suite_min_median": 1057.9936
+        },
+        "karaf": {
+          "frac_median": 0.1388,
+          "first10": 0.4688,
+          "ttff_min_median": 2.5366,
+          "suite_min_median": 30.4529
+        },
+        "log4j": {
+          "frac_median": 0.0012,
+          "first10": 0.9615,
+          "ttff_min_median": 0.0151,
+          "suite_min_median": 13.2994
+        },
+        "tvm": {
+          "frac_median": 0.0003,
+          "first10": 0.8736,
+          "ttff_min_median": 0.0502,
+          "suite_min_median": 224.5226
+        }
+      }
+    },
+    "stack": {
+      "frac_waited_macro": 0.023998,
+      "share_first_failure_in_first_10pct_macro": 0.817988,
+      "ttff_min_median_macro": 5.852433,
+      "suite_min_median_macro": 486.103144,
+      "per_project": {
+        "activemq": {
+          "frac_median": 0.018,
+          "first10": 0.9048,
+          "ttff_min_median": 4.1511,
+          "suite_min_median": 368.7993
+        },
+        "hadoop": {
+          "frac_median": 0.012,
+          "first10": 0.8411,
+          "ttff_min_median": 1.9741,
+          "suite_min_median": 345.6259
+        },
+        "hbase": {
+          "frac_median": 0.0371,
+          "first10": 0.6364,
+          "ttff_min_median": 13.3114,
+          "suite_min_median": 703.8096
+        },
+        "hive": {
+          "frac_median": 0.0178,
+          "first10": 0.7717,
+          "ttff_min_median": 29.189,
+          "suite_min_median": 1688.2458
+        },
+        "jackrabbit-oak": {
+          "frac_median": 0.028,
+          "first10": 0.8636,
+          "ttff_min_median": 5.8049,
+          "suite_min_median": 196.261
+        },
+        "james": {
+          "frac_median": 0.001,
+          "first10": 0.8928,
+          "ttff_min_median": 0.1762,
+          "suite_min_median": 232.0212
+        },
+        "kafka": {
+          "frac_median": 0.0016,
+          "first10": 0.9692,
+          "ttff_min_median": 1.5285,
+          "suite_min_median": 1057.9936
+        },
+        "karaf": {
+          "frac_median": 0.1228,
+          "first10": 0.4688,
+          "ttff_min_median": 2.3209,
+          "suite_min_median": 30.4529
+        },
+        "log4j": {
+          "frac_median": 0.0013,
+          "first10": 0.9615,
+          "ttff_min_median": 0.0165,
+          "suite_min_median": 13.2994
+        },
+        "tvm": {
+          "frac_median": 0.0002,
+          "first10": 0.87,
+          "ttff_min_median": 0.0517,
+          "suite_min_median": 224.5226
+        }
+      }
+    }
+  },
+  "median_build_hours": 2.787222,
+  "note": "frac = time to the first failure / summed suite time. 'Random' approximates a fixed order. Summed test time is not wall-clock time when tests run in parallel; the shares still apply.",
+  "_meta": {
+    "generated": "2026-11-16 16:23:59",
+    "git_sha": "a875958"
+  }
+}

@@ -20,7 +20,8 @@ BUNDLE = paths.ROOT / "demo_bundle"
 APP = paths.ROOT / "app" / "demo.py"
 
 
-PAGES = ["Overview", "The ML pipeline", "Predict live", "Race replay", "Results", "Limits and honesty"]
+PAGES = ["Start here", "Break the code (guided demo)", "The ML pipeline", "Predict live", "Race replay", "Results",
+         "Limits and honesty"]
 
 
 def check_pages() -> list[str]:

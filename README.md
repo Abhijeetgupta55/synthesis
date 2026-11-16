@@ -4,7 +4,9 @@
 
 Predict which tests will fail for a code change and run those first, so a broken change is caught in seconds instead of after the whole suite. Nothing is skipped; only the order changes.
 
-![The dashboard's overview page](reports/demo_screenshots/01_overview.png)
+> **In plain words:** like looking for lost keys where you last had them instead of searching the house room by room, smartci runs first the tests most likely to catch your mistake. [Explained simply](reports/EXPLAINER.md) · [Roadmap](reports/ROADMAP.md) · [Demo script](reports/DEMO_SCRIPT.md)
+
+![The dashboard's start page](reports/demo_screenshots/01_start_here.png)
 
 ## The result, honestly
 
@@ -29,17 +31,18 @@ scripts\setup_demo.ps1     # once: .venv-demo with requirements.txt
 scripts\run_demo.ps1       # http://localhost:8501, fully offline
 ```
 
-Linux/macOS: `scripts/setup_demo.sh` and `scripts/run_demo.sh`. Or simply `pip install -r requirements.txt` and `streamlit run app/demo.py`. The app reads only `demo_bundle/` (committed); it needs no dataset. Memory: about 274 MB. Six pages: Overview, The ML pipeline (one tab per rubric item), Predict live (the real model ranks NetworkX tests for files you pick), Race replay, Results, Limits and honesty. Screenshots of every page: [`reports/demo_screenshots/`](reports/demo_screenshots).
+Linux/macOS: `scripts/setup_demo.sh` and `scripts/run_demo.sh`. Or simply `pip install -r requirements.txt` and `streamlit run app/demo.py`. The app reads only `demo_bundle/` (committed); it needs no dataset. Memory: about 274 MB. Seven pages: Start here (the idea, an animated race on a real bug, a savings calculator), Break the code (a guided demo on a real NetworkX bug the model never saw), The ML pipeline (one tab per rubric item), Predict live (the real model ranks NetworkX tests for files you pick), Race replay, Results, Limits and honesty. Screenshots of every page: [`reports/demo_screenshots/`](reports/demo_screenshots).
 
 ## Use smartci on your own repo
 
 ```bash
 pip install "smartci @ git+https://github.com/OWNER/smart-ci-tcp.git"   # into the venv you test with
-smartci profile            # run your suite twice: durations, pytest's order, flaky tests
-smartci learn              # mine past test-backed bug fixes and reproduce them
-smartci backtest           # smartci vs simple rules on those bugs; it recommends the rule if it wins
+smartci evaluate           # replays your own past bugs; verdict: smartci, a simple rule, or nothing
 pytest --smartci           # run your tests in smartci's order (nothing is skipped)
+pytest --smartci --smartci-rule changed_files_first   # or the simple rule evaluate recommended
 ```
+
+`smartci evaluate` runs `profile` (suite twice: durations, order, flaky tests), `learn` (mine and reproduce past bug fixes) and `backtest` (replay them under every order), then prints a verdict card. On NetworkX it recommends **changed_files_first**: the tool says so when a simple rule is as good as the model.
 
 Also: `smartci compare --bug <id>` (real side-by-side pytest runs), `smartci explain`, `smartci rank --files a.py b.py` (rank for a hypothetical change), `pytest --smartci-shadow` (rank and record without reordering). The plugin does nothing unless you pass `--smartci`; if ranking fails, it keeps pytest's order. It works in git worktrees under `.smartci/` and never touches your checkout.
 

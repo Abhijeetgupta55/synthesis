@@ -11,7 +11,8 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-PAGES = ["Overview", "The ML pipeline", "Predict live", "Race replay", "Results", "Limits and honesty"]
+PAGES = ["Start here", "Break the code (guided demo)", "The ML pipeline", "Predict live", "Race replay", "Results",
+         "Limits and honesty"]
 TABS = ["1 EDA", "2 Features", "3 Classification", "4 Regularization", "5 Tuning", "6 Ensembles", "7 Performance"]
 
 

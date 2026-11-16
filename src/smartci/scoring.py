@@ -149,3 +149,26 @@ def stable_order(scored: list[Scored]) -> list[int]:
     """Indices by descending priority; ties keep the original (pytest collection) order."""
     return sorted(range(len(scored)), key=lambda i: (-scored[i].priority, i))
 
+
+
+RULES = ("changed_files_first", "fastest_first", "coverage_first", "recently_failed_first")
+
+
+def rule_order(scored: list[Scored], rule: str, covering: dict[str, int] | None = None) -> list[int]:
+    """Indices in the order a simple rule gives, defined exactly as in `smartci backtest`; ties keep pytest's order.
+    Used when `smartci evaluate` found a simple rule better than the model on this repo (--smartci-rule)."""
+    n = range(len(scored))
+    f = [x.features for x in scored]
+    if rule == "changed_files_first":
+        key = lambda i: (-f[i].get("test_file_in_diff", 0), -f[i].get("path_prefix_overlap", 0),  # noqa: E731
+                         -f[i].get("name_token_overlap", 0), i)
+    elif rule == "fastest_first":
+        key = lambda i: (scored[i].expected_duration, i)  # noqa: E731
+    elif rule == "coverage_first":
+        cov = covering or {}
+        key = lambda i: (-cov.get(scored[i].test_file, 0), i)  # noqa: E731
+    elif rule == "recently_failed_first":
+        key = lambda i: (f[i].get("h_days_since_last_fail", 9999.0), i)  # noqa: E731
+    else:
+        raise ValueError(f"unknown rule {rule!r}; choose one of {', '.join(RULES)}")
+    return sorted(n, key=key)

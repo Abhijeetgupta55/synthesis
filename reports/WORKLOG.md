@@ -431,3 +431,16 @@ test files for file-level ordering. Strict-filter fix candidates since 2023 (sha
 - **Tests without data:** fresh clone with only `.[ci]` installed: all pass, one skip (LRTS repo not cloned).
 - **Publishing.** Local absolute paths scrubbed from bundled/committed JSON (`stp.scrub`);
   `scripts/publish_check.py` passes.
+
+## 2026-11-16 · Making it a product and explaining it
+
+- Still on battery: Phase C not run.
+- **`smartci evaluate`** chains profile → learn (+rebase, adapter) → optional mutants → backtest and prints a verdict
+  card decided by the numbers (smartci only if it wins more bugs than it loses vs the best rule *and* its median is not
+  worse). First draft printed "1483x sooner" for NetworkX: that ratio ignores pytest's own start-up (74 s measured), so
+  the card now shows seconds of test time plus the measured start-up instead of a ratio.
+- **`--smartci-rule`** runs a simple rule (definitions shared with the backtest via `scoring.rule_order`).
+- **Savings data** (`python -m stp.models.savings`): share of the suite waited through before the first failure,
+  held-out failed runs, macro over projects: fixed order (random as proxy) 34%, model 2.7%, best rule 4.0%.
+- **Guided demo** lists all 18 held-out real bugs with their outcome (including losses) and opens on the median case.
+- Tests 54/54; smoke pass (seven pages).

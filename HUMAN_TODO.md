@@ -66,6 +66,7 @@ Each item has exact steps. Remove an item once it is done.
    Put the app's URL at the top of README (edit `src/stp/reports/readme_md.py`, regenerate, commit, push).
 7. **Complete `reports/AI_USE_DISCLOSURE.md`.** It is a factual draft: fill every **[STUDENTS: …]** blank with what
    the team decided, checked and wrote, and the member table. Do not leave invented or untrue sentences.
-8. **Before the presentation:** read `reports/DEMO_SCRIPT.md` and rehearse it once with the laptop plugged in;
+8. **Before the presentation:** read `reports/DEMO_SCRIPT.md` (60-second pitch, 7-minute demo, general-audience
+   variant) and `reports/EXPLAINER.md`; rehearse once with the laptop plugged in;
    learn the eight answers at the top of `reports/VIVA_NOTES.md`. Each member should be able to explain the rubric
    items in `reports/RUBRIC_MAP.md` in their own words.
