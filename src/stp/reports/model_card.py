@@ -35,7 +35,8 @@ def main() -> None:
         "while a repository has fewer than 5 recorded CI runs (no outcome history, no co-failure memory). "
         "Names, order, dtypes and missing-value defaults: `schema.json`.", "",
         "## Output and ordering",
-        "Isotonic-calibrated P(test file fails in this run). " + sch["ordering"] + ".", "",
+        "Isotonic-calibrated P(test file fails in this run). " + sch["ordering"] + "."
+        + (" " + sch["ordering_floor_note"] if sch.get("ordering_floor_note") else ""), "",
         "## Evaluation (held-out, time-respecting; numbers generated from reports/results)", "",
     ]
     if head:

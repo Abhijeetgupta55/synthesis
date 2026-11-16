@@ -95,6 +95,35 @@ PSI against train (largest on test first; < 0.1 small, > 0.25 large):
 
 **Verdict.** Partly supported, but not as feature drift: the validation period was easy (frequent, repeating failures that history catches), and the test period has rarer, more varied failures. One project and one validation period are too little to choose a model on; pooling all 10 projects (the shipped `all_to_tvm`) is more robust on test.
 
+### 4.3 Can the trade-off be tuned? A probability floor
+
+**Idea.** Order by max(P, f) ÷ duration. With f = 0 this is the model; as f grows every test gets the same probability and the order becomes "fastest first". A small f stops the model from pushing never-failed tests to the very end.
+
+**Rule, fixed before the test split was scored.** , fixed before the test split is scored (also written to the JSON before the test step runs):
+  on the VALIDATION split, among the f whose macro APFDc on All failed runs is at most 0.005 below f = 0, take the f
+  with the highest macro APFDc on FirstFail-old; if none beats f = 0 on FirstFail-old, f* = 0.
+Ship rule: smartci gets the floor only if f* > 0 and, on the TEST split (reported once), the paired difference
+  f* − 0 on FirstFail-old has a 95% PR-clustered CI above 0 and the All mean difference is ≥ −0.005.
+
+Validation curve (macro APFDc, tuned LightGBM):
+
+|  | All | FirstFail-old |
+|---|---|---|
+| f=0 | 0.873 | 0.697 |
+| f=1e-05 | 0.873 | 0.701 |
+| f=3e-05 | 0.873 | 0.703 |
+| f=0.0001 | 0.873 | 0.709 |
+| f=0.0003 | 0.872 | 0.726 |
+| f=0.001 | 0.864 | 0.754 |
+| f=0.003 | 0.845 | 0.778 |
+| f=0.01 | 0.800 | 0.806 |
+| f=0.03 | 0.752 | 0.818 |
+| f=0.1 | 0.707 | 0.824 |
+| f=1 | 0.680 | 0.826 |
+| QTF | 0.683 | 0.815 |
+
+**Test split, reported once (f* = 0.0003).** Δ vs f = 0: all failures -0.004 [-0.006, -0.002], first-time failures of existing tests +0.050 [+0.024, +0.085]. With the floor the model scores 0.758 there against QTF's 0.800: it closes part of the gap but still loses to QTF. **Shipped in smartci** (`ordering_floor` in the model's schema.json).
+
 
 ## 5. Real repositories (smartci)
 

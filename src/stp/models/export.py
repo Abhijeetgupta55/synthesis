@@ -24,10 +24,24 @@ from stp.results import git_sha, load_result
 
 OUT = paths.ROOT / "models" / "global"
 VERSION = "0.1.0"
+FLOOR_NOTE = ("ordering_floor is 0 by default. ordering_floor_lrts was chosen on LRTS validation and held on LRTS "
+              "test (RESULTS.md 4.3) but slowed smartci on the NetworkX backtest; enable it with $SMARTCI_FLOOR.")
 
 
 def iso_to_json(iso) -> dict:
     return {"x": np.asarray(iso.X_thresholds_, float).tolist(), "y": np.asarray(iso.y_thresholds_, float).tolist()}
+
+
+def _floor() -> tuple[float, float]:
+    """(floor shipped by default, floor chosen on LRTS). The LRTS floor passed its ship rule on LRTS but made smartci
+    slower on the NetworkX backtest (floor_networkx.json): the adapter puts repo probabilities on another scale. So
+    the default is 0 and the LRTS value is recorded for opt-in use ($SMARTCI_FLOOR)."""
+    try:
+        f = load_result("floor_tradeoff")
+    except FileNotFoundError:
+        return 0.0, 0.0
+    lrts = float(f["f_star"]) if f.get("test", {}).get("ship") else 0.0
+    return 0.0, lrts
 
 
 def export(main_variant: str, coldstart_variant: str = "var_coldstart") -> dict:
@@ -46,7 +60,9 @@ def export(main_variant: str, coldstart_variant: str = "var_coldstart") -> dict:
         "features": [{"name": c, "dtype": FEATURES[c]["dtype"], "default": dfl.get(c, 0.0)} for c in main.cols],
         "features_coldstart": [{"name": c, "dtype": FEATURES[c]["dtype"], "default": dfl.get(c, 0.0)}
                                for c in cold.cols],
-        "ordering": "priority = calibrated P(fail) / (expected duration + 0.001 s), descending",
+        "ordering": "priority = max(calibrated P(fail), ordering_floor) / (expected duration + 0.001 s), descending",
+        "ordering_floor": _floor()[0], "ordering_floor_lrts": _floor()[1],
+        "ordering_floor_note": FLOOR_NOTE,
         "training_data": {"source": "LRTS (ISSTA 2024), 10 Apache projects; 9 Java/Scala + TVM (Python/pytest)",
                           "split": "build-level chronological 70/15/15; model trained on train builds only",
                           "date_ranges": splits["date_range"]},

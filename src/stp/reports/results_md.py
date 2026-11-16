@@ -154,7 +154,7 @@ TVM's pytest suites: the variant chosen by TVM validation (`{T.get('chosen')}`) 
 split; the shipped model is `{T.get('shipped')}` (disclosed selection; MODELING.md §7; §4.2 below explains the
 collapse).
 
-{error_analysis_md(_r("error_analysis"))}
+{error_analysis_md(_r("error_analysis"), _r("floor_tradeoff"), _r("floor_networkx"))}
 
 ## 5. Real repositories (smartci)
 

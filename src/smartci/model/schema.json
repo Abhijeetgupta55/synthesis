@@ -197,7 +197,7 @@
       "default": 1.0
     }
   ],
-  "ordering": "priority = calibrated P(fail) / (expected duration + 0.001 s), descending",
+  "ordering": "priority = max(calibrated P(fail), ordering_floor) / (expected duration + 0.001 s), descending",
   "training_data": {
     "source": "LRTS (ISSTA 2024), 10 Apache projects; 9 Java/Scala + TVM (Python/pytest)",
     "split": "build-level chronological 70/15/15; model trained on train builds only",
@@ -323,5 +323,8 @@
         "2024-03-27"
       ]
     }
-  }
+  },
+  "ordering_floor": 0.0,
+  "ordering_floor_lrts": 0.0003,
+  "ordering_floor_note": "ordering_floor is 0 by default. ordering_floor_lrts was chosen on LRTS validation and held on LRTS test (RESULTS.md 4.3) but slowed smartci on the NetworkX backtest; enable it with $SMARTCI_FLOOR."
 }

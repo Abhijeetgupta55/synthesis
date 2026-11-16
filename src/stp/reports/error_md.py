@@ -141,8 +141,49 @@ def tvm_md(E) -> list[str]:
             ""]
 
 
-def error_analysis_md(E) -> str:
-    body = firstfail_md(E) + tvm_md(E)
+def floor_md(F, N=None) -> list[str]:
+    """§4.3: the probability floor (Phase D), from reports/results/floor_tradeoff.json."""
+    if not F or "val_curve" not in F:
+        return []
+    te = F.get("test") or {}
+    dl = te.get("delta_vs_f0") or {}
+    cv = te.get("curve") or {}
+    fs = F["f_star"]
+    rows = [[k, f"{v['All']:.3f}", f"{v['FirstFail-old']:.3f}"] for k, v in F["val_curve"].items()]
+    out = ["### 4.3 Can the trade-off be tuned? A probability floor", "",
+           "**Idea.** Order by max(P, f) ÷ duration. With f = 0 this is the model; as f grows every test gets the "
+           "same probability and the order becomes \"fastest first\". A small f stops the model from pushing "
+           "never-failed tests to the very end.", "",
+           f"**Rule, fixed before the test split was scored.** {F.get('rule', '')}", "",
+           "Validation curve (macro APFDc, tuned LightGBM):", "", table(["", "All", "FirstFail-old"], rows), ""]
+    if dl:
+        a, o = dl["All"], dl["FirstFail-old"]
+        out += [f"**Test split, reported once (f* = {fs:g}).** Δ vs f = 0: all failures {_ci(a)}, first-time "
+                f"failures of existing tests {_ci(o)}. With the floor the model scores "
+                f"{cv.get(f'f={fs:g}', {}).get('FirstFail-old', 0):.3f} there against QTF's "
+                f"{cv.get('QTF', {}).get('FirstFail-old', 0):.3f}: "
+                + ("it closes part of the gap but still loses to QTF. " if cv.get(f"f={fs:g}", {}).get(
+                    "FirstFail-old", 0) < cv.get("QTF", {}).get("FirstFail-old", 0) else "it reaches QTF. ")
+                + ("The LRTS ship rule was met. " if te.get("ship") else "**Not shipped**: the ship rule was not met. "),
+                ""]
+        nx = (N or {}).get("with_floor", {}).get("all")
+        nx0 = (N or {}).get("without_floor", {}).get("all")
+        if te.get("ship") and nx and nx0:
+            out += [f"**Deployment check on NetworkX (not declared in advance).** With the floor, smartci's median "
+                    f"time to the first failure on NetworkX's {nx['n']} bugs went from "
+                    f"{nx0['median_ttff_s']['median']:.2f} s to {nx['median_ttff_s']['median']:.2f} s, and its losses "
+                    f"against {nx['best']} from {nx0['vs_best']['loss']} to {nx['vs_best']['loss']}. smartci's "
+                    "probabilities on a repository pass through a per-repo adapter, so a floor tuned on the LRTS "
+                    "model's scale promotes tiny unrelated tests there. **The floor is therefore off by default** "
+                    "and available as an option (`SMARTCI_FLOOR`); a floor would have to be tuned per repository.",
+                    ""]
+    elif fs == 0:
+        out += ["No floor beat f = 0 on validation, so nothing was tested or shipped.", ""]
+    return out
+
+
+def error_analysis_md(E, F=None, N=None) -> str:
+    body = firstfail_md(E) + tvm_md(E) + floor_md(F, N)
     if not body:
         return ""
     return "\n".join(["## 4. Error analysis: why the model loses where it loses", ""] + body)

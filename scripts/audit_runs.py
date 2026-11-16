@@ -223,7 +223,9 @@ def main(argv=None):
     f = ROOT / "reports" / "results" / "audit_runs.json"
     old = json.loads(f.read_text(encoding="utf-8")) if f.exists() else {}
     old.update(out)
-    f.write_text(json.dumps(old, indent=2, default=str), encoding="utf-8")
+    sys.path.insert(0, str(ROOT / "src"))
+    from stp.scrub import scrub
+    f.write_text(scrub(json.dumps(old, indent=2, default=str)), encoding="utf-8")
     print(json.dumps({k: (v if not isinstance(v, dict) else {kk: vv for kk, vv in v.items()
                                                               if not isinstance(vv, (dict, list))})
                       for k, v in out.items()}, indent=1, default=str)[:3000])

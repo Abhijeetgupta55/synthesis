@@ -9,7 +9,7 @@ Each item has exact steps. Remove an item once it is done.
    On battery Windows throttles the CPU (~42% of nominal measured), so GATE 5 and the live-demo timings cannot be
    judged. The script refuses to start on battery.
    ```powershell
-   cd A:\ML\smart-ci-tcp
+   cd <your clone of this repository>
    .venv\Scripts\python.exe live_demo\phase_c.py --repeats 3     # ~2-3 hours: profile, GATE 5, 3x live-demo timings
    ```
    Then tell Claude Code "Phase C timings are done" so it writes the timings into `reports/DEMO_SCRIPT.md`,

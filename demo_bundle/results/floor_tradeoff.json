@@ -1,0 +1,88 @@
+{
+  "rule": ", fixed before the test split is scored (also written to the JSON before the test step runs):\n  on the VALIDATION split, among the f whose macro APFDc on All failed runs is at most 0.005 below f = 0, take the f\n  with the highest macro APFDc on FirstFail-old; if none beats f = 0 on FirstFail-old, f* = 0.\nShip rule: smartci gets the floor only if f* > 0 and, on the TEST split (reported once), the paired difference\n  f* \u2212 0 on FirstFail-old has a 95% PR-clustered CI above 0 and the All mean difference is \u2265 \u22120.005.",
+  "grid": [
+    0.0,
+    1e-05,
+    3e-05,
+    0.0001,
+    0.0003,
+    0.001,
+    0.003,
+    0.01,
+    0.03,
+    0.1,
+    1.0
+  ],
+  "val_curve": {
+    "f=0": {
+      "All": 0.873191,
+      "FirstFail-asof": 0.770148,
+      "FirstFail-old": 0.697043
+    },
+    "f=1e-05": {
+      "All": 0.873258,
+      "FirstFail-asof": 0.772181,
+      "FirstFail-old": 0.700505
+    },
+    "f=3e-05": {
+      "All": 0.873266,
+      "FirstFail-asof": 0.774023,
+      "FirstFail-old": 0.70333
+    },
+    "f=0.0001": {
+      "All": 0.873004,
+      "FirstFail-asof": 0.778216,
+      "FirstFail-old": 0.709179
+    },
+    "f=0.0003": {
+      "All": 0.872116,
+      "FirstFail-asof": 0.79353,
+      "FirstFail-old": 0.726485
+    },
+    "f=0.001": {
+      "All": 0.863872,
+      "FirstFail-asof": 0.819592,
+      "FirstFail-old": 0.75422
+    },
+    "f=0.003": {
+      "All": 0.844693,
+      "FirstFail-asof": 0.836772,
+      "FirstFail-old": 0.777967
+    },
+    "f=0.01": {
+      "All": 0.799795,
+      "FirstFail-asof": 0.846918,
+      "FirstFail-old": 0.805502
+    },
+    "f=0.03": {
+      "All": 0.751905,
+      "FirstFail-asof": 0.849125,
+      "FirstFail-old": 0.817527
+    },
+    "f=0.1": {
+      "All": 0.706995,
+      "FirstFail-asof": 0.848777,
+      "FirstFail-old": 0.824453
+    },
+    "f=1": {
+      "All": 0.679952,
+      "FirstFail-asof": 0.848439,
+      "FirstFail-old": 0.82555
+    },
+    "QTF": {
+      "All": 0.683072,
+      "FirstFail-asof": 0.839277,
+      "FirstFail-old": 0.815467
+    }
+  },
+  "f_star": 0.0003,
+  "n_val_runs": {
+    "All": 8809,
+    "FirstFail-asof": 402,
+    "FirstFail-old": 257
+  },
+  "_meta": {
+    "generated": "2026-11-16 10:29:01",
+    "git_sha": "eca2819"
+  }
+}

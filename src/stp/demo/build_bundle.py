@@ -6,15 +6,13 @@
         SHAP reasons for its first 10 tests; the Apache PR link. `python -m stp.demo.verify` recomputes these numbers
         from the raw LRTS csv.zip.
   demo_bundle/lrts/index.json                            list of bundled runs (seeded stratified sample)
-  demo_bundle/scoreboard.json                            copies of baselines / models / classification / leakage
-                                                         / transfer / gate results (numbers shown on the Scoreboard)
   demo_bundle/repos/<name>/backtest.json, backtest.md, profile.json, bugs.jsonl, mutants.jsonl
                                                          copies of the smartci outputs of the real repos
   demo_bundle/results/*.json, results/eda/*.json         copies of reports/results and reports/eda_json
   demo_bundle/figures/*.png                              copies of reports/figures
   demo_bundle/live/networkx/.smartci/, live_meta.json    inputs of the 'Predict live' page (same files smartci reads)
 Repos the *user* picks are never precomputed: the app reads their .smartci/ folder directly.
-Usage: python -m stp.demo.build_bundle [--per-project 30] [--seed 7] [--parts scoreboard,results,figures,repos,live]
+Usage: python -m stp.demo.build_bundle [--per-project 30] [--seed 7] [--parts results,figures,repos,live]
 """
 from __future__ import annotations
 
@@ -33,6 +31,7 @@ from stp.evaluation.metrics import DURATION_EPS
 from stp.features.store import store_dir
 from stp.models.common import load_model
 from stp.results import git_sha, load_result
+from stp.scrub import scrub_file
 
 OUT = paths.ROOT / "demo_bundle"
 METHODS = ["Random", "QTF", "cbt_LastFail", "ChangedOrNewFirst", "smartci (LightGBM)", "Oracle"]
@@ -131,12 +130,12 @@ def copy_repos() -> None:
         dst.mkdir(parents=True, exist_ok=True)
         for f in ("backtest.json", "backtest.md", "profile.json", "bugs.jsonl", "mutants.jsonl", "learn_summary.json"):
             if (src / f).exists():
-                shutil.copyfile(src / f, dst / f)
+                scrub_file(src / f, dst / f)
         cmp_dir = src / "compare"
         if cmp_dir.exists():
             (dst / "compare").mkdir(exist_ok=True)
             for f in cmp_dir.glob("*.json"):
-                shutil.copyfile(f, dst / "compare" / f.name)
+                scrub_file(f, dst / "compare" / f.name)
 
 
 def copy_results() -> None:
@@ -144,7 +143,11 @@ def copy_results() -> None:
     dst = OUT / "results"
     dst.mkdir(parents=True, exist_ok=True)
     for f in paths.RESULTS.glob("*.json"):
-        shutil.copyfile(f, dst / f.name)
+        scrub_file(f, dst / f.name)
+    from stp.features.schema import FEATURES
+    from stp.reports import features_md as fm
+    (dst / "features_meta.json").write_text(json.dumps(
+        {"features": FEATURES, "doc": fm.DOC, "asof": fm.ASOF, "rejected": fm.REJECTED}, default=str), encoding="utf-8")
     (dst / "eda").mkdir(exist_ok=True)
     for f in (paths.ROOT / "reports" / "eda_json").glob("*.json"):
         shutil.copyfile(f, dst / "eda" / f.name)
@@ -169,7 +172,7 @@ def build_live() -> None:
     (dst / "profile.json").write_text(json.dumps(keep), encoding="utf-8")
     for f in ("history.jsonl", "runs.jsonl", "adapter.json", "coverage_map.json", "bugs.jsonl"):
         if (src / f).exists():
-            shutil.copyfile(src / f, dst / f)
+            scrub_file(src / f, dst / f)
     import subprocess
     files = subprocess.check_output(["git", "-C", str(repo), "ls-files", "networkx/*.py"], text=True).split()
     sources = sorted(f for f in files if "/tests/" not in f and not f.endswith(("__init__.py", "conftest.py")))
@@ -181,7 +184,7 @@ def build_live() -> None:
         encoding="utf-8")
 
 
-PARTS = ("lrts", "scoreboard", "results", "figures", "repos", "live")
+PARTS = ("lrts", "results", "figures", "repos", "live")
 
 
 def main() -> None:
@@ -200,8 +203,7 @@ def main() -> None:
     n_lrts = old.get("n_lrts_runs")
     if "lrts" in parts:
         n_lrts = len(build_lrts(a.per_project, a.seed))
-    if "scoreboard" in parts:
-        build_scoreboard()
+    (OUT / "scoreboard.json").unlink(missing_ok=True)      # replaced by results/ (the app reads the copies)
     if "results" in parts:
         copy_results()
     if "figures" in parts:

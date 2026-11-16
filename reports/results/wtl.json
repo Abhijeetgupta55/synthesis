@@ -1,0 +1,1379 @@
+{
+  "tie_threshold": 0.001,
+  "subsets": {
+    "All": {
+      "lgbm|ChangedOrNewFirst": {
+        "win": 6612,
+        "tie": 308,
+        "loss": 2381,
+        "n": 9301,
+        "per_project": {
+          "activemq": {
+            "win": 7,
+            "tie": 1,
+            "loss": 13
+          },
+          "hadoop": {
+            "win": 46,
+            "tie": 7,
+            "loss": 54
+          },
+          "hbase": {
+            "win": 32,
+            "tie": 6,
+            "loss": 39
+          },
+          "hive": {
+            "win": 118,
+            "tie": 8,
+            "loss": 58
+          },
+          "jackrabbit-oak": {
+            "win": 64,
+            "tie": 17,
+            "loss": 73
+          },
+          "james": {
+            "win": 163,
+            "tie": 73,
+            "loss": 109
+          },
+          "kafka": {
+            "win": 6004,
+            "tie": 113,
+            "loss": 1961
+          },
+          "karaf": {
+            "win": 18,
+            "tie": 1,
+            "loss": 13
+          },
+          "log4j": {
+            "win": 19,
+            "tie": 2,
+            "loss": 5
+          },
+          "tvm": {
+            "win": 141,
+            "tie": 80,
+            "loss": 56
+          }
+        }
+      },
+      "lgbm|QTF": {
+        "win": 8916,
+        "tie": 80,
+        "loss": 305,
+        "n": 9301,
+        "per_project": {
+          "activemq": {
+            "win": 20,
+            "tie": 0,
+            "loss": 1
+          },
+          "hadoop": {
+            "win": 102,
+            "tie": 0,
+            "loss": 5
+          },
+          "hbase": {
+            "win": 60,
+            "tie": 2,
+            "loss": 15
+          },
+          "hive": {
+            "win": 165,
+            "tie": 0,
+            "loss": 19
+          },
+          "jackrabbit-oak": {
+            "win": 145,
+            "tie": 1,
+            "loss": 8
+          },
+          "james": {
+            "win": 304,
+            "tie": 18,
+            "loss": 23
+          },
+          "kafka": {
+            "win": 7906,
+            "tie": 11,
+            "loss": 161
+          },
+          "karaf": {
+            "win": 28,
+            "tie": 1,
+            "loss": 3
+          },
+          "log4j": {
+            "win": 23,
+            "tie": 2,
+            "loss": 1
+          },
+          "tvm": {
+            "win": 163,
+            "tie": 45,
+            "loss": 69
+          }
+        }
+      },
+      "lgbm|cbt_LastFail": {
+        "win": 6586,
+        "tie": 329,
+        "loss": 2386,
+        "n": 9301,
+        "per_project": {
+          "activemq": {
+            "win": 8,
+            "tie": 0,
+            "loss": 13
+          },
+          "hadoop": {
+            "win": 46,
+            "tie": 9,
+            "loss": 52
+          },
+          "hbase": {
+            "win": 29,
+            "tie": 7,
+            "loss": 41
+          },
+          "hive": {
+            "win": 113,
+            "tie": 6,
+            "loss": 65
+          },
+          "jackrabbit-oak": {
+            "win": 65,
+            "tie": 17,
+            "loss": 72
+          },
+          "james": {
+            "win": 172,
+            "tie": 68,
+            "loss": 105
+          },
+          "kafka": {
+            "win": 5975,
+            "tie": 137,
+            "loss": 1966
+          },
+          "karaf": {
+            "win": 18,
+            "tie": 1,
+            "loss": 13
+          },
+          "log4j": {
+            "win": 11,
+            "tie": 10,
+            "loss": 5
+          },
+          "tvm": {
+            "win": 149,
+            "tie": 74,
+            "loss": 54
+          }
+        }
+      },
+      "stack|ChangedOrNewFirst": {
+        "win": 6916,
+        "tie": 318,
+        "loss": 2067,
+        "n": 9301,
+        "per_project": {
+          "activemq": {
+            "win": 9,
+            "tie": 3,
+            "loss": 9
+          },
+          "hadoop": {
+            "win": 46,
+            "tie": 6,
+            "loss": 55
+          },
+          "hbase": {
+            "win": 35,
+            "tie": 4,
+            "loss": 38
+          },
+          "hive": {
+            "win": 137,
+            "tie": 6,
+            "loss": 41
+          },
+          "jackrabbit-oak": {
+            "win": 71,
+            "tie": 16,
+            "loss": 67
+          },
+          "james": {
+            "win": 172,
+            "tie": 77,
+            "loss": 96
+          },
+          "kafka": {
+            "win": 6264,
+            "tie": 121,
+            "loss": 1693
+          },
+          "karaf": {
+            "win": 18,
+            "tie": 1,
+            "loss": 13
+          },
+          "log4j": {
+            "win": 20,
+            "tie": 2,
+            "loss": 4
+          },
+          "tvm": {
+            "win": 144,
+            "tie": 82,
+            "loss": 51
+          }
+        }
+      },
+      "stack|QTF": {
+        "win": 8942,
+        "tie": 82,
+        "loss": 277,
+        "n": 9301,
+        "per_project": {
+          "activemq": {
+            "win": 20,
+            "tie": 0,
+            "loss": 1
+          },
+          "hadoop": {
+            "win": 102,
+            "tie": 0,
+            "loss": 5
+          },
+          "hbase": {
+            "win": 60,
+            "tie": 2,
+            "loss": 15
+          },
+          "hive": {
+            "win": 166,
+            "tie": 2,
+            "loss": 16
+          },
+          "jackrabbit-oak": {
+            "win": 146,
+            "tie": 2,
+            "loss": 6
+          },
+          "james": {
+            "win": 305,
+            "tie": 20,
+            "loss": 20
+          },
+          "kafka": {
+            "win": 7927,
+            "tie": 7,
+            "loss": 144
+          },
+          "karaf": {
+            "win": 28,
+            "tie": 1,
+            "loss": 3
+          },
+          "log4j": {
+            "win": 23,
+            "tie": 2,
+            "loss": 1
+          },
+          "tvm": {
+            "win": 165,
+            "tie": 46,
+            "loss": 66
+          }
+        }
+      },
+      "stack|cbt_LastFail": {
+        "win": 6896,
+        "tie": 331,
+        "loss": 2074,
+        "n": 9301,
+        "per_project": {
+          "activemq": {
+            "win": 10,
+            "tie": 1,
+            "loss": 10
+          },
+          "hadoop": {
+            "win": 48,
+            "tie": 11,
+            "loss": 48
+          },
+          "hbase": {
+            "win": 32,
+            "tie": 7,
+            "loss": 38
+          },
+          "hive": {
+            "win": 130,
+            "tie": 5,
+            "loss": 49
+          },
+          "jackrabbit-oak": {
+            "win": 70,
+            "tie": 16,
+            "loss": 68
+          },
+          "james": {
+            "win": 180,
+            "tie": 76,
+            "loss": 89
+          },
+          "kafka": {
+            "win": 6241,
+            "tie": 132,
+            "loss": 1705
+          },
+          "karaf": {
+            "win": 18,
+            "tie": 1,
+            "loss": 13
+          },
+          "log4j": {
+            "win": 13,
+            "tie": 9,
+            "loss": 4
+          },
+          "tvm": {
+            "win": 154,
+            "tie": 73,
+            "loss": 50
+          }
+        }
+      }
+    },
+    "FirstFail-asof": {
+      "lgbm|ChangedOrNewFirst": {
+        "win": 232,
+        "tie": 78,
+        "loss": 25,
+        "n": 335,
+        "per_project": {
+          "activemq": {
+            "win": 1,
+            "tie": 1,
+            "loss": 0
+          },
+          "hadoop": {
+            "win": 5,
+            "tie": 3,
+            "loss": 3
+          },
+          "hbase": {
+            "win": 21,
+            "tie": 2,
+            "loss": 0
+          },
+          "hive": {
+            "win": 11,
+            "tie": 2,
+            "loss": 1
+          },
+          "jackrabbit-oak": {
+            "win": 9,
+            "tie": 0,
+            "loss": 1
+          },
+          "james": {
+            "win": 16,
+            "tie": 5,
+            "loss": 8
+          },
+          "kafka": {
+            "win": 105,
+            "tie": 43,
+            "loss": 8
+          },
+          "karaf": {
+            "win": 5,
+            "tie": 0,
+            "loss": 2
+          },
+          "log4j": {
+            "win": 1,
+            "tie": 0,
+            "loss": 1
+          },
+          "tvm": {
+            "win": 58,
+            "tie": 22,
+            "loss": 1
+          }
+        }
+      },
+      "lgbm|QTF": {
+        "win": 104,
+        "tie": 72,
+        "loss": 159,
+        "n": 335,
+        "per_project": {
+          "activemq": {
+            "win": 1,
+            "tie": 0,
+            "loss": 1
+          },
+          "hadoop": {
+            "win": 5,
+            "tie": 1,
+            "loss": 5
+          },
+          "hbase": {
+            "win": 9,
+            "tie": 0,
+            "loss": 14
+          },
+          "hive": {
+            "win": 7,
+            "tie": 1,
+            "loss": 6
+          },
+          "jackrabbit-oak": {
+            "win": 5,
+            "tie": 0,
+            "loss": 5
+          },
+          "james": {
+            "win": 18,
+            "tie": 1,
+            "loss": 10
+          },
+          "kafka": {
+            "win": 31,
+            "tie": 60,
+            "loss": 65
+          },
+          "karaf": {
+            "win": 2,
+            "tie": 0,
+            "loss": 5
+          },
+          "log4j": {
+            "win": 0,
+            "tie": 0,
+            "loss": 2
+          },
+          "tvm": {
+            "win": 26,
+            "tie": 9,
+            "loss": 46
+          }
+        }
+      },
+      "lgbm|cbt_LastFail": {
+        "win": 326,
+        "tie": 1,
+        "loss": 8,
+        "n": 335,
+        "per_project": {
+          "activemq": {
+            "win": 2,
+            "tie": 0,
+            "loss": 0
+          },
+          "hadoop": {
+            "win": 9,
+            "tie": 1,
+            "loss": 1
+          },
+          "hbase": {
+            "win": 23,
+            "tie": 0,
+            "loss": 0
+          },
+          "hive": {
+            "win": 13,
+            "tie": 0,
+            "loss": 1
+          },
+          "jackrabbit-oak": {
+            "win": 9,
+            "tie": 0,
+            "loss": 1
+          },
+          "james": {
+            "win": 28,
+            "tie": 0,
+            "loss": 1
+          },
+          "kafka": {
+            "win": 155,
+            "tie": 0,
+            "loss": 1
+          },
+          "karaf": {
+            "win": 5,
+            "tie": 0,
+            "loss": 2
+          },
+          "log4j": {
+            "win": 1,
+            "tie": 0,
+            "loss": 1
+          },
+          "tvm": {
+            "win": 81,
+            "tie": 0,
+            "loss": 0
+          }
+        }
+      },
+      "stack|ChangedOrNewFirst": {
+        "win": 227,
+        "tie": 71,
+        "loss": 37,
+        "n": 335,
+        "per_project": {
+          "activemq": {
+            "win": 1,
+            "tie": 1,
+            "loss": 0
+          },
+          "hadoop": {
+            "win": 5,
+            "tie": 1,
+            "loss": 5
+          },
+          "hbase": {
+            "win": 20,
+            "tie": 1,
+            "loss": 2
+          },
+          "hive": {
+            "win": 11,
+            "tie": 2,
+            "loss": 1
+          },
+          "jackrabbit-oak": {
+            "win": 9,
+            "tie": 0,
+            "loss": 1
+          },
+          "james": {
+            "win": 16,
+            "tie": 2,
+            "loss": 11
+          },
+          "kafka": {
+            "win": 100,
+            "tie": 41,
+            "loss": 15
+          },
+          "karaf": {
+            "win": 5,
+            "tie": 0,
+            "loss": 2
+          },
+          "log4j": {
+            "win": 2,
+            "tie": 0,
+            "loss": 0
+          },
+          "tvm": {
+            "win": 58,
+            "tie": 23,
+            "loss": 0
+          }
+        }
+      },
+      "stack|QTF": {
+        "win": 91,
+        "tie": 75,
+        "loss": 169,
+        "n": 335,
+        "per_project": {
+          "activemq": {
+            "win": 1,
+            "tie": 0,
+            "loss": 1
+          },
+          "hadoop": {
+            "win": 5,
+            "tie": 0,
+            "loss": 6
+          },
+          "hbase": {
+            "win": 8,
+            "tie": 0,
+            "loss": 15
+          },
+          "hive": {
+            "win": 6,
+            "tie": 0,
+            "loss": 8
+          },
+          "jackrabbit-oak": {
+            "win": 5,
+            "tie": 1,
+            "loss": 4
+          },
+          "james": {
+            "win": 16,
+            "tie": 1,
+            "loss": 12
+          },
+          "kafka": {
+            "win": 28,
+            "tie": 56,
+            "loss": 72
+          },
+          "karaf": {
+            "win": 1,
+            "tie": 0,
+            "loss": 6
+          },
+          "log4j": {
+            "win": 0,
+            "tie": 0,
+            "loss": 2
+          },
+          "tvm": {
+            "win": 21,
+            "tie": 17,
+            "loss": 43
+          }
+        }
+      },
+      "stack|cbt_LastFail": {
+        "win": 322,
+        "tie": 0,
+        "loss": 13,
+        "n": 335,
+        "per_project": {
+          "activemq": {
+            "win": 2,
+            "tie": 0,
+            "loss": 0
+          },
+          "hadoop": {
+            "win": 9,
+            "tie": 0,
+            "loss": 2
+          },
+          "hbase": {
+            "win": 22,
+            "tie": 0,
+            "loss": 1
+          },
+          "hive": {
+            "win": 13,
+            "tie": 0,
+            "loss": 1
+          },
+          "jackrabbit-oak": {
+            "win": 9,
+            "tie": 0,
+            "loss": 1
+          },
+          "james": {
+            "win": 27,
+            "tie": 0,
+            "loss": 2
+          },
+          "kafka": {
+            "win": 152,
+            "tie": 0,
+            "loss": 4
+          },
+          "karaf": {
+            "win": 5,
+            "tie": 0,
+            "loss": 2
+          },
+          "log4j": {
+            "win": 2,
+            "tie": 0,
+            "loss": 0
+          },
+          "tvm": {
+            "win": 81,
+            "tie": 0,
+            "loss": 0
+          }
+        }
+      }
+    },
+    "FirstFail-old": {
+      "lgbm|ChangedOrNewFirst": {
+        "win": 212,
+        "tie": 1,
+        "loss": 9,
+        "n": 222,
+        "per_project": {
+          "activemq": {
+            "win": 1,
+            "tie": 0,
+            "loss": 0
+          },
+          "hadoop": {
+            "win": 5,
+            "tie": 1,
+            "loss": 1
+          },
+          "hbase": {
+            "win": 19,
+            "tie": 0,
+            "loss": 0
+          },
+          "hive": {
+            "win": 9,
+            "tie": 0,
+            "loss": 1
+          },
+          "jackrabbit-oak": {
+            "win": 9,
+            "tie": 0,
+            "loss": 1
+          },
+          "james": {
+            "win": 12,
+            "tie": 0,
+            "loss": 2
+          },
+          "kafka": {
+            "win": 93,
+            "tie": 0,
+            "loss": 1
+          },
+          "karaf": {
+            "win": 5,
+            "tie": 0,
+            "loss": 2
+          },
+          "log4j": {
+            "win": 1,
+            "tie": 0,
+            "loss": 1
+          },
+          "tvm": {
+            "win": 58,
+            "tie": 0,
+            "loss": 0
+          }
+        }
+      },
+      "lgbm|QTF": {
+        "win": 34,
+        "tie": 31,
+        "loss": 157,
+        "n": 222,
+        "per_project": {
+          "activemq": {
+            "win": 0,
+            "tie": 0,
+            "loss": 1
+          },
+          "hadoop": {
+            "win": 1,
+            "tie": 1,
+            "loss": 5
+          },
+          "hbase": {
+            "win": 5,
+            "tie": 0,
+            "loss": 14
+          },
+          "hive": {
+            "win": 3,
+            "tie": 1,
+            "loss": 6
+          },
+          "jackrabbit-oak": {
+            "win": 5,
+            "tie": 0,
+            "loss": 5
+          },
+          "james": {
+            "win": 4,
+            "tie": 0,
+            "loss": 10
+          },
+          "kafka": {
+            "win": 4,
+            "tie": 27,
+            "loss": 63
+          },
+          "karaf": {
+            "win": 2,
+            "tie": 0,
+            "loss": 5
+          },
+          "log4j": {
+            "win": 0,
+            "tie": 0,
+            "loss": 2
+          },
+          "tvm": {
+            "win": 10,
+            "tie": 2,
+            "loss": 46
+          }
+        }
+      },
+      "lgbm|cbt_LastFail": {
+        "win": 212,
+        "tie": 1,
+        "loss": 9,
+        "n": 222,
+        "per_project": {
+          "activemq": {
+            "win": 1,
+            "tie": 0,
+            "loss": 0
+          },
+          "hadoop": {
+            "win": 5,
+            "tie": 1,
+            "loss": 1
+          },
+          "hbase": {
+            "win": 19,
+            "tie": 0,
+            "loss": 0
+          },
+          "hive": {
+            "win": 9,
+            "tie": 0,
+            "loss": 1
+          },
+          "jackrabbit-oak": {
+            "win": 9,
+            "tie": 0,
+            "loss": 1
+          },
+          "james": {
+            "win": 12,
+            "tie": 0,
+            "loss": 2
+          },
+          "kafka": {
+            "win": 93,
+            "tie": 0,
+            "loss": 1
+          },
+          "karaf": {
+            "win": 5,
+            "tie": 0,
+            "loss": 2
+          },
+          "log4j": {
+            "win": 1,
+            "tie": 0,
+            "loss": 1
+          },
+          "tvm": {
+            "win": 58,
+            "tie": 0,
+            "loss": 0
+          }
+        }
+      },
+      "stack|ChangedOrNewFirst": {
+        "win": 209,
+        "tie": 0,
+        "loss": 13,
+        "n": 222,
+        "per_project": {
+          "activemq": {
+            "win": 1,
+            "tie": 0,
+            "loss": 0
+          },
+          "hadoop": {
+            "win": 5,
+            "tie": 0,
+            "loss": 2
+          },
+          "hbase": {
+            "win": 18,
+            "tie": 0,
+            "loss": 1
+          },
+          "hive": {
+            "win": 9,
+            "tie": 0,
+            "loss": 1
+          },
+          "jackrabbit-oak": {
+            "win": 9,
+            "tie": 0,
+            "loss": 1
+          },
+          "james": {
+            "win": 12,
+            "tie": 0,
+            "loss": 2
+          },
+          "kafka": {
+            "win": 90,
+            "tie": 0,
+            "loss": 4
+          },
+          "karaf": {
+            "win": 5,
+            "tie": 0,
+            "loss": 2
+          },
+          "log4j": {
+            "win": 2,
+            "tie": 0,
+            "loss": 0
+          },
+          "tvm": {
+            "win": 58,
+            "tie": 0,
+            "loss": 0
+          }
+        }
+      },
+      "stack|QTF": {
+        "win": 22,
+        "tie": 35,
+        "loss": 165,
+        "n": 222,
+        "per_project": {
+          "activemq": {
+            "win": 0,
+            "tie": 0,
+            "loss": 1
+          },
+          "hadoop": {
+            "win": 1,
+            "tie": 0,
+            "loss": 6
+          },
+          "hbase": {
+            "win": 4,
+            "tie": 0,
+            "loss": 15
+          },
+          "hive": {
+            "win": 2,
+            "tie": 0,
+            "loss": 8
+          },
+          "jackrabbit-oak": {
+            "win": 4,
+            "tie": 1,
+            "loss": 5
+          },
+          "james": {
+            "win": 3,
+            "tie": 0,
+            "loss": 11
+          },
+          "kafka": {
+            "win": 2,
+            "tie": 24,
+            "loss": 68
+          },
+          "karaf": {
+            "win": 1,
+            "tie": 0,
+            "loss": 6
+          },
+          "log4j": {
+            "win": 0,
+            "tie": 0,
+            "loss": 2
+          },
+          "tvm": {
+            "win": 5,
+            "tie": 10,
+            "loss": 43
+          }
+        }
+      },
+      "stack|cbt_LastFail": {
+        "win": 209,
+        "tie": 0,
+        "loss": 13,
+        "n": 222,
+        "per_project": {
+          "activemq": {
+            "win": 1,
+            "tie": 0,
+            "loss": 0
+          },
+          "hadoop": {
+            "win": 5,
+            "tie": 0,
+            "loss": 2
+          },
+          "hbase": {
+            "win": 18,
+            "tie": 0,
+            "loss": 1
+          },
+          "hive": {
+            "win": 9,
+            "tie": 0,
+            "loss": 1
+          },
+          "jackrabbit-oak": {
+            "win": 9,
+            "tie": 0,
+            "loss": 1
+          },
+          "james": {
+            "win": 12,
+            "tie": 0,
+            "loss": 2
+          },
+          "kafka": {
+            "win": 90,
+            "tie": 0,
+            "loss": 4
+          },
+          "karaf": {
+            "win": 5,
+            "tie": 0,
+            "loss": 2
+          },
+          "log4j": {
+            "win": 2,
+            "tie": 0,
+            "loss": 0
+          },
+          "tvm": {
+            "win": 58,
+            "tie": 0,
+            "loss": 0
+          }
+        }
+      }
+    },
+    "New/Edited": {
+      "lgbm|ChangedOrNewFirst": {
+        "win": 61,
+        "tie": 459,
+        "loss": 637,
+        "n": 1157,
+        "per_project": {
+          "activemq": {
+            "win": 0,
+            "tie": 1,
+            "loss": 0
+          },
+          "hadoop": {
+            "win": 1,
+            "tie": 7,
+            "loss": 7
+          },
+          "hbase": {
+            "win": 2,
+            "tie": 2,
+            "loss": 0
+          },
+          "hive": {
+            "win": 2,
+            "tie": 14,
+            "loss": 1
+          },
+          "jackrabbit-oak": {
+            "win": 1,
+            "tie": 4,
+            "loss": 9
+          },
+          "james": {
+            "win": 2,
+            "tie": 16,
+            "loss": 23
+          },
+          "kafka": {
+            "win": 52,
+            "tie": 380,
+            "loss": 583
+          },
+          "karaf": {
+            "win": 1,
+            "tie": 1,
+            "loss": 1
+          },
+          "tvm": {
+            "win": 0,
+            "tie": 34,
+            "loss": 13
+          }
+        }
+      },
+      "lgbm|QTF": {
+        "win": 1038,
+        "tie": 97,
+        "loss": 22,
+        "n": 1157,
+        "per_project": {
+          "activemq": {
+            "win": 1,
+            "tie": 0,
+            "loss": 0
+          },
+          "hadoop": {
+            "win": 15,
+            "tie": 0,
+            "loss": 0
+          },
+          "hbase": {
+            "win": 4,
+            "tie": 0,
+            "loss": 0
+          },
+          "hive": {
+            "win": 17,
+            "tie": 0,
+            "loss": 0
+          },
+          "jackrabbit-oak": {
+            "win": 14,
+            "tie": 0,
+            "loss": 0
+          },
+          "james": {
+            "win": 39,
+            "tie": 1,
+            "loss": 1
+          },
+          "kafka": {
+            "win": 914,
+            "tie": 80,
+            "loss": 21
+          },
+          "karaf": {
+            "win": 3,
+            "tie": 0,
+            "loss": 0
+          },
+          "tvm": {
+            "win": 31,
+            "tie": 16,
+            "loss": 0
+          }
+        }
+      },
+      "lgbm|cbt_LastFail": {
+        "win": 954,
+        "tie": 134,
+        "loss": 69,
+        "n": 1157,
+        "per_project": {
+          "activemq": {
+            "win": 1,
+            "tie": 0,
+            "loss": 0
+          },
+          "hadoop": {
+            "win": 14,
+            "tie": 0,
+            "loss": 1
+          },
+          "hbase": {
+            "win": 4,
+            "tie": 0,
+            "loss": 0
+          },
+          "hive": {
+            "win": 9,
+            "tie": 8,
+            "loss": 0
+          },
+          "jackrabbit-oak": {
+            "win": 9,
+            "tie": 2,
+            "loss": 3
+          },
+          "james": {
+            "win": 32,
+            "tie": 3,
+            "loss": 6
+          },
+          "kafka": {
+            "win": 847,
+            "tie": 109,
+            "loss": 59
+          },
+          "karaf": {
+            "win": 3,
+            "tie": 0,
+            "loss": 0
+          },
+          "tvm": {
+            "win": 35,
+            "tie": 12,
+            "loss": 0
+          }
+        }
+      },
+      "stack|ChangedOrNewFirst": {
+        "win": 47,
+        "tie": 424,
+        "loss": 686,
+        "n": 1157,
+        "per_project": {
+          "activemq": {
+            "win": 0,
+            "tie": 1,
+            "loss": 0
+          },
+          "hadoop": {
+            "win": 1,
+            "tie": 4,
+            "loss": 10
+          },
+          "hbase": {
+            "win": 2,
+            "tie": 1,
+            "loss": 1
+          },
+          "hive": {
+            "win": 2,
+            "tie": 13,
+            "loss": 2
+          },
+          "jackrabbit-oak": {
+            "win": 1,
+            "tie": 3,
+            "loss": 10
+          },
+          "james": {
+            "win": 3,
+            "tie": 15,
+            "loss": 23
+          },
+          "kafka": {
+            "win": 37,
+            "tie": 350,
+            "loss": 628
+          },
+          "karaf": {
+            "win": 1,
+            "tie": 1,
+            "loss": 1
+          },
+          "tvm": {
+            "win": 0,
+            "tie": 36,
+            "loss": 11
+          }
+        }
+      },
+      "stack|QTF": {
+        "win": 1037,
+        "tie": 97,
+        "loss": 23,
+        "n": 1157,
+        "per_project": {
+          "activemq": {
+            "win": 1,
+            "tie": 0,
+            "loss": 0
+          },
+          "hadoop": {
+            "win": 15,
+            "tie": 0,
+            "loss": 0
+          },
+          "hbase": {
+            "win": 4,
+            "tie": 0,
+            "loss": 0
+          },
+          "hive": {
+            "win": 17,
+            "tie": 0,
+            "loss": 0
+          },
+          "jackrabbit-oak": {
+            "win": 14,
+            "tie": 0,
+            "loss": 0
+          },
+          "james": {
+            "win": 38,
+            "tie": 2,
+            "loss": 1
+          },
+          "kafka": {
+            "win": 914,
+            "tie": 79,
+            "loss": 22
+          },
+          "karaf": {
+            "win": 3,
+            "tie": 0,
+            "loss": 0
+          },
+          "tvm": {
+            "win": 31,
+            "tie": 16,
+            "loss": 0
+          }
+        }
+      },
+      "stack|cbt_LastFail": {
+        "win": 956,
+        "tie": 131,
+        "loss": 70,
+        "n": 1157,
+        "per_project": {
+          "activemq": {
+            "win": 1,
+            "tie": 0,
+            "loss": 0
+          },
+          "hadoop": {
+            "win": 14,
+            "tie": 0,
+            "loss": 1
+          },
+          "hbase": {
+            "win": 4,
+            "tie": 0,
+            "loss": 0
+          },
+          "hive": {
+            "win": 9,
+            "tie": 8,
+            "loss": 0
+          },
+          "jackrabbit-oak": {
+            "win": 10,
+            "tie": 1,
+            "loss": 3
+          },
+          "james": {
+            "win": 32,
+            "tie": 4,
+            "loss": 5
+          },
+          "kafka": {
+            "win": 849,
+            "tie": 106,
+            "loss": 60
+          },
+          "karaf": {
+            "win": 3,
+            "tie": 0,
+            "loss": 0
+          },
+          "tvm": {
+            "win": 34,
+            "tie": 12,
+            "loss": 1
+          }
+        }
+      }
+    }
+  },
+  "_meta": {
+    "generated": "2026-11-16 10:29:11",
+    "git_sha": "eca2819"
+  }
+}

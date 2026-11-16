@@ -55,7 +55,7 @@
     "install_seconds": 608.5,
     "probe_returncode": 0,
     "install_mode": "non-editable (copies the package; stp.paths.ROOT points into site-packages, no data/)",
-    "installed_at": "C:\\Users\\Abhi\\AppData\\Local\\Temp\\smartci_audit_yi79dw3j\\freshvenv\\Lib\\site-packages\\smartci\\__init__.py",
+    "installed_at": "<tmp>\\smartci_audit_yi79dw3j\\freshvenv\\Lib\\site-packages\\smartci\\__init__.py",
     "model_version": "0.1.0",
     "n_features": 25,
     "n_features_coldstart": 13,
@@ -67,7 +67,7 @@
     "top": "tests/test_paths.py",
     "model_used": "model_coldstart",
     "research_modules_imported": [],
-    "python": "C:\\Users\\Abhi\\AppData\\Local\\Temp\\smartci_audit_yi79dw3j\\freshvenv\\Scripts\\python.exe"
+    "python": "<tmp>\\smartci_audit_yi79dw3j\\freshvenv\\Scripts\\python.exe"
   },
   "smoke": {
     "returncode": 0,

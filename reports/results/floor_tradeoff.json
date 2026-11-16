@@ -1,0 +1,226 @@
+{
+  "rule": ", fixed before the test split is scored (also written to the JSON before the test step runs):\n  on the VALIDATION split, among the f whose macro APFDc on All failed runs is at most 0.005 below f = 0, take the f\n  with the highest macro APFDc on FirstFail-old; if none beats f = 0 on FirstFail-old, f* = 0.\nShip rule: smartci gets the floor only if f* > 0 and, on the TEST split (reported once), the paired difference\n  f* \u2212 0 on FirstFail-old has a 95% PR-clustered CI above 0 and the All mean difference is \u2265 \u22120.005.",
+  "grid": [
+    0.0,
+    1e-05,
+    3e-05,
+    0.0001,
+    0.0003,
+    0.001,
+    0.003,
+    0.01,
+    0.03,
+    0.1,
+    1.0
+  ],
+  "val_curve": {
+    "f=0": {
+      "All": 0.873191,
+      "FirstFail-asof": 0.770148,
+      "FirstFail-old": 0.697043
+    },
+    "f=1e-05": {
+      "All": 0.873258,
+      "FirstFail-asof": 0.772181,
+      "FirstFail-old": 0.700505
+    },
+    "f=3e-05": {
+      "All": 0.873266,
+      "FirstFail-asof": 0.774023,
+      "FirstFail-old": 0.70333
+    },
+    "f=0.0001": {
+      "All": 0.873004,
+      "FirstFail-asof": 0.778216,
+      "FirstFail-old": 0.709179
+    },
+    "f=0.0003": {
+      "All": 0.872116,
+      "FirstFail-asof": 0.79353,
+      "FirstFail-old": 0.726485
+    },
+    "f=0.001": {
+      "All": 0.863872,
+      "FirstFail-asof": 0.819592,
+      "FirstFail-old": 0.75422
+    },
+    "f=0.003": {
+      "All": 0.844693,
+      "FirstFail-asof": 0.836772,
+      "FirstFail-old": 0.777967
+    },
+    "f=0.01": {
+      "All": 0.799795,
+      "FirstFail-asof": 0.846918,
+      "FirstFail-old": 0.805502
+    },
+    "f=0.03": {
+      "All": 0.751905,
+      "FirstFail-asof": 0.849125,
+      "FirstFail-old": 0.817527
+    },
+    "f=0.1": {
+      "All": 0.706995,
+      "FirstFail-asof": 0.848777,
+      "FirstFail-old": 0.824453
+    },
+    "f=1": {
+      "All": 0.679952,
+      "FirstFail-asof": 0.848439,
+      "FirstFail-old": 0.82555
+    },
+    "QTF": {
+      "All": 0.683072,
+      "FirstFail-asof": 0.839277,
+      "FirstFail-old": 0.815467
+    }
+  },
+  "f_star": 0.0003,
+  "n_val_runs": {
+    "All": 8809,
+    "FirstFail-asof": 402,
+    "FirstFail-old": 257
+  },
+  "test": {
+    "curve": {
+      "f=0": {
+        "All": 0.870985,
+        "FirstFail-asof": 0.775282,
+        "FirstFail-old": 0.707854
+      },
+      "f=1e-05": {
+        "All": 0.871002,
+        "FirstFail-asof": 0.778092,
+        "FirstFail-old": 0.711452
+      },
+      "f=3e-05": {
+        "All": 0.871089,
+        "FirstFail-asof": 0.785358,
+        "FirstFail-old": 0.720604
+      },
+      "f=0.0001": {
+        "All": 0.869754,
+        "FirstFail-asof": 0.794018,
+        "FirstFail-old": 0.733084
+      },
+      "f=0.0003": {
+        "All": 0.866826,
+        "FirstFail-asof": 0.815065,
+        "FirstFail-old": 0.758207
+      },
+      "f=0.001": {
+        "All": 0.85879,
+        "FirstFail-asof": 0.825322,
+        "FirstFail-old": 0.772729
+      },
+      "f=0.003": {
+        "All": 0.836531,
+        "FirstFail-asof": 0.828158,
+        "FirstFail-old": 0.781038
+      },
+      "f=0.01": {
+        "All": 0.78785,
+        "FirstFail-asof": 0.82743,
+        "FirstFail-old": 0.790699
+      },
+      "f=0.03": {
+        "All": 0.741125,
+        "FirstFail-asof": 0.828416,
+        "FirstFail-old": 0.801226
+      },
+      "f=0.1": {
+        "All": 0.694034,
+        "FirstFail-asof": 0.828269,
+        "FirstFail-old": 0.805633
+      },
+      "f=1": {
+        "All": 0.663032,
+        "FirstFail-asof": 0.828177,
+        "FirstFail-old": 0.805936
+      },
+      "QTF": {
+        "All": 0.672268,
+        "FirstFail-asof": 0.822515,
+        "FirstFail-old": 0.800187
+      }
+    },
+    "delta_vs_f0": {
+      "All": {
+        "mean": -0.004159,
+        "lo": -0.006341,
+        "hi": -0.002396,
+        "n_runs": 9301,
+        "n_prs": 1271,
+        "n_projects": 10,
+        "small_n": true,
+        "per_project": {
+          "activemq": -0.005186,
+          "hadoop": -0.001937,
+          "hbase": -0.001458,
+          "hive": -0.003566,
+          "jackrabbit-oak": -0.003925,
+          "james": -0.006269,
+          "kafka": -0.001971,
+          "karaf": -0.014691,
+          "log4j": -0.005691,
+          "tvm": 0.003103
+        },
+        "excludes_zero": true
+      },
+      "FirstFail-asof": {
+        "mean": 0.039782,
+        "lo": 0.021283,
+        "hi": 0.066934,
+        "n_runs": 335,
+        "n_prs": 139,
+        "n_projects": 10,
+        "small_n": true,
+        "per_project": {
+          "activemq": -0.002363,
+          "hadoop": 0.075308,
+          "hbase": -0.003093,
+          "hive": 0.062917,
+          "jackrabbit-oak": 0.045897,
+          "james": 0.004947,
+          "kafka": 0.038895,
+          "karaf": 0.043723,
+          "log4j": 0.113909,
+          "tvm": 0.017685
+        },
+        "excludes_zero": true
+      },
+      "FirstFail-old": {
+        "mean": 0.050353,
+        "lo": 0.024025,
+        "hi": 0.084908,
+        "n_runs": 222,
+        "n_prs": 97,
+        "n_projects": 10,
+        "small_n": true,
+        "per_project": {
+          "activemq": -0.004719,
+          "hadoop": 0.118691,
+          "hbase": -0.003571,
+          "hive": 0.088095,
+          "jackrabbit-oak": 0.045002,
+          "james": 0.01301,
+          "kafka": 0.064665,
+          "karaf": 0.043749,
+          "log4j": 0.113909,
+          "tvm": 0.024699
+        },
+        "excludes_zero": true
+      }
+    },
+    "ship": true,
+    "n_test_runs": {
+      "All": 9271,
+      "FirstFail-asof": 335,
+      "FirstFail-old": 222
+    }
+  },
+  "_meta": {
+    "generated": "2026-11-16 10:44:18",
+    "git_sha": "eca2819"
+  }
+}

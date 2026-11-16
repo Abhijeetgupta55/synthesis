@@ -52,6 +52,8 @@ class GlobalModel:
                      "model_coldstart": [f["name"] for f in self.schema["features_coldstart"]]}
         self.defaults = {f["name"]: f["default"] for f in self.schema["features"] + self.schema["features_coldstart"]}
         self.version = self.schema["version"]
+        # probability floor for the ordering (RESULTS.md 4.3): off by default; $SMARTCI_FLOOR turns it on
+        self.floor = float(os.environ.get("SMARTCI_FLOOR") or self.schema.get("ordering_floor", 0.0))
 
     def matrix(self, rows: list[dict], which: str) -> np.ndarray:
         cols = self.cols[which]
@@ -121,7 +123,8 @@ def score(repo: Path, test_files: list[str], change: Change, t: float | None = N
     p = apply_adapter(p, load_adapter(repo), cov)
     dur = np.array([r["dur_ema_asof"] if r["dur_source"] > 0 else _profile_duration(repo, f)
                     for r, f in zip(rows, test_files)], dtype=float)
-    prio = p / (dur + 1e-3)
+    # optional probability floor (ordering only; P(fail) is reported as is). Default 0 = the model's order.
+    prio = np.maximum(p, model.floor) / (dur + 1e-3)
     contrib = model.contributions(rows, which) if explain else [{} for _ in rows]
     return [Scored(f, float(pi), float(di), float(qi), r, which, c)
             for f, pi, di, qi, r, c in zip(test_files, p, dur, prio, rows, contrib)]

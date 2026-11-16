@@ -1,5 +1,2 @@
-# Demo app only (Python 3.11): streamlit run app/demo.py
-streamlit==1.66.0
-pandas==3.0.6
-matplotlib==3.11.2
-numpy==2.4.6
+# Demo app (Python 3.11): same pins as the root requirements.txt
+-r requirements.txt

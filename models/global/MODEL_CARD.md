@@ -22,7 +22,7 @@ Date ranges per project and split: see `reports/results/splits.json`.
 25 features (main model), 13 for the cold-start variant used while a repository has fewer than 5 recorded CI runs (no outcome history, no co-failure memory). Names, order, dtypes and missing-value defaults: `schema.json`.
 
 ## Output and ordering
-Isotonic-calibrated P(test file fails in this run). priority = calibrated P(fail) / (expected duration + 0.001 s), descending.
+Isotonic-calibrated P(test file fails in this run). priority = max(calibrated P(fail), ordering_floor) / (expected duration + 0.001 s), descending. ordering_floor is 0 by default. ordering_floor_lrts was chosen on LRTS validation and held on LRTS test (RESULTS.md 4.3) but slowed smartci on the NetworkX backtest; enable it with $SMARTCI_FLOOR.
 
 ## Evaluation (held-out, time-respecting; numbers generated from reports/results)
 

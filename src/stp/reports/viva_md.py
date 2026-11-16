@@ -32,6 +32,98 @@ def section(title, what, how, why, result, qa) -> str:
     return "\n".join(out) + "\n"
 
 
+def _j(name):
+    try:
+        return json.loads((paths.RESULTS / f"{name}.json").read_text(encoding="utf-8"))
+    except Exception:  # noqa: BLE001
+        return {}
+
+
+def framing_questions() -> str:
+    """The eight questions the 'when does ML beat simple rules?' framing invites, answered with numbers."""
+    from stp.reports.error_md import _ci, get, verdict
+    M, C, L, E, F, RW, LB, LS = (_j(n) for n in ("models", "models_classification", "labels", "error_analysis",
+                                                 "floor_tradeoff", "real_world", "leakage_bruteforce",
+                                                 "leakage_signal"))
+    nan = float("nan")
+    nx = get(RW, "networkx", "backtest_summary", "all", default={})
+
+    def med(m):
+        return get(nx, "median_ttff_s", m, "median", default=nan)
+
+    best_nx = nx.get("best_simple_baseline", "changed_files_first")
+    w_nx = get(nx, "vs_smartci", best_nx, default={})
+    ff = get(E, "firstfail_old", "macro", default={})
+    tv = get(E, "tvm_drift", "splits", default={})
+    ec = C.get("error_corr") or {}
+    rc = "?"
+    if ec:
+        n = ec["names"]
+        rc = f"{ec['residual_corr'][n.index('lgbm')][n.index('rf')]:.2f}"
+    dl = get(F, "test", "delta_vs_f0", default={})
+    best_pr = max(get(C, "models", m, "pr_auc", default=0) for m in ("lr", "rf", "lgbm", "vote", "stack"))
+    rate_ratio = get(tv, "valB", "row_failure_rate", default=0) / max(get(tv, "test", "row_failure_rate", default=1),
+                                                                      1e-12)
+    vb = get(M, "vs_best_simple", "All", "macro10", "lgbm")
+    qa = [
+        ("Isn't this just a scheduler?",
+         "The output is an order, so the last step is scheduling: sort by P(fail) / expected duration. The ML part "
+         "is estimating P(fail) for every test in every run, which no scheduler knows. The order itself matters a "
+         f"lot: on NetworkX the median time to the first failure falls from {med('default'):.1f} s (pytest's order) "
+         f"to {med('smartci'):.2f} s; on LRTS a random order scores APFDc "
+         f"{get(M, 'cells', 'All', 'macro10', 'Random', 'apfdc', 'mean', default=nan):.3f} and the model "
+         f"{get(M, 'cells', 'All', 'macro10', 'lgbm', 'apfdc', 'mean', default=nan):.3f}."),
+        ("Why does the model lose on first-time failures?",
+         "It learned that tests which failed before fail again, which is right for recurring failures. When the "
+         "failing test has never failed, the time spent on previously-failed tests is wasted: before reaching the "
+         f"failure the model has used {ff.get('model|time_share_before_target', nan):.1%} of suite time (QTF "
+         f"{ff.get('QTF|time_share_before_target', nan):.1%}), "
+         f"{ff.get('model|prev_failed_share_of_time_before', nan):.0%} of it on previously-failed tests. "
+         f"Delta APFDc vs QTF {_ci(get(M, 'vs_best_simple', 'FirstFail-old', 'macro10', 'lgbm'))}. A probability "
+         f"floor recovers {_ci(dl['FirstFail-old']) if dl else '(not computed)'} of it (RESULTS.md section 4)."),
+        ("Why is a simple rule as good on NetworkX?",
+         f"Median seconds to first failure: smartci {med('smartci'):.2f}, {best_nx} {med(best_nx):.2f}; smartci "
+         f"wins / ties / loses {w_nx.get('win')} / {w_nx.get('tie')} / {w_nx.get('loss')} against it. NetworkX "
+         "names each test file after the module it tests, so running the tests of the changed files already finds "
+         "most bugs, and NetworkX has almost no recorded CI history, so the model runs in cold-start mode without "
+         "its strongest (history) features."),
+        ("Why PR-AUC and not accuracy?",
+         f"Only {get(L, 'pooled', 'pos_rate_fail', default=nan):.3%} of (run, test) rows fail, so always predicting "
+         f"'pass' is {get(L, 'pooled', 'always_pass_accuracy', default=nan):.2%} accurate and finds nothing. PR-AUC "
+         "asks how well failures are ranked above passes; a random ranking scores the base rate, our best model "
+         f"{best_pr:.3f}."),
+        ("Why do ensembles add so little?",
+         f"PR-AUC LightGBM {get(C, 'models', 'lgbm', 'pr_auc', default=nan):.3f}, voting "
+         f"{get(C, 'models', 'vote', 'pr_auc', default=nan):.3f}, stacking "
+         f"{get(C, 'models', 'stack', 'pr_auc', default=nan):.3f}; the APFDc confidence intervals overlap. Ensembles "
+         f"help when members make different mistakes; the residuals of LightGBM and random forest correlate at {rc}, "
+         "because all models lean on the same history features."),
+        ("Why did the TVM model collapse on the test period?",
+         "Not because the features drifted (drift against train is large in both validation and test). The "
+         f"validation period was easier: the row failure rate was {rate_ratio:.1f}x higher and failures repeated "
+         "more, which history features catch. One project's single validation period was too little to choose a "
+         "model on; the pooled all-projects model was shipped instead (disclosed)."),
+        ("Was any future information used?",
+         "No feature uses it: every history feature counts only runs that had finished when the run started "
+         f"(brute-force recomputation from raw data matches {LB.get('n_match')}/{LB.get('n_runs')} random runs; no "
+         f"single feature reaches the suspicious PR-AUC threshold {LS.get('threshold')}). Splits are by time. JIRA "
+         "flaky labels (future knowledge) only filter the evaluation. Hyperparameters and the floor were chosen on "
+         "validation. One disclosed exception: when the TVM-only variant failed on test, shipping the pooled variant "
+         "instead used test information."),
+        ("Who would actually use this?",
+         "Teams with long suites (the LRTS projects' median suite takes hours) and recurring failures, where the "
+         f"model is level with or slightly above the best simple rule ({_ci(vb)}, {verdict(vb)}) and clearly above "
+         f"the paper's best history rule ({_ci(get(M, 'vs_cbt_lastfail_All'))}). On a small Python repo a simple "
+         "rule is enough, and `smartci backtest` says so for that repo."),
+    ]
+    out = ["## Questions this framing invites", "",
+           "*The project asks when ML beats simple rules for ordering tests. These are the questions that framing "
+           "invites, with short answers backed by numbers.*", ""]
+    for q, a in qa:
+        out += [f"**{q}**  ", a, ""]
+    return "\n".join(out)
+
+
 def build() -> str:
     pct = "{:.1%}"
     S = [
@@ -210,7 +302,7 @@ def build() -> str:
     head = ["# VIVA NOTES", "",
             "Generated by `python -m stp.reports.viva_md`. Concept text is fixed; every number is read from "
             "`reports/results/*.json`. '(pending …)' marks a result not generated yet.", ""]
-    return "\n".join(head) + "\n" + "\n".join(S)
+    return "\n".join(head) + "\n" + framing_questions() + "\n" + "\n".join(S)
 
 
 def main() -> None:
