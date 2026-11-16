@@ -23,7 +23,7 @@
   pending mains power.
 - **D trade-off:** done. Floor f* chosen on validation, held on LRTS test; failed a NetworkX deployment check, so it is
   opt-in (`SMARTCI_FLOOR`), off by default.
-- **E dashboard:** done. Six pages, offline, smoke test passing, screenshots in `reports/demo_screenshots/`.
+- **E dashboard:** done. Seven pages (six required + a guided demo), offline, smoke test passing, screenshots in `reports/demo_screenshots/`.
 - **F GitHub readiness:** done except the push (students). README generated, `tests.yml`, `requirements.txt`,
   `scripts/publish_check.py` passes.
 - **G presentation pack:** done. DEMO_SCRIPT.md (timing section fills itself after Phase C), RUBRIC_MAP.md,
