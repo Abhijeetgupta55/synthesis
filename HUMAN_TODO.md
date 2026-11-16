@@ -17,46 +17,22 @@ Each item has exact steps. Remove an item once it is done. Commands are PowerShe
    code* page shows them when the NetworkX clone is absent (for example on Streamlit hosting). Then tell Claude Code
    "recordings are done" so it regenerates the reports and commits.
 
-1. **Push this repository** (the fork's CI installs smartci from it). Remote: `github.com/Abhijeetgupta55/synthesis`
-   (already set as `origin`; `OWNER` placeholders are already replaced).
-   ```powershell
-   .venv\Scripts\python.exe scripts\publish_check.py     # confirms no data, clones or pickles are tracked
-   git push -u origin main
-   ```
-   On GitHub → **Actions**, the `tests` workflow should turn green in ~10 minutes.
+1. **Done 2026-11-17: repository pushed; NetworkX fork CI running.** Fork `Abhijeetgupta55/networkx`, branch
+   `smartci-base` (workflow + `.smartci-baseline/`), five bug branches, PRs #1–#5 against `smartci-base`
+   (https://github.com/Abhijeetgupta55/networkx/pulls), each with the three-job comparison and its PR comment.
+   To add more bugs later: `make_branches.py --fork-dir A:\ML
+etworkx-fork --smartci-dir external
+etworkx\.smartci
+   --n 10 --seed 2 --push`, open PRs against `smartci-base`, then
+   `$env:GITHUB_TOKEN = (gh auth token); .venv\Scripts\python.exe live_demo\public_ci\collect_runs.py --repo Abhijeetgupta55/networkx`.
 
-2. **Real CI on a NetworkX fork (the "GitHub PR" part of the demo).**
-   1. On github.com open https://github.com/networkx/networkx → **Fork** → owner `Abhijeetgupta55`, name `networkx`
-      → Create fork.
-   2. In the fork: **Actions** tab → "I understand my workflows, go ahead and enable them".
-   3. Clone it next to this repository and make the branches (`smartci-base` with the workflow and the `.smartci`
-      baseline, plus one branch per bug):
-      ```powershell
-      git clone https://github.com/Abhijeetgupta55/networkx.git ..\networkx-fork
-      .venv\Scripts\python.exe live_demo\public_ci\make_branches.py --fork-dir ..\networkx-fork `
-          --smartci-dir external\networkx\.smartci --n 5 --seed 1 --push
-      ```
-   4. For each pushed branch `smartci-bug-…`: on GitHub → **Pull requests** → **New pull request** → base
-      repository **Abhijeetgupta55/networkx**, base **smartci-base** (not networkx/networkx, not main), compare
-      `smartci-bug-…` → Create. Each PR starts the `smartci-compare` workflow: jobs `default`, `rule`, `model`,
-      then `report`, which comments on the PR (top 10 tests with probability and reasons, the failing test's queue
-      position in each order, each job's time) and writes the job summary.
-   5. When the runs have finished (~10 minutes each), collect them:
-      ```powershell
-      $env:GITHUB_TOKEN = "<a fine-grained token with read access to Actions on the fork>"
-      .venv\Scripts\python.exe live_demo\public_ci\collect_runs.py --repo Abhijeetgupta55/networkx
-      git add reports\PUBLIC_RUNS.md reports\results\public_runs.json live_demo\public_ci\branches.json
-      git commit -m "Public CI runs on the NetworkX fork"; git push
-      ```
-      `reports/PUBLIC_RUNS.md` then holds the run links and GitHub's own job and step durations.
-
-3. **Optional: put the dashboard online (free).** https://share.streamlit.io → sign in with GitHub → **Create app**
+2. **Optional: put the dashboard online (free).** https://share.streamlit.io → sign in with GitHub → **Create app**
    → repository `Abhijeetgupta55/synthesis`, branch `main`, main file `app/demo.py`, Python 3.11 → Deploy.
    It reads only `demo_bundle/`; ML Lab trains live there too. Without the NetworkX clone, *Break the code* shows
    the recordings from item 0.
 
-4. **Complete `reports/AI_USE_DISCLOSURE.md`.** Fill every **[STUDENTS: …]** blank with what the team decided,
+3. **Complete `reports/AI_USE_DISCLOSURE.md`.** Fill every **[STUDENTS: …]** blank with what the team decided,
    checked and wrote, and the member table.
 
-5. **Before the presentation:** read `reports/DEMO_SCRIPT.md`; rehearse once plugged in; learn the questions at the
+4. **Before the presentation:** read `reports/DEMO_SCRIPT.md`; rehearse once plugged in; learn the questions at the
    top of `reports/VIVA_NOTES.md`; each member should explain the rubric items in `reports/RUBRIC_MAP.md`.

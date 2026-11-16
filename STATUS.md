@@ -43,7 +43,7 @@
 - **3 GitHub CI:** remote `Abhijeetgupta55/synthesis` (no `OWNER` left). `.github/workflows/smartci-compare.yml`
   (jobs default / rule / model + report: job summary and PR comment via `smartci.ci_report`), baseline committed to
   the fork's `smartci-base` as `.smartci-baseline/` by `make_branches.py` (dry run on a local clone OK; the three job
-  commands checked locally). Fork, push and PRs: HUMAN_TODO 1–2. `reports/PUBLIC_RUNS.md` has no run yet.
+  commands checked locally). Pushed; fork `Abhijeetgupta55/networkx` has PRs #1–#5 with the three-job runs and PR comments (2026-11-17); links and GitHub durations in `reports/PUBLIC_RUNS.md`.
 - **4 Break the code:** two real pytest processes streamed with a stopwatch incl. start-up, real traceback
   (`stp.demo.live_run`); recordings fallback. **Recordings pending mains power** (HUMAN_TODO 0).
 - **5** queue position + test time + end-to-end shown together everywhere a time is shown.
@@ -53,7 +53,7 @@
 ## Next
 
 1. On mains power: HUMAN_TODO 0 (recordings, optionally Phase C), then regenerate reports and commit.
-2. Students: HUMAN_TODO 1 (push), 2 (fork + PRs + collect runs), 4 (disclosure), 5 (rehearse).
+2. Students: HUMAN_TODO 3 (disclosure), 4 (rehearse); 2 (hosting) optional.
 
 ## How to resume
 

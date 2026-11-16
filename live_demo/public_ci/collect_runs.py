@@ -20,13 +20,38 @@ ROOT = Path(__file__).resolve().parents[2]
 API = "https://api.github.com"
 
 
+class _NoAuthRedirect(urllib.request.HTTPRedirectHandler):
+    """Artifact zips redirect to blob storage, which rejects GitHub's Authorization header: drop it there."""
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        new = super().redirect_request(req, fp, code, msg, headers, newurl)
+        if new is not None:
+            new.headers.pop("Authorization", None)
+            new.unredirected_hdrs.pop("Authorization", None)
+        return new
+
+
+_OPENER = urllib.request.build_opener(_NoAuthRedirect)
+
+
+def fetch(req: urllib.request.Request, tries: int = 6) -> bytes:
+    """GET with retries (slow or flaky connections time out on the TLS handshake)."""
+    import time
+    for i in range(tries):
+        try:
+            with _OPENER.open(req, timeout=60) as r:
+                return r.read()
+        except OSError:
+            if i == tries - 1:
+                raise
+            time.sleep(2 + 2 * i)
+
+
 def get(url: str) -> dict:
     req = urllib.request.Request(url, headers={"Accept": "application/vnd.github+json"})
     tok = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
     if tok:
         req.add_header("Authorization", f"Bearer {tok}")
-    with urllib.request.urlopen(req, timeout=30) as r:
-        return json.loads(r.read().decode())
+    return json.loads(fetch(req).decode())
 
 
 def secs(a: str | None, b: str | None) -> float | None:
@@ -93,8 +118,7 @@ def summaries(repo: str, run_id: int) -> dict:
             continue
         req = urllib.request.Request(art["archive_download_url"], headers={
             "Authorization": f"Bearer {os.environ.get('GITHUB_TOKEN') or os.environ.get('GH_TOKEN')}"})
-        with urllib.request.urlopen(req, timeout=60) as r:
-            z = zipfile.ZipFile(io.BytesIO(r.read()))
+        z = zipfile.ZipFile(io.BytesIO(fetch(req)))
         for n in z.namelist():
             if n.startswith("summary-") and n.endswith(".json"):
                 s = json.loads(z.read(n).decode())

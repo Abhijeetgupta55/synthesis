@@ -1,0 +1,1340 @@
+[
+ {
+  "branch": "smartci-bug-b3c9b00a",
+  "id": "b3c9b00aaab32ed74e5be79bf5960772d3e63467",
+  "kind": "mined",
+  "url": "https://github.com/networkx/networkx/commit/b3c9b00aaab32ed74e5be79bf5960772d3e63467",
+  "title": "Fix sparse heuristic not applied to diagonal blocks in stochastic_block_model (#8557)",
+  "expected_failing": [
+   "networkx/generators/tests/test_community.py"
+  ],
+  "run_url": "https://github.com/Abhijeetgupta55/networkx/actions/runs/43946185175",
+  "status": "completed",
+  "event": "pull_request",
+  "conclusion": "failure",
+  "jobs": {
+   "rule": {
+    "job_s": 52.0,
+    "url": "https://github.com/Abhijeetgupta55/networkx/actions/runs/43946185175/job/133576342597",
+    "pytest_step_s": 14.0,
+    "conclusion": "failure"
+   },
+   "default": {
+    "job_s": 148.0,
+    "url": "https://github.com/Abhijeetgupta55/networkx/actions/runs/43946185175/job/133576343006",
+    "pytest_step_s": 111.0,
+    "conclusion": "failure"
+   },
+   "model": {
+    "job_s": 54.0,
+    "url": "https://github.com/Abhijeetgupta55/networkx/actions/runs/43946185175/job/133576343056",
+    "pytest_step_s": 16.0,
+    "conclusion": "failure"
+   },
+   "report": {
+    "job_s": 33.0,
+    "url": "https://github.com/Abhijeetgupta55/networkx/actions/runs/43946185175/job/133577868506",
+    "pytest_step_s": null,
+    "conclusion": "success"
+   }
+  },
+  "summaries": {
+   "rule": {
+    "name": "rule",
+    "label": "simple rule (changed_files_first)",
+    "first_failure": "networkx/generators/tests/test_community.py::test_stochastic_block_model",
+    "first_failing_file": "networkx/generators/tests/test_community.py",
+    "queue_position": 1,
+    "n_test_files": 263,
+    "test_s_to_first_failure": 0.17621946334838867,
+    "pytest_step_s": 13.4,
+    "exit_code": 1,
+    "github": {
+     "GITHUB_REPOSITORY": "Abhijeetgupta55/networkx",
+     "GITHUB_RUN_ID": "43946185175",
+     "GITHUB_SHA": "7949ca9446af87c77f663fab85bbd472f43d2b02",
+     "GITHUB_HEAD_REF": "smartci-bug-b3c9b00a",
+     "GITHUB_BASE_REF": "smartci-base"
+    },
+    "rule": "changed_files_first",
+    "model_variant": "model_coldstart",
+    "top10": [
+     {
+      "rank": 1,
+      "test_file": "networkx/generators/tests/test_community.py",
+      "p_fail": 0.010505939471385265,
+      "reasons": []
+     },
+     {
+      "rank": 2,
+      "test_file": "networkx/generators/tests/test_atlas.py",
+      "p_fail": 4.816662373479528e-05,
+      "reasons": []
+     },
+     {
+      "rank": 3,
+      "test_file": "networkx/generators/tests/test_classic.py",
+      "p_fail": 0.00014711088458889169,
+      "reasons": []
+     },
+     {
+      "rank": 4,
+      "test_file": "networkx/generators/tests/test_cographs.py",
+      "p_fail": 3.4554695348436232e-06,
+      "reasons": []
+     },
+     {
+      "rank": 5,
+      "test_file": "networkx/generators/tests/test_degree_seq.py",
+      "p_fail": 0.0001471108847515957,
+      "reasons": []
+     },
+     {
+      "rank": 6,
+      "test_file": "networkx/generators/tests/test_directed.py",
+      "p_fail": 0.00014711088434419284,
+      "reasons": []
+     },
+     {
+      "rank": 7,
+      "test_file": "networkx/generators/tests/test_duplication.py",
+      "p_fail": 3.4554695260705595e-06,
+      "reasons": []
+     },
+     {
+      "rank": 8,
+      "test_file": "networkx/generators/tests/test_ego.py",
+      "p_fail": 3.4554695222608086e-06,
+      "reasons": []
+     },
+     {
+      "rank": 9,
+      "test_file": "networkx/generators/tests/test_expanders.py",
+      "p_fail": 0.00014711088453954262,
+      "reasons": []
+     },
+     {
+      "rank": 10,
+      "test_file": "networkx/generators/tests/test_geometric.py",
+      "p_fail": 0.0002081337377328144,
+      "reasons": []
+     }
+    ]
+   },
+   "model": {
+    "name": "model",
+    "label": "smartci model",
+    "first_failure": "networkx/generators/tests/test_community.py::test_stochastic_block_model",
+    "first_failing_file": "networkx/generators/tests/test_community.py",
+    "queue_position": 2,
+    "n_test_files": 263,
+    "test_s_to_first_failure": 0.2334749698638916,
+    "pytest_step_s": 13.88,
+    "exit_code": 1,
+    "github": {
+     "GITHUB_REPOSITORY": "Abhijeetgupta55/networkx",
+     "GITHUB_RUN_ID": "43946185175",
+     "GITHUB_SHA": "7949ca9446af87c77f663fab85bbd472f43d2b02",
+     "GITHUB_HEAD_REF": "smartci-bug-b3c9b00a",
+     "GITHUB_BASE_REF": "smartci-base"
+    },
+    "rule": null,
+    "model_variant": "model_coldstart",
+    "top10": [
+     {
+      "rank": 1,
+      "test_file": "networkx/classes/tests/test_graph_historical.py",
+      "p_fail": 0.006109217226634883,
+      "expected_duration_s": 0.0615,
+      "reasons": [
+       "It is quick to run (0.06 s), so checking it first is cheap.",
+       "The change is large (2 files), which raises every test's risk a little.",
+       "Its name matches words in your diff (BM25 4.8)."
+      ]
+     },
+     {
+      "rank": 2,
+      "test_file": "networkx/generators/tests/test_community.py",
+      "p_fail": 0.010505939471385265,
+      "expected_duration_s": 0.8941999999999999,
+      "reasons": [
+       "Its name shares 2 word(s) with the changed paths.",
+       "It is quick to run (0.89 s), so checking it first is cheap.",
+       "Its directory path overlaps a changed file's path (100% of its package path matches)."
+      ]
+     },
+     {
+      "rank": 3,
+      "test_file": "networkx/algorithms/assortativity/tests/test_correlation.py",
+      "p_fail": 0.01962894508088392,
+      "expected_duration_s": 7.218500000000002,
+      "reasons": [
+       "It is quick to run (7.22 s), so checking it first is cheap.",
+       "The change is large (2 files), which raises every test's risk a little."
+      ]
+     },
+     {
+      "rank": 4,
+      "test_file": "networkx/tests/test_all_random_functions.py",
+      "p_fail": 3.4554694998691598e-06,
+      "expected_duration_s": 0.001,
+      "reasons": [
+       "It is quick to run (0.00 s), so checking it first is cheap.",
+       "The change is large (2 files), which raises every test's risk a little."
+      ]
+     },
+     {
+      "rank": 5,
+      "test_file": "networkx/classes/tests/test_graphviews.py",
+      "p_fail": 0.00014711088433657017,
+      "expected_duration_s": 0.08440000000000003,
+      "reasons": [
+       "It is quick to run (0.08 s), so checking it first is cheap.",
+       "The change is large (2 files), which raises every test's risk a little."
+      ]
+     },
+     {
+      "rank": 6,
+      "test_file": "networkx/algorithms/shortest_paths/tests/test_generic.py",
+      "p_fail": 0.00014711088433657017,
+      "expected_duration_s": 0.08540000000000003,
+      "reasons": [
+       "It is quick to run (0.09 s), so checking it first is cheap.",
+       "The change is large (2 files), which raises every test's risk a little."
+      ]
+     },
+     {
+      "rank": 7,
+      "test_file": "networkx/algorithms/tests/test_clique.py",
+      "p_fail": 0.00014711088438155108,
+      "expected_duration_s": 0.08570000000000003,
+      "reasons": [
+       "It is quick to run (0.09 s), so checking it first is cheap.",
+       "The change is large (2 files), which raises every test's risk a little."
+      ]
+     },
+     {
+      "rank": 8,
+      "test_file": "networkx/algorithms/approximation/tests/test_density.py",
+      "p_fail": 0.01869451104156609,
+      "expected_duration_s": 11.996499999999997,
+      "reasons": [
+       "It is quick to run (12.00 s), so checking it first is cheap.",
+       "The change is large (2 files), which raises every test's risk a little."
+      ]
+     },
+     {
+      "rank": 9,
+      "test_file": "networkx/linalg/tests/test_laplacian.py",
+      "p_fail": 0.00014711088434808545,
+      "expected_duration_s": 0.0951,
+      "reasons": [
+       "It is quick to run (0.10 s), so checking it first is cheap.",
+       "The change is large (2 files), which raises every test's risk a little."
+      ]
+     },
+     {
+      "rank": 10,
+      "test_file": "networkx/algorithms/tests/test_broadcasting.py",
+      "p_fail": 0.00014711088443245318,
+      "expected_duration_s": 0.09620000000000004,
+      "reasons": [
+       "It is quick to run (0.10 s), so checking it first is cheap.",
+       "The change is large (2 files), which raises every test's risk a little."
+      ]
+     }
+    ]
+   },
+   "default": {
+    "name": "default",
+    "label": "pytest's default order",
+    "first_failure": "networkx/generators/tests/test_community.py::test_stochastic_block_model",
+    "first_failing_file": "networkx/generators/tests/test_community.py",
+    "queue_position": 197,
+    "n_test_files": 263,
+    "test_s_to_first_failure": 97.22213983535767,
+    "pytest_step_s": 111.05,
+    "exit_code": 1,
+    "github": {
+     "GITHUB_REPOSITORY": "Abhijeetgupta55/networkx",
+     "GITHUB_RUN_ID": "43946185175",
+     "GITHUB_SHA": "7949ca9446af87c77f663fab85bbd472f43d2b02",
+     "GITHUB_HEAD_REF": "smartci-bug-b3c9b00a",
+     "GITHUB_BASE_REF": "smartci-base"
+    }
+   }
+  }
+ },
+ {
+  "branch": "smartci-bug-f4c159f2",
+  "id": "f4c159f2b7e71993fee5c98ed54dbe5c1ae6ad30",
+  "kind": "mined",
+  "url": "https://github.com/networkx/networkx/commit/f4c159f2b7e71993fee5c98ed54dbe5c1ae6ad30",
+  "title": "BUGFIX: spring energy and ARF layouts with zero iterations (#8486)",
+  "expected_failing": [
+   "networkx/drawing/tests/test_layout.py"
+  ],
+  "run_url": "https://github.com/Abhijeetgupta55/networkx/actions/runs/43946222934",
+  "status": "completed",
+  "event": "pull_request",
+  "conclusion": "failure",
+  "jobs": {
+   "default": {
+    "job_s": 150.0,
+    "url": "https://github.com/Abhijeetgupta55/networkx/actions/runs/43946222934/job/133576473986",
+    "pytest_step_s": 110.0,
+    "conclusion": "failure"
+   },
+   "model": {
+    "job_s": 41.0,
+    "url": "https://github.com/Abhijeetgupta55/networkx/actions/runs/43946222934/job/133576474723",
+    "pytest_step_s": 11.0,
+    "conclusion": "failure"
+   },
+   "rule": {
+    "job_s": 52.0,
+    "url": "https://github.com/Abhijeetgupta55/networkx/actions/runs/43946222934/job/133576476290",
+    "pytest_step_s": 15.0,
+    "conclusion": "failure"
+   },
+   "report": {
+    "job_s": 40.0,
+    "url": "https://github.com/Abhijeetgupta55/networkx/actions/runs/43946222934/job/133578013770",
+    "pytest_step_s": null,
+    "conclusion": "success"
+   }
+  },
+  "summaries": {
+   "model": {
+    "name": "model",
+    "label": "smartci model",
+    "first_failure": "networkx/drawing/tests/test_layout.py::TestLayout::test_zero_iterations_fruchterman_reingold[spring_layout0-energy]",
+    "first_failing_file": "networkx/drawing/tests/test_layout.py",
+    "queue_position": 2,
+    "n_test_files": 263,
+    "test_s_to_first_failure": 1.1930255889892578,
+    "pytest_step_s": 10.16,
+    "exit_code": 1,
+    "github": {
+     "GITHUB_REPOSITORY": "Abhijeetgupta55/networkx",
+     "GITHUB_RUN_ID": "43946222934",
+     "GITHUB_SHA": "d0f1ff5ec2986b0be0f231dd8a70c81609392be9",
+     "GITHUB_HEAD_REF": "smartci-bug-f4c159f2",
+     "GITHUB_BASE_REF": "smartci-base"
+    },
+    "rule": null,
+    "model_variant": "model_coldstart",
+    "top10": [
+     {
+      "rank": 1,
+      "test_file": "networkx/classes/tests/test_graph_historical.py",
+      "p_fail": 0.006239049811609626,
+      "expected_duration_s": 0.0615,
+      "reasons": [
+       "It is quick to run (0.06 s), so checking it first is cheap.",
+       "The change is large (2 files), which raises every test's risk a little."
+      ]
+     },
+     {
+      "rank": 2,
+      "test_file": "networkx/drawing/tests/test_layout.py",
+      "p_fail": 0.10116992698652388,
+      "expected_duration_s": 19.054999999999993,
+      "reasons": [
+       "It is quick to run (19.05 s), so checking it first is cheap.",
+       "Its directory path overlaps a changed file's path (100% of its package path matches).",
+       "Its name shares 2 word(s) with the changed paths."
+      ]
+     },
+     {
+      "rank": 3,
+      "test_file": "networkx/algorithms/assortativity/tests/test_correlation.py",
+      "p_fail": 0.01962894508437926,
+      "expected_duration_s": 7.218500000000002,
+      "reasons": [
+       "It is quick to run (7.22 s), so checking it first is cheap.",
+       "The change is large (2 files), which raises every test's risk a little."
+      ]
+     },
+     {
+      "rank": 4,
+      "test_file": "networkx/generators/tests/test_nonisomorphic_trees.py",
+      "p_fail": 0.0001471108842708742,
+      "expected_duration_s": 0.060399999999999995,
+      "reasons": [
+       "It is quick to run (0.06 s), so checking it first is cheap.",
+       "The change is large (2 files), which raises every test's risk a little."
+      ]
+     },
+     {
+      "rank": 5,
+      "test_file": "networkx/algorithms/tests/test_sparsifiers.py",
+      "p_fail": 0.0001471108842866134,
+      "expected_duration_s": 0.06330000000000001,
+      "reasons": [
+       "It is quick to run (0.06 s), so checking it first is cheap.",
+       "The change is large (2 files), which raises every test's risk a little."
+      ]
+     },
+     {
+      "rank": 6,
+      "test_file": "networkx/algorithms/tests/test_dominance.py",
+      "p_fail": 0.0001471108843031359,
+      "expected_duration_s": 0.06610000000000003,
+      "reasons": [
+       "It is quick to run (0.07 s), so checking it first is cheap.",
+       "The change is large (2 files), which raises every test's risk a little."
+      ]
+     },
+     {
+      "rank": 7,
+      "test_file": "networkx/linalg/tests/test_graphmatrix.py",
+      "p_fail": 0.00014711088450058065,
+      "expected_duration_s": 0.07139999999999999,
+      "reasons": [
+       "It is quick to run (0.07 s), so checking it first is cheap.",
+       "The change is large (2 files), which raises every test's risk a little.",
+       "Its name matches words in your diff (BM25 6.8)."
+      ]
+     },
+     {
+      "rank": 8,
+      "test_file": "networkx/tests/test_convert.py",
+      "p_fail": 0.0001471108843934238,
+      "expected_duration_s": 0.0815,
+      "reasons": [
+       "It is quick to run (0.08 s), so checking it first is cheap.",
+       "The change is large (2 files), which raises every test's risk a little."
+      ]
+     },
+     {
+      "rank": 9,
+      "test_file": "networkx/tests/test_all_random_functions.py",
+      "p_fail": 3.4554695032077965e-06,
+      "expected_duration_s": 0.001,
+      "reasons": [
+       "It is quick to run (0.00 s), so checking it first is cheap.",
+       "The change is large (2 files), which raises every test's risk a little."
+      ]
+     },
+     {
+      "rank": 10,
+      "test_file": "networkx/classes/tests/test_graphviews.py",
+      "p_fail": 0.00014711088450340248,
+      "expected_duration_s": 0.08440000000000003,
+      "reasons": [
+       "It is quick to run (0.08 s), so checking it first is cheap.",
+       "The change is large (2 files), which raises every test's risk a little."
+      ]
+     }
+    ]
+   },
+   "default": {
+    "name": "default",
+    "label": "pytest's default order",
+    "first_failure": "networkx/drawing/tests/test_layout.py::TestLayout::test_zero_iterations_fruchterman_reingold[spring_layout0-energy]",
+    "first_failing_file": "networkx/drawing/tests/test_layout.py",
+    "queue_position": 192,
+    "n_test_files": 263,
+    "test_s_to_first_failure": 93.76443123817444,
+    "pytest_step_s": 110.15,
+    "exit_code": 1,
+    "github": {
+     "GITHUB_REPOSITORY": "Abhijeetgupta55/networkx",
+     "GITHUB_RUN_ID": "43946222934",
+     "GITHUB_SHA": "d0f1ff5ec2986b0be0f231dd8a70c81609392be9",
+     "GITHUB_HEAD_REF": "smartci-bug-f4c159f2",
+     "GITHUB_BASE_REF": "smartci-base"
+    }
+   },
+   "rule": {
+    "name": "rule",
+    "label": "simple rule (changed_files_first)",
+    "first_failure": "networkx/drawing/tests/test_layout.py::TestLayout::test_zero_iterations_fruchterman_reingold[spring_layout0-energy]",
+    "first_failing_file": "networkx/drawing/tests/test_layout.py",
+    "queue_position": 1,
+    "n_test_files": 263,
+    "test_s_to_first_failure": 1.5977990627288818,
+    "pytest_step_s": 14.85,
+    "exit_code": 1,
+    "github": {
+     "GITHUB_REPOSITORY": "Abhijeetgupta55/networkx",
+     "GITHUB_RUN_ID": "43946222934",
+     "GITHUB_SHA": "d0f1ff5ec2986b0be0f231dd8a70c81609392be9",
+     "GITHUB_HEAD_REF": "smartci-bug-f4c159f2",
+     "GITHUB_BASE_REF": "smartci-base"
+    },
+    "rule": "changed_files_first",
+    "model_variant": "model_coldstart",
+    "top10": [
+     {
+      "rank": 1,
+      "test_file": "networkx/drawing/tests/test_layout.py",
+      "p_fail": 0.10116992698652388,
+      "reasons": []
+     },
+     {
+      "rank": 2,
+      "test_file": "networkx/drawing/tests/test_latex.py",
+      "p_fail": 3.4554695452568676e-06,
+      "reasons": []
+     },
+     {
+      "rank": 3,
+      "test_file": "networkx/drawing/tests/test_pylab.py",
+      "p_fail": 0.0019320084681088404,
+      "reasons": []
+     },
+     {
+      "rank": 4,
+      "test_file": "networkx/algorithms/tests/test_planar_drawing.py",
+      "p_fail": 4.816662378393305e-05,
+      "reasons": []
+     },
+     {
+      "rank": 5,
+      "test_file": "networkx/algorithms/approximation/tests/test_approx_clust_coeff.py",
+      "p_fail": 0.00014711088443710926,
+      "reasons": []
+     },
+     {
+      "rank": 6,
+      "test_file": "networkx/algorithms/approximation/tests/test_clique.py",
+      "p_fail": 0.000628208976854764,
+      "reasons": []
+     },
+     {
+      "rank": 7,
+      "test_file": "networkx/algorithms/approximation/tests/test_connectivity.py",
+      "p_fail": 0.000329395817892105,
+      "reasons": []
+     },
+     {
+      "rank": 8,
+      "test_file": "networkx/algorithms/approximation/tests/test_density.py",
+      "p_fail": 0.018694511032090484,
+      "reasons": []
+     },
+     {
+      "rank": 9,
+      "test_file": "networkx/algorithms/approximation/tests/test_distance_measures.py",
+      "p_fail": 4.816662359243632e-05,
+      "reasons": []
+     },
+     {
+      "rank": 10,
+      "test_file": "networkx/algorithms/approximation/tests/test_dominating_set.py",
+      "p_fail": 3.4554695318909515e-06,
+      "reasons": []
+     }
+    ]
+   }
+  }
+ },
+ {
+  "branch": "smartci-bug-d8081795",
+  "id": "d8081795e1344c576590b214c2e4f264b5e87244",
+  "kind": "mined",
+  "url": "https://github.com/networkx/networkx/commit/d8081795e1344c576590b214c2e4f264b5e87244",
+  "title": "BUG: Fix k_components losing or truncating k-components (#8734)",
+  "expected_failing": [
+   "networkx/algorithms/connectivity/tests/test_kcomponents.py"
+  ],
+  "run_url": "https://github.com/Abhijeetgupta55/networkx/actions/runs/43946231531",
+  "status": "completed",
+  "event": "pull_request",
+  "conclusion": "failure",
+  "jobs": {
+   "default": {
+    "job_s": 66.0,
+    "url": "https://github.com/Abhijeetgupta55/networkx/actions/runs/43946231531/job/133576505101",
+    "pytest_step_s": 30.0,
+    "conclusion": "failure"
+   },
+   "rule": {
+    "job_s": 54.0,
+    "url": "https://github.com/Abhijeetgupta55/networkx/actions/runs/43946231531/job/133576505789",
+    "pytest_step_s": 14.0,
+    "conclusion": "failure"
+   },
+   "model": {
+    "job_s": 58.0,
+    "url": "https://github.com/Abhijeetgupta55/networkx/actions/runs/43946231531/job/133576505991",
+    "pytest_step_s": 17.0,
+    "conclusion": "failure"
+   },
+   "report": {
+    "job_s": 16.0,
+    "url": "https://github.com/Abhijeetgupta55/networkx/actions/runs/43946231531/job/133577189283",
+    "pytest_step_s": null,
+    "conclusion": "success"
+   }
+  },
+  "summaries": {
+   "model": {
+    "name": "model",
+    "label": "smartci model",
+    "first_failure": "networkx/algorithms/connectivity/tests/test_kcomponents.py::test_generate_partition_does_not_drop_cutset_nodes",
+    "first_failing_file": "networkx/algorithms/connectivity/tests/test_kcomponents.py",
+    "queue_position": 2,
+    "n_test_files": 263,
+    "test_s_to_first_failure": 0.20434188842773438,
+    "pytest_step_s": 15.18,
+    "exit_code": 1,
+    "github": {
+     "GITHUB_REPOSITORY": "Abhijeetgupta55/networkx",
+     "GITHUB_RUN_ID": "43946231531",
+     "GITHUB_SHA": "b3e3766bd28f8b80c583cd63c9c34c51bdd9dd2b",
+     "GITHUB_HEAD_REF": "smartci-bug-d8081795",
+     "GITHUB_BASE_REF": "smartci-base"
+    },
+    "rule": null,
+    "model_variant": "model_coldstart",
+    "top10": [
+     {
+      "rank": 1,
+      "test_file": "networkx/classes/tests/test_graph_historical.py",
+      "p_fail": 0.003419210655344461,
+      "expected_duration_s": 0.0615,
+      "reasons": [
+       "It is quick to run (0.06 s), so checking it first is cheap."
+      ]
+     },
+     {
+      "rank": 2,
+      "test_file": "networkx/algorithms/connectivity/tests/test_kcomponents.py",
+      "p_fail": 0.07892722055805085,
+      "expected_duration_s": 2.8725999999999994,
+      "reasons": [
+       "Its name shares 3 word(s) with the changed paths.",
+       "It is quick to run (2.87 s), so checking it first is cheap.",
+       "Its directory path overlaps a changed file's path (100% of its package path matches)."
+      ]
+     },
+     {
+      "rank": 3,
+      "test_file": "networkx/algorithms/connectivity/tests/test_disjoint_paths.py",
+      "p_fail": 0.0013148483758175552,
+      "expected_duration_s": 0.23859999999999998,
+      "reasons": [
+       "Its name shares 2 word(s) with the changed paths.",
+       "It is quick to run (0.24 s), so checking it first is cheap.",
+       "Its name matches words in your diff (BM25 3.0)."
+      ]
+     },
+     {
+      "rank": 4,
+      "test_file": "networkx/algorithms/connectivity/tests/test_stoer_wagner.py",
+      "p_fail": 4.816662370572267e-05,
+      "expected_duration_s": 0.016499999999999997,
+      "reasons": [
+       "Its name shares 2 word(s) with the changed paths.",
+       "Its directory path overlaps a changed file's path (100% of its package path matches).",
+       "It is quick to run (0.02 s), so checking it first is cheap."
+      ]
+     },
+     {
+      "rank": 5,
+      "test_file": "networkx/tests/test_all_random_functions.py",
+      "p_fail": 3.1761015947185796e-06,
+      "expected_duration_s": 0.001,
+      "reasons": [
+       "It is quick to run (0.00 s), so checking it first is cheap.",
+       "The change is large (2 files), which raises every test's risk a little."
+      ]
+     },
+     {
+      "rank": 6,
+      "test_file": "networkx/classes/tests/test_special.py",
+      "p_fail": 3.1761015947185796e-06,
+      "expected_duration_s": 0.0017,
+      "reasons": [
+       "It is quick to run (0.00 s), so checking it first is cheap.",
+       "The change is large (2 files), which raises every test's risk a little."
+      ]
+     },
+     {
+      "rank": 7,
+      "test_file": "networkx/algorithms/tests/test_smetric.py",
+      "p_fail": 3.455469516736312e-06,
+      "expected_duration_s": 0.002,
+      "reasons": [
+       "It is quick to run (0.00 s), so checking it first is cheap.",
+       "Its directory path overlaps a changed file's path (100% of its package path matches).",
+       "Its name matches words in your diff (BM25 0.4)."
+      ]
+     },
+     {
+      "rank": 8,
+      "test_file": "networkx/tests/test_removed_functions_exception_messages.py",
+      "p_fail": 3.1761015947185796e-06,
+      "expected_duration_s": 0.002,
+      "reasons": [
+       "It is quick to run (0.00 s), so checking it first is cheap.",
+       "The change is large (2 files), which raises every test's risk a little."
+      ]
+     },
+     {
+      "rank": 9,
+      "test_file": "networkx/algorithms/tests/test_lowest_common_ancestors.py",
+      "p_fail": 0.0001471108842704039,
+      "expected_duration_s": 0.1466000000000001,
+      "reasons": [
+       "It is quick to run (0.15 s), so checking it first is cheap.",
+       "Its directory path overlaps a changed file's path (100% of its package path matches).",
+       "Its name matches words in your diff (BM25 0.4)."
+      ]
+     },
+     {
+      "rank": 10,
+      "test_file": "networkx/readwrite/tests/test_edgelist.py",
+      "p_fail": 0.0001471108842698871,
+      "expected_duration_s": 0.1561,
+      "reasons": [
+       "It is quick to run (0.16 s), so checking it first is cheap."
+      ]
+     }
+    ]
+   },
+   "rule": {
+    "name": "rule",
+    "label": "simple rule (changed_files_first)",
+    "first_failure": "networkx/algorithms/connectivity/tests/test_kcomponents.py::test_generate_partition_does_not_drop_cutset_nodes",
+    "first_failing_file": "networkx/algorithms/connectivity/tests/test_kcomponents.py",
+    "queue_position": 2,
+    "n_test_files": 263,
+    "test_s_to_first_failure": 1.1782879829406738,
+    "pytest_step_s": 13.93,
+    "exit_code": 1,
+    "github": {
+     "GITHUB_REPOSITORY": "Abhijeetgupta55/networkx",
+     "GITHUB_RUN_ID": "43946231531",
+     "GITHUB_SHA": "b3e3766bd28f8b80c583cd63c9c34c51bdd9dd2b",
+     "GITHUB_HEAD_REF": "smartci-bug-d8081795",
+     "GITHUB_BASE_REF": "smartci-base"
+    },
+    "rule": "changed_files_first",
+    "model_variant": "model_coldstart",
+    "top10": [
+     {
+      "rank": 1,
+      "test_file": "networkx/algorithms/connectivity/tests/test_edge_kcomponents.py",
+      "p_fail": 0.0034192106528243616,
+      "reasons": []
+     },
+     {
+      "rank": 2,
+      "test_file": "networkx/algorithms/connectivity/tests/test_kcomponents.py",
+      "p_fail": 0.07892722055805085,
+      "reasons": []
+     },
+     {
+      "rank": 3,
+      "test_file": "networkx/algorithms/connectivity/tests/test_connectivity.py",
+      "p_fail": 0.0013148483752492364,
+      "reasons": []
+     },
+     {
+      "rank": 4,
+      "test_file": "networkx/algorithms/connectivity/tests/test_cuts.py",
+      "p_fail": 0.000329395818583175,
+      "reasons": []
+     },
+     {
+      "rank": 5,
+      "test_file": "networkx/algorithms/connectivity/tests/test_disjoint_paths.py",
+      "p_fail": 0.0013148483758175552,
+      "reasons": []
+     },
+     {
+      "rank": 6,
+      "test_file": "networkx/algorithms/connectivity/tests/test_edge_augmentation.py",
+      "p_fail": 0.0026522772434557362,
+      "reasons": []
+     },
+     {
+      "rank": 7,
+      "test_file": "networkx/algorithms/connectivity/tests/test_kcutsets.py",
+      "p_fail": 0.0019320084690941982,
+      "reasons": []
+     },
+     {
+      "rank": 8,
+      "test_file": "networkx/algorithms/connectivity/tests/test_stoer_wagner.py",
+      "p_fail": 4.816662370572267e-05,
+      "reasons": []
+     },
+     {
+      "rank": 9,
+      "test_file": "networkx/algorithms/tests/test_asteroidal.py",
+      "p_fail": 3.4554695187445347e-06,
+      "reasons": []
+     },
+     {
+      "rank": 10,
+      "test_file": "networkx/algorithms/tests/test_boundary.py",
+      "p_fail": 3.4554695513348884e-06,
+      "reasons": []
+     }
+    ]
+   },
+   "default": {
+    "name": "default",
+    "label": "pytest's default order",
+    "first_failure": "networkx/algorithms/connectivity/tests/test_kcomponents.py::test_generate_partition_does_not_drop_cutset_nodes",
+    "first_failing_file": "networkx/algorithms/connectivity/tests/test_kcomponents.py",
+    "queue_position": 79,
+    "n_test_files": 263,
+    "test_s_to_first_failure": 17.199533939361572,
+    "pytest_step_s": 30.39,
+    "exit_code": 1,
+    "github": {
+     "GITHUB_REPOSITORY": "Abhijeetgupta55/networkx",
+     "GITHUB_RUN_ID": "43946231531",
+     "GITHUB_SHA": "b3e3766bd28f8b80c583cd63c9c34c51bdd9dd2b",
+     "GITHUB_HEAD_REF": "smartci-bug-d8081795",
+     "GITHUB_BASE_REF": "smartci-base"
+    }
+   }
+  }
+ },
+ {
+  "branch": "smartci-bug-7c35210a",
+  "id": "7c35210a95bcea5bf25bd9bc5fbe052f588b6d90",
+  "kind": "mined",
+  "url": "https://github.com/networkx/networkx/commit/7c35210a95bcea5bf25bd9bc5fbe052f588b6d90",
+  "title": "fix: add suggestions from #8021 and #8029 to `is_aperiodic` (#8148)",
+  "expected_failing": [
+   "networkx/algorithms/tests/test_dag.py"
+  ],
+  "run_url": "https://github.com/Abhijeetgupta55/networkx/actions/runs/43946243293",
+  "status": "completed",
+  "event": "pull_request",
+  "conclusion": "failure",
+  "jobs": {
+   "default": {
+    "job_s": 105.0,
+    "url": "https://github.com/Abhijeetgupta55/networkx/actions/runs/43946243293/job/133576546438",
+    "pytest_step_s": 70.0,
+    "conclusion": "failure"
+   },
+   "rule": {
+    "job_s": 51.0,
+    "url": "https://github.com/Abhijeetgupta55/networkx/actions/runs/43946243293/job/133576546790",
+    "pytest_step_s": 14.0,
+    "conclusion": "failure"
+   },
+   "model": {
+    "job_s": 54.0,
+    "url": "https://github.com/Abhijeetgupta55/networkx/actions/runs/43946243293/job/133576546903",
+    "pytest_step_s": 16.0,
+    "conclusion": "failure"
+   },
+   "report": {
+    "job_s": 15.0,
+    "url": "https://github.com/Abhijeetgupta55/networkx/actions/runs/43946243293/job/133577639147",
+    "pytest_step_s": null,
+    "conclusion": "success"
+   }
+  },
+  "summaries": {
+   "default": {
+    "name": "default",
+    "label": "pytest's default order",
+    "first_failure": "networkx/algorithms/tests/test_dag.py::test_is_aperiodic_cycle",
+    "first_failing_file": "networkx/algorithms/tests/test_dag.py",
+    "queue_position": 124,
+    "n_test_files": 263,
+    "test_s_to_first_failure": 57.04963970184326,
+    "pytest_step_s": 69.08,
+    "exit_code": 1,
+    "github": {
+     "GITHUB_REPOSITORY": "Abhijeetgupta55/networkx",
+     "GITHUB_RUN_ID": "43946243293",
+     "GITHUB_SHA": "c532e18666e1879a77286da8e2fe11b1730b987d",
+     "GITHUB_HEAD_REF": "smartci-bug-7c35210a",
+     "GITHUB_BASE_REF": "smartci-base"
+    }
+   },
+   "rule": {
+    "name": "rule",
+    "label": "simple rule (changed_files_first)",
+    "first_failure": "networkx/algorithms/tests/test_dag.py::test_is_aperiodic_cycle",
+    "first_failing_file": "networkx/algorithms/tests/test_dag.py",
+    "queue_position": 1,
+    "n_test_files": 263,
+    "test_s_to_first_failure": 0.22323369979858398,
+    "pytest_step_s": 13.82,
+    "exit_code": 1,
+    "github": {
+     "GITHUB_REPOSITORY": "Abhijeetgupta55/networkx",
+     "GITHUB_RUN_ID": "43946243293",
+     "GITHUB_SHA": "c532e18666e1879a77286da8e2fe11b1730b987d",
+     "GITHUB_HEAD_REF": "smartci-bug-7c35210a",
+     "GITHUB_BASE_REF": "smartci-base"
+    },
+    "rule": "changed_files_first",
+    "model_variant": "model_coldstart",
+    "top10": [
+     {
+      "rank": 1,
+      "test_file": "networkx/algorithms/tests/test_dag.py",
+      "p_fail": 0.23576966113342385,
+      "reasons": []
+     },
+     {
+      "rank": 2,
+      "test_file": "networkx/algorithms/tests/test_asteroidal.py",
+      "p_fail": 0.00020813373782023272,
+      "reasons": []
+     },
+     {
+      "rank": 3,
+      "test_file": "networkx/algorithms/tests/test_boundary.py",
+      "p_fail": 0.0002081337375799693,
+      "reasons": []
+     },
+     {
+      "rank": 4,
+      "test_file": "networkx/algorithms/tests/test_bridges.py",
+      "p_fail": 0.00020813373782544245,
+      "reasons": []
+     },
+     {
+      "rank": 5,
+      "test_file": "networkx/algorithms/tests/test_broadcasting.py",
+      "p_fail": 0.00032939581864216183,
+      "reasons": []
+     },
+     {
+      "rank": 6,
+      "test_file": "networkx/algorithms/tests/test_chains.py",
+      "p_fail": 0.00020813373782023272,
+      "reasons": []
+     },
+     {
+      "rank": 7,
+      "test_file": "networkx/algorithms/tests/test_chordal.py",
+      "p_fail": 0.0004972149428757532,
+      "reasons": []
+     },
+     {
+      "rank": 8,
+      "test_file": "networkx/algorithms/tests/test_clique.py",
+      "p_fail": 0.0003293958184189168,
+      "reasons": []
+     },
+     {
+      "rank": 9,
+      "test_file": "networkx/algorithms/tests/test_cluster.py",
+      "p_fail": 0.0006282089769612911,
+      "reasons": []
+     },
+     {
+      "rank": 10,
+      "test_file": "networkx/algorithms/tests/test_communicability.py",
+      "p_fail": 0.0002081337379694442,
+      "reasons": []
+     }
+    ]
+   },
+   "model": {
+    "name": "model",
+    "label": "smartci model",
+    "first_failure": "networkx/algorithms/tests/test_dag.py::test_is_aperiodic_cycle",
+    "first_failing_file": "networkx/algorithms/tests/test_dag.py",
+    "queue_position": 1,
+    "n_test_files": 263,
+    "test_s_to_first_failure": 0.19428634643554688,
+    "pytest_step_s": 14.34,
+    "exit_code": 1,
+    "github": {
+     "GITHUB_REPOSITORY": "Abhijeetgupta55/networkx",
+     "GITHUB_RUN_ID": "43946243293",
+     "GITHUB_SHA": "c532e18666e1879a77286da8e2fe11b1730b987d",
+     "GITHUB_HEAD_REF": "smartci-bug-7c35210a",
+     "GITHUB_BASE_REF": "smartci-base"
+    },
+    "rule": null,
+    "model_variant": "model_coldstart",
+    "top10": [
+     {
+      "rank": 1,
+      "test_file": "networkx/algorithms/tests/test_dag.py",
+      "p_fail": 0.23576966113342385,
+      "expected_duration_s": 0.31090000000000007,
+      "reasons": [
+       "Its name shares 2 word(s) with the changed paths.",
+       "Its directory path overlaps a changed file's path (100% of its package path matches).",
+       "It is quick to run (0.31 s), so checking it first is cheap."
+      ]
+     },
+     {
+      "rank": 2,
+      "test_file": "networkx/algorithms/tests/test_perfect_graph.py",
+      "p_fail": 0.00243536794327514,
+      "expected_duration_s": 0.0133,
+      "reasons": [
+       "Its directory path overlaps a changed file's path (100% of its package path matches).",
+       "The change is large (3 files), which raises every test's risk a little.",
+       "It is quick to run (0.01 s), so checking it first is cheap."
+      ]
+     },
+     {
+      "rank": 3,
+      "test_file": "networkx/algorithms/tests/test_smetric.py",
+      "p_fail": 0.0002081337374803513,
+      "expected_duration_s": 0.002,
+      "reasons": [
+       "Its directory path overlaps a changed file's path (100% of its package path matches).",
+       "The change is large (3 files), which raises every test's risk a little.",
+       "It is quick to run (0.00 s), so checking it first is cheap."
+      ]
+     },
+     {
+      "rank": 4,
+      "test_file": "networkx/classes/tests/test_graph_historical.py",
+      "p_fail": 0.0034192106504275063,
+      "expected_duration_s": 0.0615,
+      "reasons": [
+       "It is quick to run (0.06 s), so checking it first is cheap.",
+       "The change is large (3 files), which raises every test's risk a little.",
+       "Its name matches words in your diff (BM25 12.4)."
+      ]
+     },
+     {
+      "rank": 5,
+      "test_file": "networkx/algorithms/tests/test_moral.py",
+      "p_fail": 0.0002081337374803513,
+      "expected_duration_s": 0.003,
+      "reasons": [
+       "Its directory path overlaps a changed file's path (100% of its package path matches).",
+       "The change is large (3 files), which raises every test's risk a little.",
+       "It is quick to run (0.00 s), so checking it first is cheap."
+      ]
+     },
+     {
+      "rank": 6,
+      "test_file": "networkx/algorithms/tests/test_isolate.py",
+      "p_fail": 0.0002081337374803513,
+      "expected_duration_s": 0.0066,
+      "reasons": [
+       "Its directory path overlaps a changed file's path (100% of its package path matches).",
+       "The change is large (3 files), which raises every test's risk a little.",
+       "It is quick to run (0.01 s), so checking it first is cheap."
+      ]
+     },
+     {
+      "rank": 7,
+      "test_file": "networkx/algorithms/tests/test_reciprocity.py",
+      "p_fail": 0.0002081337374803513,
+      "expected_duration_s": 0.006999999999999999,
+      "reasons": [
+       "Its directory path overlaps a changed file's path (100% of its package path matches).",
+       "The change is large (3 files), which raises every test's risk a little.",
+       "It is quick to run (0.01 s), so checking it first is cheap."
+      ]
+     },
+     {
+      "rank": 8,
+      "test_file": "networkx/algorithms/tests/test_time_dependent.py",
+      "p_fail": 0.0004972149429001995,
+      "expected_duration_s": 0.021700000000000004,
+      "reasons": [
+       "Its directory path overlaps a changed file's path (100% of its package path matches).",
+       "The change is large (3 files), which raises every test's risk a little.",
+       "It is quick to run (0.02 s), so checking it first is cheap."
+      ]
+     },
+     {
+      "rank": 9,
+      "test_file": "networkx/algorithms/tests/test_communicability.py",
+      "p_fail": 0.0002081337379694442,
+      "expected_duration_s": 0.0088,
+      "reasons": [
+       "Its directory path overlaps a changed file's path (100% of its package path matches).",
+       "The change is large (3 files), which raises every test's risk a little.",
+       "It is quick to run (0.01 s), so checking it first is cheap."
+      ]
+     },
+     {
+      "rank": 10,
+      "test_file": "networkx/algorithms/tests/test_chains.py",
+      "p_fail": 0.00020813373782023272,
+      "expected_duration_s": 0.0101,
+      "reasons": [
+       "Its directory path overlaps a changed file's path (100% of its package path matches).",
+       "The change is large (3 files), which raises every test's risk a little.",
+       "It is quick to run (0.01 s), so checking it first is cheap."
+      ]
+     }
+    ]
+   }
+  }
+ },
+ {
+  "branch": "smartci-bug-e9eac8a7",
+  "id": "e9eac8a7e04df0b9cdcff8ed1682b3971678f4ed",
+  "kind": "mined",
+  "url": "https://github.com/networkx/networkx/commit/e9eac8a7e04df0b9cdcff8ed1682b3971678f4ed",
+  "title": "Fix: bug with mean degree part of geometric_soft_configuration_model (#8726)",
+  "expected_failing": [
+   "networkx/generators/tests/test_geometric.py"
+  ],
+  "run_url": "https://github.com/Abhijeetgupta55/networkx/actions/runs/43946247710",
+  "status": "completed",
+  "event": "pull_request",
+  "conclusion": "failure",
+  "jobs": {
+   "model": {
+    "job_s": 69.0,
+    "url": "https://github.com/Abhijeetgupta55/networkx/actions/runs/43946247710/job/133576560606",
+    "pytest_step_s": 18.0,
+    "conclusion": "failure"
+   },
+   "rule": {
+    "job_s": 67.0,
+    "url": "https://github.com/Abhijeetgupta55/networkx/actions/runs/43946247710/job/133576560854",
+    "pytest_step_s": 15.0,
+    "conclusion": "failure"
+   },
+   "default": {
+    "job_s": 145.0,
+    "url": "https://github.com/Abhijeetgupta55/networkx/actions/runs/43946247710/job/133576561029",
+    "pytest_step_s": 111.0,
+    "conclusion": "failure"
+   },
+   "report": {
+    "job_s": 14.0,
+    "url": "https://github.com/Abhijeetgupta55/networkx/actions/runs/43946247710/job/133578037673",
+    "pytest_step_s": null,
+    "conclusion": "success"
+   }
+  },
+  "summaries": {
+   "model": {
+    "name": "model",
+    "label": "smartci model",
+    "first_failure": "networkx/generators/tests/test_geometric.py::test_S1_kappas_mean_degree_from_values",
+    "first_failing_file": "networkx/generators/tests/test_geometric.py",
+    "queue_position": 2,
+    "n_test_files": 263,
+    "test_s_to_first_failure": 0.6051685810089111,
+    "pytest_step_s": 15.09,
+    "exit_code": 1,
+    "github": {
+     "GITHUB_REPOSITORY": "Abhijeetgupta55/networkx",
+     "GITHUB_RUN_ID": "43946247710",
+     "GITHUB_SHA": "8b688748782f2cc3ac20231b714cce356349a004",
+     "GITHUB_HEAD_REF": "smartci-bug-e9eac8a7",
+     "GITHUB_BASE_REF": "smartci-base"
+    },
+    "rule": null,
+    "model_variant": "model_coldstart",
+    "top10": [
+     {
+      "rank": 1,
+      "test_file": "networkx/classes/tests/test_graph_historical.py",
+      "p_fail": 0.006109217223755049,
+      "expected_duration_s": 0.0615,
+      "reasons": [
+       "It is quick to run (0.06 s), so checking it first is cheap.",
+       "The change is large (2 files), which raises every test's risk a little."
+      ]
+     },
+     {
+      "rank": 2,
+      "test_file": "networkx/generators/tests/test_geometric.py",
+      "p_fail": 0.015776634976697686,
+      "expected_duration_s": 2.3749000000000002,
+      "reasons": [
+       "Its name shares 2 word(s) with the changed paths.",
+       "It is quick to run (2.37 s), so checking it first is cheap.",
+       "Its directory path overlaps a changed file's path (100% of its package path matches)."
+      ]
+     },
+     {
+      "rank": 3,
+      "test_file": "networkx/algorithms/assortativity/tests/test_correlation.py",
+      "p_fail": 0.0331613534043996,
+      "expected_duration_s": 7.218500000000002,
+      "reasons": [
+       "It is quick to run (7.22 s), so checking it first is cheap.",
+       "The change is large (2 files), which raises every test's risk a little."
+      ]
+     },
+     {
+      "rank": 4,
+      "test_file": "networkx/utils/tests/test_unionfind.py",
+      "p_fail": 0.00014711088444671716,
+      "expected_duration_s": 0.042499999999999996,
+      "reasons": [
+       "The change is large (2 files), which raises every test's risk a little.",
+       "It is quick to run (0.04 s), so checking it first is cheap."
+      ]
+     },
+     {
+      "rank": 5,
+      "test_file": "networkx/algorithms/isomorphism/tests/test_temporalisomorphvf2.py",
+      "p_fail": 0.00014711088439312698,
+      "expected_duration_s": 0.043300000000000005,
+      "reasons": [
+       "The change is large (2 files), which raises every test's risk a little.",
+       "It is quick to run (0.04 s), so checking it first is cheap."
+      ]
+     },
+     {
+      "rank": 6,
+      "test_file": "networkx/algorithms/tests/test_distance_regular.py",
+      "p_fail": 0.00014711088439312698,
+      "expected_duration_s": 0.044800000000000006,
+      "reasons": [
+       "The change is large (2 files), which raises every test's risk a little.",
+       "It is quick to run (0.04 s), so checking it first is cheap."
+      ]
+     },
+     {
+      "rank": 7,
+      "test_file": "networkx/linalg/tests/test_spectrum.py",
+      "p_fail": 0.00014711088443380662,
+      "expected_duration_s": 0.047,
+      "reasons": [
+       "The change is large (2 files), which raises every test's risk a little.",
+       "It is quick to run (0.05 s), so checking it first is cheap."
+      ]
+     },
+     {
+      "rank": 8,
+      "test_file": "networkx/algorithms/centrality/tests/test_betweenness_centrality_subset.py",
+      "p_fail": 0.0001471108842664716,
+      "expected_duration_s": 0.048000000000000015,
+      "reasons": [
+       "The change is large (2 files), which raises every test's risk a little.",
+       "It is quick to run (0.05 s), so checking it first is cheap."
+      ]
+     },
+     {
+      "rank": 9,
+      "test_file": "networkx/algorithms/shortest_paths/tests/test_astar.py",
+      "p_fail": 0.00014711088443380662,
+      "expected_duration_s": 0.04810000000000002,
+      "reasons": [
+       "The change is large (2 files), which raises every test's risk a little.",
+       "It is quick to run (0.05 s), so checking it first is cheap."
+      ]
+     },
+     {
+      "rank": 10,
+      "test_file": "networkx/algorithms/bipartite/tests/test_project.py",
+      "p_fail": 0.00014711088443380662,
+      "expected_duration_s": 0.048400000000000006,
+      "reasons": [
+       "The change is large (2 files), which raises every test's risk a little.",
+       "It is quick to run (0.05 s), so checking it first is cheap."
+      ]
+     }
+    ]
+   },
+   "default": {
+    "name": "default",
+    "label": "pytest's default order",
+    "first_failure": "networkx/generators/tests/test_geometric.py::test_S1_kappas_mean_degree_from_values",
+    "first_failing_file": "networkx/generators/tests/test_geometric.py",
+    "queue_position": 203,
+    "n_test_files": 263,
+    "test_s_to_first_failure": 97.2991669178009,
+    "pytest_step_s": 110.61,
+    "exit_code": 1,
+    "github": {
+     "GITHUB_REPOSITORY": "Abhijeetgupta55/networkx",
+     "GITHUB_RUN_ID": "43946247710",
+     "GITHUB_SHA": "8b688748782f2cc3ac20231b714cce356349a004",
+     "GITHUB_HEAD_REF": "smartci-bug-e9eac8a7",
+     "GITHUB_BASE_REF": "smartci-base"
+    }
+   },
+   "rule": {
+    "name": "rule",
+    "label": "simple rule (changed_files_first)",
+    "first_failure": "networkx/generators/tests/test_geometric.py::test_S1_kappas_mean_degree_from_values",
+    "first_failing_file": "networkx/generators/tests/test_geometric.py",
+    "queue_position": 1,
+    "n_test_files": 263,
+    "test_s_to_first_failure": 0.6019470691680908,
+    "pytest_step_s": 14.95,
+    "exit_code": 1,
+    "github": {
+     "GITHUB_REPOSITORY": "Abhijeetgupta55/networkx",
+     "GITHUB_RUN_ID": "43946247710",
+     "GITHUB_SHA": "8b688748782f2cc3ac20231b714cce356349a004",
+     "GITHUB_HEAD_REF": "smartci-bug-e9eac8a7",
+     "GITHUB_BASE_REF": "smartci-base"
+    },
+    "rule": "changed_files_first",
+    "model_variant": "model_coldstart",
+    "top10": [
+     {
+      "rank": 1,
+      "test_file": "networkx/generators/tests/test_geometric.py",
+      "p_fail": 0.015776634976697686,
+      "reasons": []
+     },
+     {
+      "rank": 2,
+      "test_file": "networkx/generators/tests/test_atlas.py",
+      "p_fail": 5.3077357840461324e-05,
+      "reasons": []
+     },
+     {
+      "rank": 3,
+      "test_file": "networkx/generators/tests/test_classic.py",
+      "p_fail": 0.00014711088439565149,
+      "reasons": []
+     },
+     {
+      "rank": 4,
+      "test_file": "networkx/generators/tests/test_cographs.py",
+      "p_fail": 3.4554695339982805e-06,
+      "reasons": []
+     },
+     {
+      "rank": 5,
+      "test_file": "networkx/generators/tests/test_community.py",
+      "p_fail": 0.00014711088440102972,
+      "reasons": []
+     },
+     {
+      "rank": 6,
+      "test_file": "networkx/generators/tests/test_degree_seq.py",
+      "p_fail": 0.00014711088463150118,
+      "reasons": []
+     },
+     {
+      "rank": 7,
+      "test_file": "networkx/generators/tests/test_directed.py",
+      "p_fail": 0.00014711088440788267,
+      "reasons": []
+     },
+     {
+      "rank": 8,
+      "test_file": "networkx/generators/tests/test_duplication.py",
+      "p_fail": 3.4554695252442814e-06,
+      "reasons": []
+     },
+     {
+      "rank": 9,
+      "test_file": "networkx/generators/tests/test_ego.py",
+      "p_fail": 3.455469522048663e-06,
+      "reasons": []
+     },
+     {
+      "rank": 10,
+      "test_file": "networkx/generators/tests/test_expanders.py",
+      "p_fail": 0.0001471108845138653,
+      "reasons": []
+     }
+    ]
+   }
+  }
+ }
+]

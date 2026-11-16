@@ -1,0 +1,50 @@
+{
+ "branches": {
+  "smartci-bug-b3c9b00a": {
+   "id": "b3c9b00aaab32ed74e5be79bf5960772d3e63467",
+   "kind": "mined",
+   "url": "https://github.com/networkx/networkx/commit/b3c9b00aaab32ed74e5be79bf5960772d3e63467",
+   "title": "Fix sparse heuristic not applied to diagonal blocks in stochastic_block_model (#8557)",
+   "expected_failing": [
+    "networkx/generators/tests/test_community.py"
+   ]
+  },
+  "smartci-bug-f4c159f2": {
+   "id": "f4c159f2b7e71993fee5c98ed54dbe5c1ae6ad30",
+   "kind": "mined",
+   "url": "https://github.com/networkx/networkx/commit/f4c159f2b7e71993fee5c98ed54dbe5c1ae6ad30",
+   "title": "BUGFIX: spring energy and ARF layouts with zero iterations (#8486)",
+   "expected_failing": [
+    "networkx/drawing/tests/test_layout.py"
+   ]
+  },
+  "smartci-bug-d8081795": {
+   "id": "d8081795e1344c576590b214c2e4f264b5e87244",
+   "kind": "mined",
+   "url": "https://github.com/networkx/networkx/commit/d8081795e1344c576590b214c2e4f264b5e87244",
+   "title": "BUG: Fix k_components losing or truncating k-components (#8734)",
+   "expected_failing": [
+    "networkx/algorithms/connectivity/tests/test_kcomponents.py"
+   ]
+  },
+  "smartci-bug-7c35210a": {
+   "id": "7c35210a95bcea5bf25bd9bc5fbe052f588b6d90",
+   "kind": "mined",
+   "url": "https://github.com/networkx/networkx/commit/7c35210a95bcea5bf25bd9bc5fbe052f588b6d90",
+   "title": "fix: add suggestions from #8021 and #8029 to `is_aperiodic` (#8148)",
+   "expected_failing": [
+    "networkx/algorithms/tests/test_dag.py"
+   ]
+  },
+  "smartci-bug-e9eac8a7": {
+   "id": "e9eac8a7e04df0b9cdcff8ed1682b3971678f4ed",
+   "kind": "mined",
+   "url": "https://github.com/networkx/networkx/commit/e9eac8a7e04df0b9cdcff8ed1682b3971678f4ed",
+   "title": "Fix: bug with mean degree part of geometric_soft_configuration_model (#8726)",
+   "expected_failing": [
+    "networkx/generators/tests/test_geometric.py"
+   ]
+  }
+ },
+ "skipped": []
+}
