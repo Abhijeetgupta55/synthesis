@@ -39,6 +39,46 @@ def _j(name):
         return {}
 
 
+def demo_questions() -> list[tuple[str, str]]:
+    """Questions the reworked demo (ML Lab, Real PRs, GitHub PR) invites."""
+    from stp.reports.error_md import get
+    LC, W, M = _j("lab_check"), _j("real_prs_wins"), _j("models")
+    r = lambda sp, m, k: get(LC, "splits", sp, m, k, default=float("nan"))  # noqa: E731
+    w = lambda p, o, k: get(W, "projects", p, o, k, default=0)  # noqa: E731
+    kp = get(M, "vs_best_simple", "All", "macro10", "stack", "per_project", default={})
+    return [
+        ("How much does a random split inflate the score?",
+         f"On 300k sampled training rows, unregularized LightGBM scores PR-AUC {r('random_80_20', 'lgbm_unregularized', 'test'):.3f} "
+         f"on a random 20% but {r('time_80_20', 'lgbm_unregularized', 'test'):.3f} on the latest 20% of runs (same "
+         f"sampling). Regularized: {r('random_80_20', 'lgbm_regularized', 'test'):.3f} vs "
+         f"{r('time_80_20', 'lgbm_regularized', 'test'):.3f}. Logistic regression barely moves "
+         f"({r('random_80_20', 'lr_regularized', 'test'):.3f} vs {r('time_80_20', 'lr_regularized', 'test'):.3f}): "
+         "the flexible model is the one that memorises run-specific patterns shared across a random split."),
+        ("Does regularization matter on the later builds?",
+         f"Yes for LightGBM: train PR-AUC 1.000 without it; later builds (valA) {r('time_80_20', 'lgbm_unregularized', 'valA'):.3f} "
+         f"without vs {r('time_80_20', 'lgbm_regularized', 'valA'):.3f} with (early stopping at round "
+         f"{r('time_80_20', 'lgbm_regularized', 'best_iteration'):.0f}). For LR the gap is small "
+         f"({r('time_80_20', 'lr_unregularized', 'valA'):.3f} vs {r('time_80_20', 'lr_regularized', 'valA'):.3f})."),
+        ("Do the model's wins on Kafka and TVM come from flaky tests?",
+         f"No. Every Kafka win build and {w('tvm', 'win', 'share_builds_with_a_recurring_failure'):.0%} of TVM win "
+         "builds contain a test that had failed before; builds failing only on known-flaky tests are "
+         f"{w('kafka', 'win', 'share_builds_only_known_flaky_failures'):.0%} (Kafka) and "
+         f"{w('tvm', 'win', 'share_builds_only_known_flaky_failures'):.0%} (TVM) of wins. Known-flaky tests are "
+         f"{w('kafka', 'win', 'share_known_flaky'):.0%} of failing tests in Kafka wins and "
+         f"{w('kafka', 'loss', 'share_known_flaky'):.0%} in losses, so flakiness does not separate them. Losses are "
+         "recurring too: history makes winning possible, it does not guarantee it."),
+        ("How often does the model lose on those two projects?",
+         f"Kafka: {w('kafka', 'win', 'n_builds'):,} won, {w('kafka', 'tie', 'n_builds')} tied, "
+         f"{w('kafka', 'loss', 'n_builds'):,} lost; TVM: {w('tvm', 'win', 'n_builds')} / {w('tvm', 'tie', 'n_builds')} / "
+         f"{w('tvm', 'loss', 'n_builds')} (ΔAPFDc vs the best rule {kp.get('kafka', 0):+.3f} and "
+         f"{kp.get('tvm', 0):+.3f}). The Real PRs page has a 'Show me a loss' button."),
+        ("Why show queue position, test time and end-to-end time together?",
+         "Each alone misleads: the model can put the failing test at position 140 yet reach it after under a minute "
+         "of testing, because it puts quick tests first; and on NetworkX pytest start-up and collection (about "
+         "two minutes on our laptop) is paid by every order, so end-to-end gains are smaller than test-time gains."),
+    ]
+
+
 def framing_questions() -> str:
     """The eight questions the 'when does ML beat simple rules?' framing invites, answered with numbers."""
     from stp.reports.error_md import _ci, get, verdict
@@ -116,6 +156,7 @@ def framing_questions() -> str:
          f"the paper's best history rule ({_ci(get(M, 'vs_cbt_lastfail_All'))}). On a small Python repo a simple "
          "rule is enough, and `smartci backtest` says so for that repo."),
     ]
+    qa += demo_questions()
     out = ["## Questions this framing invites", "",
            "*The project asks when ML beats simple rules for ordering tests. These are the questions that framing "
            "invites, with short answers backed by numbers.*", ""]

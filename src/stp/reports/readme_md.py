@@ -28,8 +28,29 @@ def build() -> str:
     v = get(M, "vs_cbt_lastfail_All")
     rows.insert(1, ["all failed runs", "cbt_LastFail (paper's best history rule)", cell("All", "cbt_LastFail"),
                     cell("All", "lgbm"), _ci(v), word[verdict(v)]])
-    med = lambda m: get(nx, "median_ttff_s", m, "median", default=float("nan"))  # noqa: E731
+    nxm = get(RW, "networkx", "backtest_summary", "mined", default={})
+    med = lambda m: get(nxm, "median_ttff_s", m, "median", default=float("nan"))  # noqa: E731
     bnx = nx.get("best_simple_baseline", "changed_files_first")
+    lab = _r("lab_meta") or {}
+    import json as _json
+    lm = paths.ROOT / "demo_bundle" / "lab" / "lab_meta.json"
+    if lm.exists():
+        lab = _json.loads(lm.read_text(encoding="utf-8"))
+    kp = get(M, "vs_best_simple", "All", "macro10", "stack", "per_project", default={})
+    W = _r("real_prs_wins")
+    wtl = lambda p: " / ".join(f"{get(W, 'projects', p, o, 'n_builds', default=0):,}" for o in ("win", "tie", "loss"))  # noqa: E731
+    bt = paths.ROOT / "demo_bundle" / "repos" / "networkx" / "backtest.json"
+    nq, startup = {}, 0.0
+    if bt.exists():
+        b = _json.loads(bt.read_text(encoding="utf-8"))
+        mined = [x for x in b["bugs"] if x["kind"] == "mined" and x.get("prefix")]
+        nq = {"n": len(mined), "n_files": b.get("n_test_files")}
+        for m in ("default", "smartci", "changed_files_first"):
+            v = sorted(len(x["prefix"][m]) for x in mined if m in x["prefix"])
+            nq[m] = v[len(v) // 2] if v else None
+        pr = _json.loads((bt.parent / "profile.json").read_text(encoding="utf-8"))
+        o = sorted(x for x in pr.get("overhead_s") or [] if x is not None)
+        startup = o[len(o) // 2] if o else 0.0
     rubric = [
         ["1 EDA", "[EDA_REPORT.md](reports/EDA_REPORT.md)", "label imbalance, suite durations, history-rule collapse"],
         ["2 Feature derivation", "[FEATURES.md](reports/FEATURES.md)", "25 as-of features, leakage tests, rejected features"],
@@ -49,27 +70,44 @@ def build() -> str:
         "room by room, smartci runs first the tests most likely to catch your mistake. "
         "[Explained simply](reports/EXPLAINER.md) · [Roadmap](reports/ROADMAP.md) · "
         "[Demo script](reports/DEMO_SCRIPT.md)", "",
-        "![The dashboard's start page](reports/demo_screenshots/01_start_here.png)", "",
-        "## The result, honestly", "",
+        "## The demo in four steps", "",
+        "```powershell", "scripts\\setup_demo.ps1     # once: .venv-demo with requirements.txt",
+        "scripts\\run_demo.ps1       # http://localhost:8501, offline", "```", "",
+        "Linux/macOS: `scripts/setup_demo.sh` and `scripts/run_demo.sh` (or `pip install -r requirements.txt` and "
+        f"`streamlit run app/demo.py`). The app needs no dataset; about {MEM.get('peak_working_set_mb', '?')} MB of memory.", "",
+        f"1. **ML Lab** (live training, nothing precomputed). A real sample is bundled ({lab.get('train_sample', {}).get('rows', 0):,} "
+        f"training rows, {lab.get('later_builds', {}).get('rows', 0):,} rows of later builds). Pick logistic regression, a random forest "
+        "or LightGBM, the regularization, the split (random or by time), the feature groups and the metric; *Train* fits now and "
+        "shows train vs validation vs later-build scores, top features and the time taken. Four guided experiments, each with a "
+        "takeaway computed from the fit: the accuracy trap, overfitting without regularization, a random split inflating the "
+        "score, history features alone vs with change features. Retype them: [notebooks/lab_by_hand.ipynb](notebooks/lab_by_hand.ipynb).",
+        f"2. **Real PRs** (replay of a real recorded build). Held-out Apache Kafka and TVM builds, the two projects where the "
+        f"stacked model beats the best simple rule (ΔAPFDc {kp.get('kafka', 0):+.3f} Kafka, {kp.get('tvm', 0):+.3f} TVM). Per build: "
+        "the link to the real PR, changed files, tests and total test time; for random, fastest-first, the best simple rule and "
+        "the model, the position of the first failing test, the test minutes before it and approximate wall-clock time; the "
+        "model's top 10 with reasons. Win/tie/loss counts and a *Show me a loss* button. "
+        f"Over all held-out builds: Kafka {wtl('kafka')}, TVM {wtl('tvm')} (won / tied / lost). The wins come from recurring "
+        "failures, not flaky tests (the page shows the numbers).",
+        "3. **A real GitHub pull request.** On a NetworkX fork, one workflow runs three jobs on the same commit (pytest's "
+        "order, `--smartci-rule changed_files_first`, the model) and comments on the PR: the top 10 tests with probability "
+        "and reasons, the failing test's queue position in each order, and each job's end-to-end time on GitHub's clock. "
+        "Links: [reports/PUBLIC_RUNS.md](reports/PUBLIC_RUNS.md); steps: [HUMAN_TODO.md](HUMAN_TODO.md). On the *Break the code* "
+        "page two real pytest processes run side by side with a real stopwatch (start-up included), ending in the real traceback.",
+        "4. **The honest verdict.** The model helps on large projects with long history (Kafka, TVM). On a small Python repo "
+        "(NetworkX) a simple rule, changed files first, is enough. On first-time failures the model loses to fastest first.", "",
+        "## The numbers", "",
         f"**The question.** {QUESTION}", "", f"**The answer.** {HEADLINE}", "",
         f"On 108,366 real CI runs of 10 Apache projects (held-out test period, APFDc: 1 = failures first, 0.5 ≈ random; "
         f"95% confidence intervals):", "",
         table(["Failures", "Best simple rule", "Its APFDc", "ML (LightGBM)", "ML − rule", "Verdict"], rows), "",
-        f"On NetworkX ({nx.get('n')} bugs: real past bugs and synthetic mutants), the median time to the first failure "
-        f"is {med('default'):.1f} s in pytest's default order, {med('smartci'):.2f} s with smartci and "
-        f"{med(bnx):.2f} s with {bnx.replace('_', ' ')}. Failures are rare: "
+        f"On NetworkX ({nq.get('n')} real past bugs put back), the failing test file sits at median queue position "
+        f"{nq.get('default')} of {nq.get('n_files')} in pytest's order, {nq.get('smartci')} with smartci and "
+        f"{nq.get('changed_files_first')} with changed files first; test seconds until it fails are {med('default'):.1f}, "
+        f"{med('smartci'):.2f} and {med(bnx):.2f}, and every order pays the same pytest start-up on top (about "
+        f"{startup:.0f} s on our laptop). Failures are rare: "
         f"{get(L, 'pooled', 'pos_rate_fail', default=0):.3%} of (run, test) pairs, so accuracy is meaningless and we "
         f"use PR-AUC (best model {max(get(C, 'models', m, 'pr_auc', default=0) for m in ('lr', 'rf', 'lgbm', 'vote', 'stack')):.3f}). "
         "Why the model loses on first-time failures: [RESULTS.md §4](reports/RESULTS.md).", "",
-        "## Run the demo", "",
-        "```powershell", "scripts\\setup_demo.ps1     # once: .venv-demo with requirements.txt",
-        "scripts\\run_demo.ps1       # http://localhost:8501, fully offline", "```", "",
-        "Linux/macOS: `scripts/setup_demo.sh` and `scripts/run_demo.sh`. Or simply `pip install -r requirements.txt` "
-        "and `streamlit run app/demo.py`. The app reads only `demo_bundle/` (committed); it needs no dataset. "
-        f"Memory: about {MEM.get('peak_working_set_mb', '?')} MB. Seven pages: Start here (the idea, an animated race "
-        "on a real bug, a savings calculator), Break the code (a guided demo on a real NetworkX bug the model never "
-        "saw), The ML pipeline (one tab per rubric item), Predict live (the real model ranks NetworkX tests for files "
-        "you pick), Race replay, Results, Limits and honesty. Screenshots of every page: [`reports/demo_screenshots/`](reports/demo_screenshots).", "",
         "## Use smartci on your own repo", "",
         "```bash",
         f"pip install \"smartci @ git+https://github.com/{REPO}.git\"   # into the venv you test with",
@@ -94,9 +132,10 @@ def build() -> str:
         "- The model was trained on Apache CI data (9 Java/Scala projects + TVM's Python suites), never on NetworkX.",
         "- On first-time failures the model loses to \"fastest first\"; on a small Python repo a simple rule is as "
         "good as the model.",
-        "- NetworkX bugs are past bugs reintroduced, or synthetic mutants; race lanes replay measured durations.",
-        "- The simulated-vs-real timing check (GATE 5) was measured on battery and failed; it is pending a re-run on "
-        "mains power ([REAL_WORLD.md](reports/REAL_WORLD.md)).",
+        "- NetworkX bugs are past bugs reintroduced, or synthetic mutants; Real PRs replays add up recorded durations "
+        "(LRTS does not record the real execution order, so a random order stands in for it).",
+        "- The simulated-vs-real timing check (GATE 5) and the live-run recordings need mains power and are pending "
+        "([REAL_WORLD.md](reports/REAL_WORLD.md), HUMAN_TODO 0).",
         "- On a suite of a few seconds, smartci's own start-up costs more than it saves.",
         "- A second repository (sympy) was attempted and not completed.", "",
         "## Data sources and licences", "",
@@ -120,7 +159,8 @@ def build() -> str:
             ["`src/stp/`", "research pipeline: data, EDA, features, evaluation, baselines, models, reports, demo"],
             ["`src/smartci/`", "the tool: CLI, pytest plugin, scoring, packaged model (`model/`)"],
             ["`app/demo.py`, `demo_bundle/`", "the dashboard and the only data it reads"],
-            ["`live_demo/`", "NetworkX live comparison, GATE 5, Phase C timing script"],
+            ["`live_demo/`", "NetworkX live comparison, GATE 5, Phase C timing, public CI (`public_ci/`)"],
+            ["`notebooks/lab_by_hand.ipynb`", "the ML Lab's four experiments in plain pandas / scikit-learn / LightGBM"],
             ["`reports/`", "generated reports, `results/*.json`, `figures/`, `demo_screenshots/`"],
             ["`data/`, `external/`", "git-ignored (LRTS data, LRTS repo, NetworkX clone)"]]), ""])
 

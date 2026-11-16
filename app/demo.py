@@ -468,16 +468,19 @@ def page_results():
 def page_limits():
     st.header("Limits and honesty")
     st.markdown("""
-**Real**
-- LRTS test durations and outcomes: 108,366 CI runs of 10 Apache projects.
-- NetworkX test durations (measured by `smartci profile`), the failing tests of each bug, and every `smartci compare` run.
-- The 'Predict live' page runs the real packaged model now.
+**Real, computed now**
+- ML Lab: every score is a fit made when you press the button, on a bundled real sample of LRTS rows.
+- Predict live and Break the code step 2: the real packaged model scores NetworkX tests now.
+- Break the code step 4: two real pytest processes on NetworkX, a real stopwatch including start-up (needs the clone;
+  otherwise recordings of real runs with their full logs).
 
-**Replayed (simulated from real measurements)**
-- Every race lane adds up *measured* durations in a given order, as if tests run one after another.
-- NetworkX lanes include pytest's per-test overhead but not start-up and collection.
-- `smartci compare` checks this against real pytest runs (GATE 5). The last check was measured on battery, with a
-  throttled CPU, and failed; it is pending a re-run on mains power (REAL_WORLD.md).
+**Real, replayed from recorded data**
+- Real PRs: recorded durations and outcomes of held-out Kafka/TVM builds, added up in each order, one test after
+  another; the wall-clock estimate scales that by the project's recorded build-time ratio. LRTS does not record
+  the real execution order, so a random order stands in for it.
+- Break the code step 3: NetworkX's measured per-test durations, replayed per order; start-up added from the profile.
+- The GitHub fork runs (reports/PUBLIC_RUNS.md) are timed by GitHub itself.
+- Timings measured on battery do not count; recordings and GATE 5 are redone on mains power (HUMAN_TODO 0).
 
 **Caveats, one line each**
 - Mined NetworkX bugs are past bugs reintroduced; the revealing test usually came with the fix (regression catching).
@@ -485,7 +488,7 @@ def page_limits():
 - The model was trained on Apache CI data (9 Java/Scala projects + TVM's Python suites), never on NetworkX.
 - The headline LightGBM numbers are the tuned model; smartci ships the all-projects variant (disclosed choice).
 - The TVM-only variant looked best on validation and collapsed on test; it was not shipped.
-- LRTS has test-class granularity and no execution order; 'default' there is a random order.
+- LRTS has test-class granularity and no execution order; 'random' stands in for the fixed order.
 - Models are evaluated at one time origin; small projects have few test runs, so only the macro is interpreted.
 - On a ~1 s suite, smartci's own start-up (imports, git diff, scoring) can cost more than it saves.
 - A second repository (sympy) was attempted and not completed; no result from it is shown.

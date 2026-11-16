@@ -1,69 +1,89 @@
-# Example: two parallel jobs on the same commit, so anyone can compare real CI timings.
+# Three parallel jobs on the same commit of a NetworkX fork, so GitHub's own machines time three test orders:
 #   default  pytest -x in pytest's own order
-#   smartci  pytest -x --smartci (same tests, most-likely-to-fail files first)
-# Each job prints its start time, the moment the first failure was reported, and its end time.
-# Copy into the repo under test (e.g. a NetworkX fork). Not run on this research repository itself.
+#   rule     pytest -x --smartci --smartci-rule changed_files_first   (the simple rule)
+#   model    pytest -x --smartci                                       (smartci's model)
+#   report   (after the three) job summary + PR comment: top 10 tests with P(fail) and reasons, the failing test's
+#            queue position in each order, each job's end-to-end time from the GitHub Actions API
+# The .smartci baseline (profile, history, adapter, coverage map from the local NetworkX profile) is committed to the
+# fork's `smartci-base` branch as .smartci-baseline/ by live_demo/public_ci/make_branches.py and copied to .smartci/.
+# Copied into the fork by make_branches.py; it does nothing on this research repository.
 name: smartci-compare
 on:
   workflow_dispatch:
   pull_request:
-    paths-ignore: ["**.md"]
+permissions:
+  contents: read
+  pull-requests: write
+  actions: read
+env:
+  SMARTCI_SPEC: "smartci @ git+https://github.com/Abhijeetgupta55/synthesis.git"
+  BASE_BRANCH: ${{ github.base_ref || 'smartci-base' }}
 jobs:
   default:
     if: github.repository != 'Abhijeetgupta55/synthesis'
     runs-on: ubuntu-latest
-    steps:
+    steps: &steps
       - uses: actions/checkout@v4
         with: {fetch-depth: 0}
       - uses: actions/setup-python@v5
-        with: {python-version: "3.11"}
-      - name: Install the project under test
-        run: python -m pip install -e ".[test]" || python -m pip install -e . pytest
-      - name: pytest -x (default order)
+        with: {python-version: "3.12"}
+      - name: Install NetworkX and smartci (same in all three jobs)
+        run: python -m pip install -e ".[default,test]" "$SMARTCI_SPEC"
+      - name: Make the .smartci baseline available
         run: |
-          echo "default: start $(date -u +%H:%M:%S.%N)"
+          rm -rf .smartci && cp -r .smartci-baseline .smartci
+          git fetch --no-tags origin "$BASE_BRANCH" || true
+      - name: pytest -x
+        run: |
+          case "${{ github.job }}" in
+            default) FLAGS="--smartci-timing=timing.json" ;;
+            rule)    FLAGS="--smartci --smartci-base origin/$BASE_BRANCH --smartci-rule changed_files_first" ;;
+            model)   FLAGS="--smartci --smartci-base origin/$BASE_BRANCH" ;;
+          esac
+          START=$(date +%s.%N)
           set +e
-          python -m pytest -x -p no:cacheprovider -q -o junit_family=xunit1 --junitxml=default.xml | tee default.log
-          code=${PIPESTATUS[0]}
-          echo "default: end $(date -u +%H:%M:%S.%N)"
-          grep -m1 -E "^(FAILED|ERROR) " default.log && echo "default: first failure line above" || true
-          exit $code
+          python -m pytest -x -p no:cacheprovider -q --ignore=.smartci-baseline $FLAGS | tee pytest.log
+          CODE=${PIPESTATUS[0]}
+          END=$(date +%s.%N)
+          if [ "${{ github.job }}" = default ]; then SRC="--timing timing.json"; else SRC="--receipt-dir .smartci/receipts"; fi
+          python -m smartci.ci_report job --name ${{ github.job }} $SRC --start $START --end $END --exit-code $CODE \
+            --out summary-${{ github.job }}.json
+          exit $CODE
       - uses: actions/upload-artifact@v4
         if: always()
-        with: {name: default-junit, path: "default.*"}
-  smartci:
+        with:
+          name: summary-${{ github.job }}
+          include-hidden-files: true
+          path: |
+            summary-*.json
+            pytest.log
+            .smartci/receipts/*.json
+  rule:
     if: github.repository != 'Abhijeetgupta55/synthesis'
     runs-on: ubuntu-latest
+    steps: *steps
+  model:
+    if: github.repository != 'Abhijeetgupta55/synthesis'
+    runs-on: ubuntu-latest
+    steps: *steps
+  report:
+    needs: [default, rule, model]
+    if: always() && github.repository != 'Abhijeetgupta55/synthesis'
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with: {fetch-depth: 0}
       - uses: actions/setup-python@v5
-        with: {python-version: "3.11"}
-      - name: Install the project under test
-        run: python -m pip install -e ".[test]" || python -m pip install -e . pytest
-      - uses: actions/cache@v4
-        with:
-          path: .smartci
-          key: smartci-${{ runner.os }}-${{ github.run_id }}
-          restore-keys: smartci-${{ runner.os }}-
-      - name: Install smartci
-        run: python -m pip install "smartci @ git+https://github.com/Abhijeetgupta55/synthesis.git"
-      - name: pytest -x --smartci
+        with: {python-version: "3.12"}
+      - run: python -m pip install --no-deps "$SMARTCI_SPEC"
+      - uses: actions/download-artifact@v4
+        with: {pattern: "summary-*", path: summaries}
+      - name: Job summary and PR comment
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          echo "smartci: start $(date -u +%H:%M:%S.%N)"
-          set +e
-          python -m pytest -x -p no:cacheprovider -q --smartci --smartci-base "origin/${{ github.base_ref || github.event.repository.default_branch }}" \
-            -o junit_family=xunit1 --junitxml=smartci.xml | tee smartci.log
-          code=${PIPESTATUS[0]}
-          echo "smartci: end $(date -u +%H:%M:%S.%N)"
-          grep -m1 -E "^(FAILED|ERROR) " smartci.log && echo "smartci: first failure line above" || true
-          python - <<'PY'
-          import glob, json
-          r = json.load(open(sorted(glob.glob(".smartci/receipts/*.json"))[-1]))
-          print("smartci: first failure after", (r.get("first_failure") or {}).get("elapsed_s"), "s:",
-                (r.get("first_failure") or {}).get("nodeid"))
-          PY
-          exit $code
+          gh api "repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs" > jobs.json
+          python -m smartci.ci_report comment --dir summaries --jobs jobs.json --out comment.md
+          if [ -n "${{ github.event.pull_request.number }}" ]; then
+            gh pr comment "${{ github.event.pull_request.number }}" --repo "${{ github.repository }}" --body-file comment.md
+          fi
       - uses: actions/upload-artifact@v4
-        if: always()
-        with: {name: smartci-receipt, path: ".smartci/receipts/*.json"}
+        with: {name: report, path: "comment.md\njobs.json"}

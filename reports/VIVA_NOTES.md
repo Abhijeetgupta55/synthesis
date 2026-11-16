@@ -30,6 +30,21 @@ No feature uses it: every history feature counts only runs that had finished whe
 **Who would actually use this?**  
 Teams with long suites (the LRTS projects' median suite takes hours) and recurring failures, where the model is level with or slightly above the best simple rule (+0.008 [-0.002, +0.019], level) and clearly above the paper's best history rule (+0.020 [+0.008, +0.032]). On a small Python repo a simple rule is enough, and `smartci backtest` says so for that repo.
 
+**How much does a random split inflate the score?**  
+On 300k sampled training rows, unregularized LightGBM scores PR-AUC 0.677 on a random 20% but 0.349 on the latest 20% of runs (same sampling). Regularized: 0.565 vs 0.401. Logistic regression barely moves (0.399 vs 0.373): the flexible model is the one that memorises run-specific patterns shared across a random split.
+
+**Does regularization matter on the later builds?**  
+Yes for LightGBM: train PR-AUC 1.000 without it; later builds (valA) 0.141 without vs 0.189 with (early stopping at round 112). For LR the gap is small (0.148 vs 0.164).
+
+**Do the model's wins on Kafka and TVM come from flaky tests?**  
+No. Every Kafka win build and 92% of TVM win builds contain a test that had failed before; builds failing only on known-flaky tests are 7% (Kafka) and 1% (TVM) of wins. Known-flaky tests are 37% of failing tests in Kafka wins and 33% in losses, so flakiness does not separate them. Losses are recurring too: history makes winning possible, it does not guarantee it.
+
+**How often does the model lose on those two projects?**  
+Kafka: 6,264 won, 121 tied, 1,693 lost; TVM: 144 / 82 / 51 (ΔAPFDc vs the best rule +0.041 and +0.050). The Real PRs page has a 'Show me a loss' button.
+
+**Why show queue position, test time and end-to-end time together?**  
+Each alone misleads: the model can put the failing test at position 140 yet reach it after under a minute of testing, because it puts quick tests first; and on NetworkX pytest start-up and collection (about two minutes on our laptop) is paid by every order, so end-to-end gains are smaller than test-time gains.
+
 ## As-of history and the concurrency leak
 
 **What it is.** A rule that a CI run may only use results of runs that had *finished* when it started.

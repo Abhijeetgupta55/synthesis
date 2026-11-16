@@ -49,6 +49,10 @@ def _file_of(item, root: Path) -> str:
 
 @pytest.hookimpl(trylast=True)
 def pytest_collection_modifyitems(session, config, items):
+    if _STATE.get("timing_only"):              # record pytest's own file order (for the queue position), no change
+        root = Path(str(config.rootpath)).resolve()
+        _STATE["order"] = list(dict.fromkeys(_file_of(it, root) for it in items))
+        return
     if not active(config) or not items:
         return
     from smartci import gitdiff, receipts
@@ -132,7 +136,8 @@ def pytest_sessionfinish(session, exitstatus):
         import json
         Path(_STATE["timing_only"]).write_text(json.dumps({
             "first_failure": _STATE["first_fail"], "first_test_start": _STATE["start"], "end": time.time(),
-            "exitstatus": int(exitstatus), "results": _STATE["results"]}), encoding="utf-8")
+            "exitstatus": int(exitstatus), "results": _STATE["results"], "order": _STATE.get("order", [])}),
+            encoding="utf-8")
         _STATE.clear()
         return
     from smartci import receipts

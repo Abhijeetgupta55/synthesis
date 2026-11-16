@@ -23,27 +23,37 @@
   pending mains power.
 - **D trade-off:** done. Floor f* chosen on validation, held on LRTS test; failed a NetworkX deployment check, so it is
   opt-in (`SMARTCI_FLOOR`), off by default.
-- **E dashboard:** done. Seven pages (six required + a guided demo), offline, smoke test passing, screenshots in `reports/demo_screenshots/`.
+- **E dashboard:** done. Eight pages (Start here, ML Lab, Real PRs, Break the code, pipeline, Predict live, Results, Limits), offline, smoke test passing, screenshots in `reports/demo_screenshots/`.
 - **F GitHub readiness:** done except the push (students). README generated, `tests.yml`, `requirements.txt`,
   `scripts/publish_check.py` passes.
 - **G presentation pack:** done. DEMO_SCRIPT.md (timing section fills itself after Phase C), RUBRIC_MAP.md,
   VIVA_NOTES.md (eight framing questions), AI_USE_DISCLOSURE.md draft.
 
-## Added after the finishing prompt (2026-11-16)
+## Demo rework (2026-11-16/17): nothing decorative or staged
 
-- `smartci evaluate` (one command → verdict card: smartci, a simple rule, or not enough evidence) and
-  `pytest --smartci --smartci-rule <rule>` so a team can run whichever order wins on its code.
-- Dashboard: *Start here* (analogy, animated race on a real bug, savings calculator from 9,301 held-out runs) and
-  *Break the code* (guided demo on a held-out real bug, live model, reveal); Results shows the NetworkX verdict.
-- `reports/EXPLAINER.md` (plain language + FAQ), `reports/ROADMAP.md` (scope), DEMO_SCRIPT.md rewritten as a story with
-  a 60-second pitch and a general-audience variant.
+- **0 measured first:** `reports/results/lab_check.json` (300k rows). Random vs time split: LightGBM unregularized
+  PR-AUC 0.677 vs 0.349, regularized 0.565 vs 0.401; LR 0.399 vs 0.373. Later builds (valA): LightGBM 0.141 without
+  vs 0.189 with regularization. Gaps are large for LightGBM, small for LR, so the Lab was built.
+- **1 Real PRs page:** 80 held-out Kafka/TVM builds (`demo_bundle/real_prs`, stack APFDc equals stored values,
+  `verify --bundle real_prs` matches raw LRTS); W/T/L over all held-out builds Kafka 6,264/121/1,693, TVM 144/82/51;
+  wins come from recurring failures, not flaky (`reports/results/real_prs_wins.json`). Animated race, race replay
+  page and savings calculator removed.
+- **2 ML Lab page:** live LR / RF / LightGBM on a 4.5 MB bundled sample; each fit ≤ 17 s on battery; four guided
+  experiments with computed takeaways; `notebooks/lab_by_hand.ipynb` (56 code lines).
+- **3 GitHub CI:** remote `Abhijeetgupta55/synthesis` (no `OWNER` left). `.github/workflows/smartci-compare.yml`
+  (jobs default / rule / model + report: job summary and PR comment via `smartci.ci_report`), baseline committed to
+  the fork's `smartci-base` as `.smartci-baseline/` by `make_branches.py` (dry run on a local clone OK; the three job
+  commands checked locally). Fork, push and PRs: HUMAN_TODO 1–2. `reports/PUBLIC_RUNS.md` has no run yet.
+- **4 Break the code:** two real pytest processes streamed with a stopwatch incl. start-up, real traceback
+  (`stp.demo.live_run`); recordings fallback. **Recordings pending mains power** (HUMAN_TODO 0).
+- **5** queue position + test time + end-to-end shown together everywhere a time is shown.
+- **6** README and DEMO_SCRIPT in the order ML Lab → Real PRs → GitHub PR → honest verdict; VIVA_NOTES has five new
+  questions; smoke test covers the eight pages (presses Train, the four experiments and Show me a loss).
 
 ## Next
 
-1. On mains power: `.venv\Scripts\python.exe live_demo\phase_c.py --repeats 3` (HUMAN_TODO 0). Then regenerate:
-   `python -m stp.reports.real_world_md`, `results_md`, `presentation_md`, `readme_md`, `audit_md`; rebuild the bundle
-   (`python -m stp.demo.build_bundle --parts results,repos`); `python -m stp.demo.smoke`; commit.
-2. Students: HUMAN_TODO 3 (publish), 6 (optional hosting), 7 (disclosure), 8 (rehearse).
+1. On mains power: HUMAN_TODO 0 (recordings, optionally Phase C), then regenerate reports and commit.
+2. Students: HUMAN_TODO 1 (push), 2 (fork + PRs + collect runs), 4 (disclosure), 5 (rehearse).
 
 ## How to resume
 
